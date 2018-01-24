@@ -4,36 +4,50 @@ import org.usfirst.frc.team1153.robot.OI;
 import org.usfirst.frc.team1153.robot.RobotMap;
 import org.usfirst.frc.team1153.robot.lib.RebelDrive;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Drive extends Subsystem {
-
+	
+	/*
+	 * Drive Talons Related
+	 */
 	private RebelDrive robotDrive;
 
-	private SpeedController leftFront;
-	private SpeedController leftBack;
-	private SpeedController rightFront;
-	private SpeedController rightBack;
+	private WPI_TalonSRX leftFront;
+	private WPI_TalonSRX leftBack;
+	private WPI_TalonSRX rightFront;
+	private WPI_TalonSRX rightBack;
+	private WPI_TalonSRX leftFrontSlave;
+	private WPI_TalonSRX rightFrontSlave;
 
+	/*
+	 * Transmission Shifting Related
+	 */
 	private DoubleSolenoid transmission;
-
-	private boolean turboMode = false;
-
 	public enum Shifter {
 		High, Low
 	}
 
-	public Drive() {
-		leftFront = new Victor(RobotMap.LEFT_FRONT_MOTOR);
-		leftBack = new Victor(RobotMap.LEFT_BACK_MOTOR);
-		rightFront = new Victor(RobotMap.RIGHT_FRONT_MOTOR);
-		rightBack = new Victor(RobotMap.RIGHT_BACK_MOTOR);
+	private boolean turboMode = false;
 
-		transmission = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_A, RobotMap.TRANSMISSION_SOLENOID_B);
+	/**
+	 * Assigns what the Robot should instantiate every time the Drive subsystem
+	 * initializes.
+	 */
+	public Drive() {
+		leftFront = new WPI_TalonSRX(RobotMap.LEFT_FRONT_MOTOR);
+		leftBack = new WPI_TalonSRX(RobotMap.LEFT_BACK_MOTOR);
+		rightFront = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_MOTOR);
+		rightBack = new WPI_TalonSRX(RobotMap.RIGHT_BACK_MOTOR);
+		rightFrontSlave = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_MOTOR_SLAVE);
+		leftFrontSlave = new WPI_TalonSRX(RobotMap.LEFT_FRONT_MOTOR_SLAVE);
+
+		// transmission = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_A,
+		// RobotMap.TRANSMISSION_SOLENOID_B);
 
 		robotDrive = RebelDrive.getInstance(leftFront, leftBack, rightFront, rightBack);
 	}
@@ -42,12 +56,31 @@ public class Drive extends Subsystem {
 	public void initDefaultCommand() {
 	}
 
+	/**
+	 * Code to set how our team controls the Joystick. Sets a move value and a
+	 * rotate value that can be assigned to differnt Joystick inputs.
+	 * 
+	 * @param joystick
+	 */
 	public void drive(Joystick joystick) {
 		double moveValue = joystick.getRawAxis(OI.JOYSTICK_LEFT_Y);
 		double rotateValue = joystick.getRawAxis(OI.JOYSTICK_RIGHT_X);
 		robotDrive.arcadeDriveTurbo(moveValue, rotateValue, turboMode);
 	}
 
+	/**
+	 * Sets Talons 3 and 6 to the servitude of 
+	 */
+	public void setIndenturedServants() {
+		rightFrontSlave.follow(rightFront);
+		leftFrontSlave.follow(leftBack);
+	}
+
+	/**
+	 * Code for turning on and off the ball-shifter transmissions. This code also
+	 * functions as a variable setter to allow us to autonomously control the stage
+	 * that the transmissions are on.
+	 */
 	public void turboOn() {
 		turboMode = true;
 	}
@@ -63,7 +96,7 @@ public class Drive extends Subsystem {
 	public void shiftLow() {
 		transmission.set(DoubleSolenoid.Value.kReverse);
 	}
-	
+
 	public Shifter getGear() {
 		DoubleSolenoid.Value currentState = transmission.get();
 		if (currentState == DoubleSolenoid.Value.kForward) {
