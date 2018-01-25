@@ -29,7 +29,9 @@ public class Drive extends Subsystem {
 	/*
 	 * Transmission Shifting Related
 	 */
-	private DoubleSolenoid transmission;
+	private DoubleSolenoid transmissionLeft;
+	private DoubleSolenoid transmissionRight;
+
 
 	public enum Shifter {
 		High, Low
@@ -49,7 +51,8 @@ public class Drive extends Subsystem {
 		rightFrontSlave = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_MOTOR_SLAVE);
 		leftFrontSlave = new WPI_TalonSRX(RobotMap.LEFT_FRONT_MOTOR_SLAVE);
 
-		transmission = new DoubleSolenoid (RobotMap.TRANSMISSION_SOLENOID_A, RobotMap.TRANSMISSION_SOLENOID_B);
+		transmissionLeft = new DoubleSolenoid (RobotMap.TRANSMISSION_SOLENOID_LEFT_A, RobotMap.TRANSMISSION_SOLENOID_LEFT_B);
+		transmissionRight = new DoubleSolenoid (RobotMap.TRANSMISSION_SOLENOID_RIGHT_A, RobotMap.TRANSMISSION_SOLENOID_RIGHT_B);
 
 		robotDrive = RebelDrive.getInstance(leftFront, leftBack, rightFront, rightBack);
 
@@ -93,16 +96,20 @@ public class Drive extends Subsystem {
 	}
 
 	public void shiftHigh() {
-		transmission.set(DoubleSolenoid.Value.kForward);
+		transmissionLeft.set(DoubleSolenoid.Value.kForward);
+		transmissionRight.set(DoubleSolenoid.Value.kForward);
+
 	}
 
 	public void shiftLow() {
-		transmission.set(DoubleSolenoid.Value.kReverse);
+		transmissionLeft.set(DoubleSolenoid.Value.kReverse);
+		transmissionRight.set(DoubleSolenoid.Value.kReverse);
+
 
 	}
 
 	public Shifter getGear() {
-		DoubleSolenoid.Value currentState = transmission.get();
+		DoubleSolenoid.Value currentState = transmissionLeft.get();
 		if (currentState == DoubleSolenoid.Value.kForward) {
 			return Shifter.High;
 		} else {

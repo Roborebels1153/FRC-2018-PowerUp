@@ -23,7 +23,12 @@ public class RobotMap {
 	public static int RIGHT_FRONT_MOTOR_SLAVE = 6;
 
 	
-	public static final int TRANSMISSION_SOLENOID_A = 0;
-	public static final int TRANSMISSION_SOLENOID_B = 1;
+	public static final int TRANSMISSION_SOLENOID_LEFT_A = 0;
+	public static final int TRANSMISSION_SOLENOID_LEFT_B = 1;
+	
+	public static final int TRANSMISSION_SOLENOID_RIGHT_A = 2;
+	public static final int TRANSMISSION_SOLENOID_RIGHT_B = 3;
+
+
 	
 }

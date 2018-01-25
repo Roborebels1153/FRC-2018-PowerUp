@@ -43,6 +43,8 @@ public class Robot extends TimedRobot {
 		drive.setIndenturedServants();
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
+		
+	
 	}
 
 	/**
