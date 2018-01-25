@@ -1,0 +1,42 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
+package org.usfirst.frc.team1153.robot.commands;
+
+import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team1153.robot.Robot;
+
+/**
+ * This Command shifts the robot into high gear!
+ */
+public class ShiftHighCommand extends Command {
+	public ShiftHighCommand() {
+		requires(Robot.drive);
+	}
+
+	@Override
+	protected void initialize() {
+		Robot.drive.shiftHigh();
+	}
+
+	@Override
+	protected void execute() {
+	}
+
+	@Override
+	protected boolean isFinished() {
+		return true;
+	}
+
+	@Override
+	protected void end() {
+	}
+
+	@Override
+	protected void interrupted() {
+	}
+}

@@ -7,7 +7,12 @@
 
 package org.usfirst.frc.team1153.robot;
 
+import org.usfirst.frc.team1153.robot.commands.ShiftHighCommand;
+import org.usfirst.frc.team1153.robot.commands.ShiftLowCommand;
+import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
+
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -23,6 +28,16 @@ public class OI {
 	
 	private Joystick opStick = new Joystick(OPERATOR_STICK);
     private Joystick driverStick = new Joystick(DRIVER_JOYSTICK);
+    
+    public Button drTriggerL = new RebelTrigger(driverStick, 2);
+    public Button drTriggerR = new RebelTrigger(driverStick, 3);
+   
+    public OI() {
+    	
+    	drTriggerL.whenPressed(new ShiftHighCommand());
+    	drTriggerL.whenReleased(new ShiftLowCommand());
+    }
+    
     
     public Joystick getOpStick() {
     	return opStick;

@@ -8,10 +8,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Drive extends Subsystem {
-	
+
 	/*
 	 * Drive Talons Related
 	 */
@@ -27,11 +28,13 @@ public class Drive extends Subsystem {
 	/*
 	 * Transmission Shifting Related
 	 */
-	private DoubleSolenoid transmission;
+	private Solenoid trannyLeft;
+	private Solenoid trannyRight;
+
 	public enum Shifter {
 		High, Low
 	}
-
+	
 	private boolean turboMode = false;
 
 	/**
@@ -46,10 +49,11 @@ public class Drive extends Subsystem {
 		rightFrontSlave = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_MOTOR_SLAVE);
 		leftFrontSlave = new WPI_TalonSRX(RobotMap.LEFT_FRONT_MOTOR_SLAVE);
 
-		// transmission = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_A,
-		// RobotMap.TRANSMISSION_SOLENOID_B);
+		trannyLeft = new Solenoid(RobotMap.TRANSMISSION_SOLENOID_A);
+		trannyRight = new Solenoid(RobotMap.TRANSMISSION_SOLENOID_B);
 
 		robotDrive = RebelDrive.getInstance(leftFront, leftBack, rightFront, rightBack);
+
 	}
 
 	@Override
@@ -69,7 +73,7 @@ public class Drive extends Subsystem {
 	}
 
 	/**
-	 * Sets Talons 3 and 6 to the servitude of 
+	 * Sets Talons 3 and 6 to the servitude of
 	 */
 	public void setIndenturedServants() {
 		rightFrontSlave.follow(rightFront);
@@ -90,16 +94,18 @@ public class Drive extends Subsystem {
 	}
 
 	public void shiftHigh() {
-		transmission.set(DoubleSolenoid.Value.kForward);
+		trannyLeft.set(true);
+		trannyRight.set(true);
 	}
 
 	public void shiftLow() {
-		transmission.set(DoubleSolenoid.Value.kReverse);
+		trannyLeft.set(false);
+		trannyRight.set(false);
 	}
 
 	public Shifter getGear() {
-		DoubleSolenoid.Value currentState = transmission.get();
-		if (currentState == DoubleSolenoid.Value.kForward) {
+		boolean currentState = trannyRight.get();
+		if (currentState) {
 			return Shifter.High;
 		} else {
 			return Shifter.Low;
