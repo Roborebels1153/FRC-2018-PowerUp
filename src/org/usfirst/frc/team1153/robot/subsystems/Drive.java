@@ -7,6 +7,7 @@ import org.usfirst.frc.team1153.robot.lib.RebelDrive;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -28,8 +29,7 @@ public class Drive extends Subsystem {
 	/*
 	 * Transmission Shifting Related
 	 */
-	private Solenoid trannyLeft;
-	private Solenoid trannyRight;
+	private DoubleSolenoid transmission;
 
 	public enum Shifter {
 		High, Low
@@ -49,8 +49,7 @@ public class Drive extends Subsystem {
 		rightFrontSlave = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_MOTOR_SLAVE);
 		leftFrontSlave = new WPI_TalonSRX(RobotMap.LEFT_FRONT_MOTOR_SLAVE);
 
-		trannyLeft = new Solenoid(RobotMap.TRANSMISSION_SOLENOID_A);
-		trannyRight = new Solenoid(RobotMap.TRANSMISSION_SOLENOID_B);
+		transmission = new DoubleSolenoid (RobotMap.TRANSMISSION_SOLENOID_A, RobotMap.TRANSMISSION_SOLENOID_B);
 
 		robotDrive = RebelDrive.getInstance(leftFront, leftBack, rightFront, rightBack);
 
@@ -94,18 +93,17 @@ public class Drive extends Subsystem {
 	}
 
 	public void shiftHigh() {
-		trannyLeft.set(true);
-		trannyRight.set(true);
+		transmission.set(DoubleSolenoid.Value.kForward);
 	}
 
 	public void shiftLow() {
-		trannyLeft.set(false);
-		trannyRight.set(false);
+		transmission.set(DoubleSolenoid.Value.kReverse);
+
 	}
 
 	public Shifter getGear() {
-		boolean currentState = trannyRight.get();
-		if (currentState) {
+		DoubleSolenoid.Value currentState = transmission.get();
+		if (currentState == DoubleSolenoid.Value.kForward) {
 			return Shifter.High;
 		} else {
 			return Shifter.Low;
