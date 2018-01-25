@@ -67,7 +67,7 @@ public class Drive extends Subsystem {
 	 * @param joystick
 	 */
 	public void drive(Joystick joystick) {
-		double moveValue = joystick.getRawAxis(OI.JOYSTICK_LEFT_Y);
+		double moveValue = -joystick.getRawAxis(OI.JOYSTICK_LEFT_Y);
 		double rotateValue = joystick.getRawAxis(OI.JOYSTICK_RIGHT_X);
 		robotDrive.arcadeDriveTurbo(moveValue, rotateValue, turboMode);
 	}
