@@ -20,7 +20,7 @@ public class RebelDrive extends DifferentialDrive {
 	
 	public void arcadeDriveTurbo(double drive, double turn, boolean turbo) {
 		double moveValue = (turbo ? 1 : 0.8) * drive;
-		double rotateValue = 0.7 * turn;
+		double rotateValue = 1.0 * turn;
 		arcadeDrive(moveValue, rotateValue, true);
 	}
 }

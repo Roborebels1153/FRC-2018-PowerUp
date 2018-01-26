@@ -32,11 +32,10 @@ public class Drive extends Subsystem {
 	private DoubleSolenoid transmissionLeft;
 	private DoubleSolenoid transmissionRight;
 
-
 	public enum Shifter {
 		High, Low
 	}
-	
+
 	private boolean turboMode = false;
 
 	/**
@@ -51,8 +50,10 @@ public class Drive extends Subsystem {
 		rightFrontSlave = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_MOTOR_SLAVE);
 		leftFrontSlave = new WPI_TalonSRX(RobotMap.LEFT_FRONT_MOTOR_SLAVE);
 
-		transmissionLeft = new DoubleSolenoid (RobotMap.TRANSMISSION_SOLENOID_LEFT_A, RobotMap.TRANSMISSION_SOLENOID_LEFT_B);
-		transmissionRight = new DoubleSolenoid (RobotMap.TRANSMISSION_SOLENOID_RIGHT_A, RobotMap.TRANSMISSION_SOLENOID_RIGHT_B);
+		transmissionLeft = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_LEFT_A,
+				RobotMap.TRANSMISSION_SOLENOID_LEFT_B);
+		transmissionRight = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_RIGHT_A,
+				RobotMap.TRANSMISSION_SOLENOID_RIGHT_B);
 
 		robotDrive = RebelDrive.getInstance(leftFront, leftBack, rightFront, rightBack);
 
@@ -71,7 +72,7 @@ public class Drive extends Subsystem {
 	public void drive(Joystick joystick) {
 		double moveValue = -joystick.getRawAxis(OI.JOYSTICK_LEFT_Y);
 		double rotateValue = joystick.getRawAxis(OI.JOYSTICK_RIGHT_X);
-		robotDrive.arcadeDriveTurbo(moveValue, rotateValue, turboMode);
+		robotDrive.arcadeDriveTurbo(moveValue, rotateValue, true);
 	}
 
 	/**
@@ -105,7 +106,6 @@ public class Drive extends Subsystem {
 		transmissionLeft.set(DoubleSolenoid.Value.kReverse);
 		transmissionRight.set(DoubleSolenoid.Value.kReverse);
 
-
 	}
 
 	public Shifter getGear() {
@@ -115,6 +115,10 @@ public class Drive extends Subsystem {
 		} else {
 			return Shifter.Low;
 		}
+	}
+
+	public void testMotor(double speed) {
+		rightFrontSlave.set(speed);
 	}
 
 }
