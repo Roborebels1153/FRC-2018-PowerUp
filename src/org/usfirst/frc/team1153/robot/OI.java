@@ -7,12 +7,14 @@
 
 package org.usfirst.frc.team1153.robot;
 
+import org.usfirst.frc.team1153.robot.commands.ResetCommand;
 import org.usfirst.frc.team1153.robot.commands.ShiftHighCommand;
 import org.usfirst.frc.team1153.robot.commands.ShiftLowCommand;
 import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -31,11 +33,19 @@ public class OI {
     
     public Button drTriggerL = new RebelTrigger(driverStick, 2);
     public Button drTriggerR = new RebelTrigger(driverStick, 3);
-   
+    
+    public Button drButtonY = new JoystickButton(driverStick, 4);
+    public Button drButtonA = new JoystickButton(driverStick, 1);
+    public Button drButtonB = new JoystickButton(driverStick, 2);
+    public Button drButtonX = new JoystickButton(driverStick, 3);
+
     public OI() {
     	
     	drTriggerL.whenPressed(new ShiftHighCommand());
     	drTriggerL.whenReleased(new ShiftLowCommand());
+    	
+    	drButtonY.whenActive(new ResetCommand());
+    	
     }
     
     

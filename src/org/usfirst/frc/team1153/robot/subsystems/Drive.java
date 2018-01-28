@@ -4,6 +4,7 @@ import org.usfirst.frc.team1153.robot.OI;
 import org.usfirst.frc.team1153.robot.RobotMap;
 import org.usfirst.frc.team1153.robot.lib.RebelDrive;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -17,6 +18,9 @@ public class Drive extends Subsystem {
 	/*
 	 * Drive Talons Related
 	 */
+	private int rEncoderOffset = 0;
+	private int lEncoderOffset = 0;
+
 	private RebelDrive robotDrive;
 
 	private WPI_TalonSRX leftFront;
@@ -56,6 +60,8 @@ public class Drive extends Subsystem {
 				RobotMap.TRANSMISSION_SOLENOID_RIGHT_B);
 
 		robotDrive = RebelDrive.getInstance(leftFront, leftBack, rightFront, rightBack);
+		
+		setEncoderAsFeedback();
 
 	}
 
@@ -81,6 +87,41 @@ public class Drive extends Subsystem {
 	public void setIndenturedServants() {
 		rightFrontSlave.follow(rightFront);
 		leftFrontSlave.follow(leftBack);
+	}
+	
+	public void setEncoderAsFeedback() {
+		leftFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+		rightFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+		//reverseSensor() for the left talon
+		
+		leftFront.setSensorPhase(true);
+	//	leftFront.setInverted(false);
+
+	}
+	
+	private int getRawTalonEncoderOutput(boolean right) {
+		if (right) {
+			int encoderPosition = rightFront.getSensorCollection().getQuadraturePosition();
+			return encoderPosition;
+		} else {
+			int encoderPosition = leftFront.getSensorCollection().getQuadraturePosition();
+			return encoderPosition;
+		}
+	}
+	
+	public void resetEncoders() {
+//		rEncoderOffset = getRawTalonEncoderOutput(true);
+//		lEncoderOffset = getRawTalonEncoderOutput(false);
+		leftFront.getSensorCollection().setQuadraturePosition(0, 10);
+		rightFront.getSensorCollection().setQuadraturePosition(0, 10);
+	}
+	
+	public int getTalonEncoderOutput(boolean right) {
+		if (right) {
+			return (getRawTalonEncoderOutput(right) - rEncoderOffset);
+		} else {
+			return (getRawTalonEncoderOutput(right) - lEncoderOffset);
+		}
 	}
 
 	/**

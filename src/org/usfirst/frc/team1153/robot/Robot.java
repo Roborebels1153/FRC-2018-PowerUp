@@ -40,7 +40,8 @@ public class Robot extends TimedRobot {
 		drive = new Drive();
 		oi = new OI();
 		chooser = new SendableChooser<Command>();
-
+		drive.resetEncoders();
+		//drive.resetEncoders();
 		/**
 		 * Below is the sample syntax for adding an auto mode to the chooser and 
 		 * adding a deefault auto mode without choosers
@@ -50,6 +51,12 @@ public class Robot extends TimedRobot {
 		
 		drive.setIndenturedServants();
 		SmartDashboard.putData("Auto mode", chooser);
+
+	}
+	
+	public static void updateDashboard() {
+		SmartDashboard.putNumber("RQuadEncoderValue", drive.getTalonEncoderOutput(true));
+		SmartDashboard.putNumber("LQuadEncoderValue", drive.getTalonEncoderOutput(false));
 
 	}
 
@@ -65,6 +72,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledPeriodic() {
+		updateDashboard();
 		Scheduler.getInstance().run();
 	}
 
@@ -103,6 +111,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		updateDashboard();
+
 	}
 
 	@Override
@@ -114,6 +124,7 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
+		drive.resetEncoders();
 	}
 
 	/**
@@ -123,7 +134,8 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		drive.drive(oi.getDriverStick());
-		
+		updateDashboard();
+
 		/**
 		 * Test to make sure individual talons are working
 		 *	if(oi.getDriverStick().getRawButtonPressed(1)) {
