@@ -7,14 +7,14 @@
 
 package org.usfirst.frc.team1153.robot;
 
+import org.usfirst.frc.team1153.robot.subsystems.Drive;
+import org.usfirst.frc.team1153.robot.subsystems.Shooter;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team1153.robot.commands.ShiftHighCommand;
-import org.usfirst.frc.team1153.robot.subsystems.Drive;
-import org.usfirst.frc.team1153.robot.subsystems.ExampleSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,6 +27,7 @@ public class Robot extends TimedRobot {
 
 	public static Drive drive;
 	public static OI oi;
+	public static Shooter shooter;
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -39,6 +40,7 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		drive = new Drive();
 		oi = new OI();
+		shooter = new Shooter();
 		chooser = new SendableChooser<Command>();
 
 		/**
