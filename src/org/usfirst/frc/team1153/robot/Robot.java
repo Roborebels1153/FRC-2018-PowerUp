@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team1153.robot;
 
+import org.usfirst.frc.team1153.robot.lib.StateScheduler;
 import org.usfirst.frc.team1153.robot.subsystems.Drive;
 import org.usfirst.frc.team1153.robot.subsystems.Shooter;
 
@@ -42,10 +43,12 @@ public class Robot extends TimedRobot {
 		oi = new OI();
 		shooter = new Shooter();
 		chooser = new SendableChooser<Command>();
+		
+		StateScheduler.getInstance().addStateSubsystem(shooter);
 
 		/**
 		 * Below is the sample syntax for adding an auto mode to the chooser and 
-		 * adding a deefault auto mode without choosers
+		 * adding a default auto mode without choosers
 		 * chooser.addObject("My Auto", new MyAutoCommand());
 	 	 * chooser.addDefault("Default Auto", new ShiftHighCommand());
 		 */
@@ -62,12 +65,13 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
+		StateScheduler.getInstance().notifyDisabled();
 	}
 
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		StateScheduler.getInstance().runAll();
 	}
 
 	/**
@@ -84,6 +88,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		StateScheduler.getInstance().notifyAuto();
+		
 		m_autonomousCommand = chooser.getSelected();
 
 		/*
@@ -105,10 +111,13 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		StateScheduler.getInstance().runAll();
 	}
 
 	@Override
 	public void teleopInit() {
+		StateScheduler.getInstance().notifyTeleop();
+		
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -124,6 +133,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		StateScheduler.getInstance().runAll();
+		
 		drive.drive(oi.getDriverStick());
 		
 		/**

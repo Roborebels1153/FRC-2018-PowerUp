@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1153.robot.commands;
 
 import org.usfirst.frc.team1153.robot.Robot;
+import org.usfirst.frc.team1153.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -16,7 +17,7 @@ public class RetractShooterCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shooter.retractPistonShooters();
+    	Robot.shooter.setState(Shooter.STATE_RETRACT);
     }
 
     // Called repeatedly when this Command is scheduled to run
