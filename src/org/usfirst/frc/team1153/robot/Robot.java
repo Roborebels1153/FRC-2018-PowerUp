@@ -7,14 +7,16 @@
 
 package org.usfirst.frc.team1153.robot;
 
+import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
+import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
+import org.usfirst.frc.team1153.robot.subsystems.AutoDrive;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team1153.robot.commands.ShiftHighCommand;
-import org.usfirst.frc.team1153.robot.subsystems.Drive;
-import org.usfirst.frc.team1153.robot.subsystems.ExampleSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,11 +27,15 @@ import org.usfirst.frc.team1153.robot.subsystems.ExampleSubsystem;
  */
 public class Robot extends TimedRobot {
 
-	public static Drive drive;
-	public static OI oi;
+	// public static Drive drive = new Drive();
+	public static AutoDrive autoDrive = new AutoDrive();
+	public static OI oi = new OI();
+	static int loops = 0;
 
-	Command m_autonomousCommand;
+	private Command autoCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
+
+	Button drRightTrigger;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -37,27 +43,70 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		drive = new Drive();
-		oi = new OI();
 		chooser = new SendableChooser<Command>();
-		drive.resetEncoders();
-		//drive.resetEncoders();
 		/**
-		 * Below is the sample syntax for adding an auto mode to the chooser and 
-		 * adding a deefault auto mode without choosers
-		 * chooser.addObject("My Auto", new MyAutoCommand());
-	 	 * chooser.addDefault("Default Auto", new ShiftHighCommand());
+		 * Below is the sample syntax for adding an auto mode to the chooser and adding
+		 * a deefault auto mode without choosers chooser.addObject("My Auto", new
+		 * MyAutoCommand()); chooser.addDefault("Default Auto", new ShiftHighCommand());
 		 */
-		
-		drive.setIndenturedServants();
+		autoDrive.setFollowers();
+		drRightTrigger = new RebelTrigger(oi.getDriverStick(), 3);
 		SmartDashboard.putData("Auto mode", chooser);
 
 	}
-	
-	public static void updateDashboard() {
-		SmartDashboard.putNumber("RQuadEncoderValue", drive.getTalonEncoderOutput(true));
-		SmartDashboard.putNumber("LQuadEncoderValue", drive.getTalonEncoderOutput(false));
 
+	public static void updateDashboard() {
+		// if (++loops >= 10) {
+		// loops = 0;
+		 SmartDashboard.putNumber("Right Encoder Value",
+		 autoDrive.getRightEncoderOutput());
+		// SmartDashboard.putNumber("Right Motor Motor Output",
+		// autoDrive.getRightMotorOutputPercent());
+		// SmartDashboard.putNumber("Right Motor Motor Speed",
+		// autoDrive.getRightMotorSpeed());
+		// SmartDashboard.putNumber("Right Motor Motion Magic Error",
+		// autoDrive.getRightMotorClosedLoopError());
+		// // SmartDashboard.putNumber("Right Motor Active Trajectory Position",
+		// // drive.getRightMotorActiveTrajectoryPosition());
+		// // SmartDashboard.putNumber("Right Motor Active Trajectory Velocity",
+		// // drive.getRightMotorActiveTrajectoryVelocity());
+		SmartDashboard.putNumber("Right Motor Sensor Position", autoDrive.getRightMotorSensorPosition());
+		SmartDashboard.putNumber("Right Motor Sensor Velocity", autoDrive.getRightMotorSensorVelocity());
+		//
+		 SmartDashboard.putNumber("Left Encoder Value",
+		 autoDrive.getLeftEncoderOutput());
+		// SmartDashboard.putNumber("Left Motor Motor Output",
+		// autoDrive.getLeftMotorOutputPercent());
+		// SmartDashboard.putNumber("Left Motor Motor Speed",
+		// autoDrive.getLeftMotorSpeed());
+		// SmartDashboard.putNumber("Left Motor Motion Magic Error",
+		// autoDrive.getLeftMotorClosedLoopError());
+		// // SmartDashboard.putNumber("Left Motor Active Trajectory Position",
+		// // drive.getLeftMotorActiveTrajectoryPosition());
+		// // SmartDashboard.putNumber("Left Motor Active Trajectory Velocity",
+		// // drive.getLeftMotorActiveTrajectoryVelocity());
+		SmartDashboard.putNumber("Left Motor Sensor Position", autoDrive.getLeftMotorSensorPosition());
+		SmartDashboard.putNumber("Left Motor Sensor Velocity", autoDrive.getLeftMotorSensorVelocity());
+		//
+		// SmartDashboard.putNumber("Left Motor Sensor Position",
+		// autoDrive.getLeftMotorSensorPosition());
+		// SmartDashboard.putNumber("Left Motor Sensor Velocity",
+		// autoDrive.getLeftMotorSensorVelocity());
+		//
+		// // SmartDashboard.putNumber("Left Motor Output Voltage",
+		// // leftMaster.getMotorOutputVoltage());
+		// // SmartDashboard.putNumber("Left Motor Bus Voltage",
+		// // leftMaster.getBusVoltage());
+		// // SmartDashboard.putNumber("Left Motor Output Signal",
+		// // leftMaster.getMotorOutputVoltage() / leftMaster.getBusVoltage());
+		// //
+		// // SmartDashboard.putNumber("Right Motor Output Voltage",
+		// // rightMaster.getMotorOutputVoltage());
+		// // SmartDashboard.putNumber("Right Motor Bus Voltage",
+		// // rightMaster.getBusVoltage());
+		// // SmartDashboard.putNumber("Right Motor Output Signal",
+		// // rightMaster.getMotorOutputVoltage() / rightMaster.getBusVoltage());
+		// }
 	}
 
 	/**
@@ -90,7 +139,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = chooser.getSelected();
+		autoCommand = new DriveDistanceCommand(15000, -15000);
+		// m_autonomousCommand = chooser.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -100,8 +150,8 @@ public class Robot extends TimedRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
+		if (autoCommand != null) {
+			autoCommand.start();
 		}
 	}
 
@@ -121,10 +171,10 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
+		if (autoCommand != null) {
+			autoCommand.cancel();
 		}
-		drive.resetEncoders();
+		// drive.resetEncoders();
 	}
 
 	/**
@@ -133,17 +183,34 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		drive.drive(oi.getDriverStick());
+		// drive.drive(oi.getDriverStick());
 		updateDashboard();
-
+		// autoDrive.drive(oi.getDriverStick());
+		// autoDrive.resetEncoders();
 		/**
 		 * Test to make sure individual talons are working
-		 *	if(oi.getDriverStick().getRawButtonPressed(1)) {
-		 *		drive.testMotor(1);
-		 *	} else if (oi.getDriverStick().getRawButtonPressed(2)) {
-		 *		drive.testMotor(-1);
-		 *	}
-		*/
+		 * if(oi.getDriverStick().getRawButtonPressed(1)) { drive.testMotor(1); } else
+		 * if (oi.getDriverStick().getRawButtonPressed(2)) { drive.testMotor(-1); }
+		 */
+		// autoDrive.drive(oi.getDriverStick());
+
+		if (drRightTrigger.get()) {
+			autoDrive.shiftHigh();
+		} else {
+			autoDrive.shiftLow();
+		}
+		if (oi.getDriverStick().getRawButtonPressed(2)) {
+			autoDrive.resetEncoders();
+		}
+
+		if (oi.getDriverStick().getRawButtonPressed(3)) {
+			autoDrive.stop();
+		} else if (oi.getDriverStick().getRawButtonPressed(4)) {
+			autoDrive.driveForward();
+		} else if (oi.getDriverStick().getRawButtonPressed(1)) {
+			autoDrive.driveBackward();
+		}
+
 	}
 
 	/**
