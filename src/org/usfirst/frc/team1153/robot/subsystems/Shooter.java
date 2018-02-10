@@ -13,12 +13,12 @@ public class Shooter extends StateSubsystem {
 	/**
 	 * Shooter is in the fire position and all pistons are out
 	 */
-	public static final int STATE_FIRE = 0;
+	public static final State STATE_FIRE = new StateSubsystem.State("fire");
 	/**
 	 * Shooter is in the retracted position with all pistons
 	 * retracted
 	 */
-	public static final int STATE_RETRACT = 1;
+	public static final State STATE_RETRACT = new StateSubsystem.State("retract");
 
 	private Solenoid shooterA;
 	private Solenoid shooterB;
@@ -30,28 +30,6 @@ public class Shooter extends StateSubsystem {
 		shooterB = new Solenoid(RobotMap.SHOOTER_SOLENOID_B);
 		shooterC = new Solenoid(RobotMap.SHOOTER_SOLENOID_C);
 		shooterD = new Solenoid(RobotMap.SHOOTER_SOLENOID_D);
-	}
-
-	@Override
-	public void run() {
-		switch (state) {
-		case STATE_FIRE:
-			if (!isInit) {
-				fireInit();
-				isInit = true;
-			} else {
-				firePeriodic();
-			}
-			break;
-		case STATE_RETRACT:
-			if (!isInit) {
-				retractInit();
-				isInit = true;
-			} else {
-				retractPeriodic();
-			}
-			break;
-		}
 	}
 
 	@Override
@@ -71,47 +49,32 @@ public class Shooter extends StateSubsystem {
 	/**
 	 * Called when shooter first begins fire state
 	 */
-	private void fireInit() {
+	public void fireInit() {
 		setAllPistonState(true);
 	}
 	
 	/**
-	 * Called periodically while shooter is in fire state
-	 */
-	private void firePeriodic() {
-		
-	}
-
-	
-	/**
 	 * Called when shooter first begins retract state
 	 */
-	private void retractInit() {
+	public void retractInit() {
 		setAllPistonState(false);
 	}
-	
-	/**
-	 * Called periodically while shooter is in retract state
-	 */
-	private void retractPeriodic() {
-		
-	}
 
 	
 	@Override
-	public int getDisabledDefaultState() {
+	public StateSubsystem.State getDisabledDefaultState() {
 		return STATE_RETRACT;
 	}
 	
 
 	@Override
-	public int getTeleopDefaultState() {
+	public StateSubsystem.State getTeleopDefaultState() {
 		return STATE_RETRACT;
 	}
 	
 
 	@Override
-	public int getAutoDefaultState() {
+	public StateSubsystem.State getAutoDefaultState() {
 		return STATE_RETRACT;
 	}
 }

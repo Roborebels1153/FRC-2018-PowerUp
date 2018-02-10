@@ -1,5 +1,8 @@
 package org.usfirst.frc.team1153.robot.lib;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -10,24 +13,50 @@ public abstract class StateSubsystem extends Subsystem {
 	/**
 	 * Holds the current state of the subsystem
 	 */
-	protected int state;
+	private StateSubsystem.State state;
+	
+	/**
+	 * Holds references to known states
+	 */
+	private ArrayList<StateSubsystem.State> knownStates = new ArrayList<>();
+	
 	/**
 	 * Whether or not the latest state has been initialized; used
 	 * determine whether or not we should call init or periodic
 	 */
-	protected boolean isInit = false;
+	private boolean isInit = false;
     
     /**
-	 * Called from all periodic methods in robot to update hardware
-	 * components based on their state
+	 * Calls the appropriate statePeriodic and stateInit methods
 	 */
-	public abstract void run();
+	public void run() {
+		try {
+			if (!isInit) {
+				StateSubsystem.class.getMethod(state.name + "Init").invoke(this);
+				isInit = true;
+			} else {
+				StateSubsystem.class.getMethod(state.name + "Periodic").invoke(this);
+			}
+		} catch (NoSuchMethodException e) {
+			// Subclasses of StateSubsystem are not required to implement either method
+		} catch (InvocationTargetException|IllegalAccessException e) {
+			throw new RuntimeException("Invalid subclass of StateSubsystem");
+		}
+	}
+	
+	/**
+	 * Used in the constructor to register new states for the
+	 * underlying StateSubsystem manager
+	 */
+	protected void registerState(StateSubsystem.State state) {
+		knownStates.add(state);
+	}
 	
 	/**
 	 * Getter for the current state of the subsystem
 	 * @return an int representing the current state
 	 */
-	public int getState() {
+	public StateSubsystem.State getState() {
 		return state;
 	}
 	
@@ -35,7 +64,10 @@ public abstract class StateSubsystem extends Subsystem {
 	 * Setter for the current state of the subsystem
 	 * @param in state to enter
 	 */
-	public void setState(int in) {
+	public void setState(StateSubsystem.State in) {
+		if (!knownStates.contains(in)) {
+			throw new IllegalArgumentException("Invalid state, maybe missing calls to registerState(StateSubsystem.State)?");
+		}
 		isInit = false;
 		state = in;
 	}
@@ -44,19 +76,19 @@ public abstract class StateSubsystem extends Subsystem {
 	 * Set the state of the subsystem when robot is disabled
 	 * @return the int state id for disabled
 	 */
-	protected abstract int getDisabledDefaultState();
+	protected abstract StateSubsystem.State getDisabledDefaultState();
 	
 	/**
 	 * Set the state of the subsystem when robot is in teleop
-	 * @return the int state id for teleop
+	 * @return the state for teleop
 	 */
-	protected abstract int getTeleopDefaultState();
+	protected abstract StateSubsystem.State getTeleopDefaultState();
 	
 	/**
 	 * Set the state of the subsystem when robot is in auto
-	 * @return the int state id for auto
+	 * @return the state for auto
 	 */
-	protected abstract int getAutoDefaultState();
+	protected abstract StateSubsystem.State getAutoDefaultState();
 	
 	/**
 	 * Called when the robot first enters the disabled state
@@ -77,6 +109,15 @@ public abstract class StateSubsystem extends Subsystem {
 	 */
 	public void robotAuto() {
 		setState(getAutoDefaultState());
+	}
+	
+	public static class State {
+		
+		public final String name;
+		
+		public State(String name) {
+			this.name = name;
+		}
 	}
 }
 
