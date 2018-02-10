@@ -30,6 +30,9 @@ public class Shooter extends StateSubsystem {
 		shooterB = new Solenoid(RobotMap.SHOOTER_SOLENOID_B);
 		shooterC = new Solenoid(RobotMap.SHOOTER_SOLENOID_C);
 		shooterD = new Solenoid(RobotMap.SHOOTER_SOLENOID_D);
+		
+		registerState(STATE_FIRE);
+		registerState(STATE_RETRACT);
 	}
 
 	@Override
