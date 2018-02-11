@@ -9,6 +9,7 @@ package org.usfirst.frc.team1153.robot.subsystems;
 
 import org.usfirst.frc.team1153.robot.Constants;
 import org.usfirst.frc.team1153.robot.RobotMap;
+import org.usfirst.frc.team1153.robot.lib.DriveSignal;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -97,6 +98,19 @@ public class AutoDrive extends Subsystem {
 	public void drive(Joystick joystick) {
 		// drive.arcadeDrive(-1* joystick.getY(), joystick.getRawAxis(4));
 	}
+	
+	/**
+	 * Below is drive code which is used in the cheesy Drive Command
+	 */
+	 public void configDrive(ControlMode controlMode, double left, double right){
+	    	leftMaster.set(controlMode, left);
+	    	rightMaster.set(controlMode, right);
+	    }
+	    
+	    public void driveWithHelper(ControlMode controlMode, DriveSignal driveSignal) {
+	    	//System.out.println(driveSignal.toString());
+	    	this.configDrive(controlMode, driveSignal.getLeft(), driveSignal.getRight());
+	    }
 
 	public void configTalonOutput() {
 		rightMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
