@@ -8,6 +8,8 @@
 package org.usfirst.frc.team1153.robot.subsystems;
 
 import org.usfirst.frc.team1153.robot.Constants;
+import org.usfirst.frc.team1153.robot.OI;
+import org.usfirst.frc.team1153.robot.Robot;
 import org.usfirst.frc.team1153.robot.RobotMap;
 import org.usfirst.frc.team1153.robot.lib.DriveSignal;
 
@@ -96,7 +98,7 @@ public class AutoDrive extends Subsystem {
 	}
 
 	public void drive(Joystick joystick) {
-		// drive.arcadeDrive(-1* joystick.getY(), joystick.getRawAxis(4));
+		 //drive.arcadeDrive(-1* joystick.getY(), joystick.getRawAxis(4));
 	}
 	
 	/**
@@ -111,6 +113,16 @@ public class AutoDrive extends Subsystem {
 	    	//System.out.println(driveSignal.toString());
 	    	this.configDrive(controlMode, driveSignal.getLeft(), driveSignal.getRight());
 	    }
+	    
+	    public boolean quickTurnController() {
+	    	if (Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y) < 0.2 
+	    			&& Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y) > -0.2) {
+	    		return true;	
+	    	} else {
+	    		return false;
+	    		}
+	        }
+	    
 
 	public void configTalonOutput() {
 		rightMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
