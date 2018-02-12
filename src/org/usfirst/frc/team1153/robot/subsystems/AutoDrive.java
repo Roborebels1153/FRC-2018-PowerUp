@@ -30,13 +30,10 @@ public class AutoDrive extends Subsystem {
 	private WPI_TalonSRX rightBackSlave;
 	private WPI_TalonSRX rightFrontSlave;
 
-	// DifferentialDrive drive;
-
 	/*
 	 * Transmission Shifting Related
 	 */
-	private DoubleSolenoid transmissionLeft;
-	private DoubleSolenoid transmissionRight;
+	private DoubleSolenoid transmissionShifter;
 
 	public enum Shifter {
 		High, Low
@@ -58,14 +55,12 @@ public class AutoDrive extends Subsystem {
 		rightBackSlave = new WPI_TalonSRX(6);
 		rightFrontSlave = new WPI_TalonSRX(5);
 
-		transmissionLeft = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_LEFT_A,
+		transmissionShifter = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_LEFT_A,
 				RobotMap.TRANSMISSION_SOLENOID_LEFT_B);
-		transmissionRight = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_RIGHT_A,
-				RobotMap.TRANSMISSION_SOLENOID_RIGHT_B);
-
+		
 		configTalonOutput();
 		setEncoderAsFeedback();
-		// setFollowers();
+		setFollowers();
 
 		// drive = new DifferentialDrive(leftMaster, rightMaster);
 	}
@@ -134,16 +129,6 @@ public class AutoDrive extends Subsystem {
 		leftMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
 		leftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
 		leftMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-		
-//		rightBackSlave.configNominalOutputForward(0, Constants.kTimeoutMs);
-//		rightBackSlave.configNominalOutputReverse(0, Constants.kTimeoutMs);
-//		rightBackSlave.configPeakOutputForward(1, Constants.kTimeoutMs);
-//		rightBackSlave.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-//		
-//		rightFrontSlave.configNominalOutputForward(0, Constants.kTimeoutMs);
-//		rightFrontSlave.configNominalOutputReverse(0, Constants.kTimeoutMs);
-//		rightFrontSlave.configPeakOutputForward(1, Constants.kTimeoutMs);
-//		rightFrontSlave.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 	}
 
 	public void setFollowers() {
@@ -169,14 +154,6 @@ public class AutoDrive extends Subsystem {
 		rightMaster.getSensorCollection().setQuadraturePosition(0, 10);
 	}
 
-	public int getRightEncoderOutput() {
-		return rightMaster.getSensorCollection().getQuadraturePosition();
-	}
-
-	public int getLeftEncoderOutput() {
-		return leftMaster.getSensorCollection().getQuadraturePosition();
-	}
-
 	/**
 	 * Code for turning on and off the ball-shifter transmissions. This code also
 	 * functions as a variable setter to allow us to autonomously control the stage
@@ -191,19 +168,17 @@ public class AutoDrive extends Subsystem {
 	}
 
 	public void shiftHigh() {
-		transmissionLeft.set(DoubleSolenoid.Value.kForward);
-		transmissionRight.set(DoubleSolenoid.Value.kForward);
+		transmissionShifter.set(DoubleSolenoid.Value.kForward);
 
 	}
 
 	public void shiftLow() {
-		transmissionLeft.set(DoubleSolenoid.Value.kReverse);
-		transmissionRight.set(DoubleSolenoid.Value.kReverse);
+		transmissionShifter.set(DoubleSolenoid.Value.kReverse);
 
 	}
 
 	public Shifter getGear() {
-		DoubleSolenoid.Value currentState = transmissionLeft.get();
+		DoubleSolenoid.Value currentState = transmissionShifter.get();
 		if (currentState == DoubleSolenoid.Value.kForward) {
 			return Shifter.High;
 		} else {

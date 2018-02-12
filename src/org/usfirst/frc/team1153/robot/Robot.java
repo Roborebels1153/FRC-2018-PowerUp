@@ -58,8 +58,6 @@ public class Robot extends TimedRobot {
 	public static void updateDashboard() {
 		// if (++loops >= 10) {
 		// loops = 0;
-		 SmartDashboard.putNumber("Right Encoder Value",
-		 autoDrive.getRightEncoderOutput());
 		// SmartDashboard.putNumber("Right Motor Motor Output",
 		// autoDrive.getRightMotorOutputPercent());
 		// SmartDashboard.putNumber("Right Motor Motor Speed",
@@ -73,8 +71,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Right Motor Sensor Position", autoDrive.getRightMotorSensorPosition());
 		SmartDashboard.putNumber("Right Motor Sensor Velocity", autoDrive.getRightMotorSensorVelocity());
 		//
-		 SmartDashboard.putNumber("Left Encoder Value",
-		 autoDrive.getLeftEncoderOutput());
+
 		// SmartDashboard.putNumber("Left Motor Motor Output",
 		// autoDrive.getLeftMotorOutputPercent());
 		// SmartDashboard.putNumber("Left Motor Motor Speed",
