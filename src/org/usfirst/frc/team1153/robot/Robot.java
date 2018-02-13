@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team1153.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -28,8 +29,7 @@ public class Robot extends TimedRobot {
 	public static Drive drive;
 	public static OI oi;
 
-	Command m_autonomousCommand;
-	SendableChooser<Command> chooser = new SendableChooser<>();
+	private SendableChooser<String> m_chooser = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -39,18 +39,14 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		drive = new Drive();
 		oi = new OI();
-		chooser = new SendableChooser<Command>();
-
-		/**
-		 * Below is the sample syntax for adding an auto mode to the chooser and 
-		 * adding a deefault auto mode without choosers
-		 * chooser.addObject("My Auto", new MyAutoCommand());
-	 	 * chooser.addDefault("Default Auto", new ShiftHighCommand());
-		 */
+		
+		m_chooser.addDefault("Center", "Center");
+		m_chooser.addDefault("Left", "Left");
+		m_chooser.addDefault("Right", "Right");
+		m_chooser.addDefault("Far Right", "Far Right");
+		SmartDashboard.putData("Position", m_chooser);
 		
 		drive.setIndenturedServants();
-		SmartDashboard.putData("Auto mode", chooser);
-
 	}
 
 	/**
@@ -67,6 +63,10 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	}
+	
+	private boolean robotPosEqual(String position) {
+		return m_chooser.getSelected().equalsIgnoreCase(position);
+	}
 
 	/**
 	 * This autonomous (along with the chooser code above) shows how to select
@@ -82,18 +82,22 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = chooser.getSelected();
-
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
-		 * switch(autoSelected) { case "My Auto": autonomousCommand = new
-		 * MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new
-		 * ExampleCommand(); break; }
-		 */
-
-		// schedule the autonomous command (example)
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
+		String autoPattern = DriverStation.getInstance().getGameSpecificMessage();
+		char switchPos = autoPattern.charAt(0);
+		
+		if ((robotPosEqual("Right") && switchPos == 'R') || (robotPosEqual("Left") && switchPos == 'L')) {
+			// continue driving (with vision)
+			// TODO: Add forward default command
+		} else if (robotPosEqual("Center") && switchPos == 'R') {
+			// turn Right then use vision to target the switch
+			// TODO: Add right center default command
+		} else if (robotPosEqual("Center") && switchPos == 'L') {
+			// turn Left then use vision to target the switch
+			// TODO: Add left center default command
+		} else if (robotPosEqual("Far Right") && switchPos == 'R') {
+			// TODO: Add far right switch right default command
+		} else if (robotPosEqual("Far Right") && switchPos == 'L') {
+			// TODO; Add far right switch left default command
 		}
 	}
 
@@ -107,13 +111,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
-		}
+
 	}
 
 	/**
@@ -123,15 +121,6 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		drive.drive(oi.getDriverStick());
-		
-		/**
-		 * Test to make sure individual talons are working
-		 *	if(oi.getDriverStick().getRawButtonPressed(1)) {
-		 *		drive.testMotor(1);
-		 *	} else if (oi.getDriverStick().getRawButtonPressed(2)) {
-		 *		drive.testMotor(-1);
-		 *	}
-		*/
 	}
 
 	/**
