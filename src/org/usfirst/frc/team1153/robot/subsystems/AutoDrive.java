@@ -21,6 +21,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class AutoDrive extends Subsystem {
 	private WPI_TalonSRX leftMaster;
@@ -43,6 +44,8 @@ public class AutoDrive extends Subsystem {
 
 	private double turnValue;
 
+	// DifferentialDrive drive;
+
 	/**
 	 * Assigns what the Robot should instantiate every time the Drive subsystem
 	 * initializes.
@@ -57,7 +60,7 @@ public class AutoDrive extends Subsystem {
 
 		transmissionShifter = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_LEFT_A,
 				RobotMap.TRANSMISSION_SOLENOID_LEFT_B);
-		
+
 		configTalonOutput();
 		setEncoderAsFeedback();
 		setFollowers();
@@ -71,53 +74,52 @@ public class AutoDrive extends Subsystem {
 
 	public void driveForward() {
 		configTalonOutput();
-		leftMaster.set(ControlMode.PercentOutput, 1);
-		rightMaster.set(ControlMode.PercentOutput, -1);
-//		rightBackSlave.set(ControlMode.PercentOutput, -.8);
-//		rightFrontSlave.set(ControlMode.PercentOutput, -.8);
+		leftMaster.set(ControlMode.PercentOutput, -1);
+		rightMaster.set(ControlMode.PercentOutput, 1);
+		// rightBackSlave.set(ControlMode.PercentOutput, -.8);
+		// rightFrontSlave.set(ControlMode.PercentOutput, -.8);
 
 	}
-	
-	public void driveBackward(){
+
+	public void driveBackward() {
 		configTalonOutput();
-		leftMaster.set(ControlMode.PercentOutput,-1);
-		rightMaster.set(ControlMode.PercentOutput, 1);
+		leftMaster.set(ControlMode.PercentOutput, 1);
+		rightMaster.set(ControlMode.PercentOutput, -1);
 	}
 
 	public void stop() {
 		configTalonOutput();
 		leftMaster.set(ControlMode.PercentOutput, 0);
 		rightMaster.set(ControlMode.PercentOutput, 0);
-//		rightBackSlave.set(ControlMode.PercentOutput, 0);
-//		rightFrontSlave.set(ControlMode.PercentOutput, 0);
+		// rightBackSlave.set(ControlMode.PercentOutput, 0);
+		// rightFrontSlave.set(ControlMode.PercentOutput, 0);
 	}
 
-	public void drive(Joystick joystick) {
-		 //drive.arcadeDrive(-1* joystick.getY(), joystick.getRawAxis(4));
-	}
-	
+	// public void drive(Joystick joystick) {
+	// drive.arcadeDrive(-0.8 * joystick.getY(), 0.8 * joystick.getRawAxis(4));
+	// }
+
 	/**
 	 * Below is drive code which is used in the cheesy Drive Command
 	 */
-	 public void configDrive(ControlMode controlMode, double left, double right){
-	    	leftMaster.set(controlMode, left);
-	    	rightMaster.set(controlMode, right);
-	    }
-	    
-	    public void driveWithHelper(ControlMode controlMode, DriveSignal driveSignal) {
-	    	//System.out.println(driveSignal.toString());
-	    	this.configDrive(controlMode, driveSignal.getLeft(), driveSignal.getRight());
-	    }
-	    
-	    public boolean quickTurnController() {
-	    	if (Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y) < 0.2 
-	    			&& Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y) > -0.2) {
-	    		return true;	
-	    	} else {
-	    		return false;
-	    		}
-	        }
-	    
+	public void configDrive(ControlMode controlMode, double left, double right) {
+		leftMaster.set(controlMode, left);
+		rightMaster.set(controlMode, right);
+	}
+
+	public void driveWithHelper(ControlMode controlMode, DriveSignal driveSignal) {
+		// System.out.println(driveSignal.toString());
+		this.configDrive(controlMode, driveSignal.getLeft(), driveSignal.getRight());
+	}
+
+	public boolean quickTurnController() {
+		if (Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y) < 0.2
+				&& Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y) > -0.2) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	public void configTalonOutput() {
 		rightMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
@@ -129,6 +131,12 @@ public class AutoDrive extends Subsystem {
 		leftMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
 		leftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
 		leftMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+
+		rightMaster.enableCurrentLimit(true);
+		rightMaster.configContinuousCurrentLimit(20, Constants.kTimeoutMs);
+
+		leftMaster.enableCurrentLimit(true);
+		leftMaster.configContinuousCurrentLimit(20, Constants.kTimeoutMs);
 	}
 
 	public void setFollowers() {
@@ -144,8 +152,11 @@ public class AutoDrive extends Subsystem {
 		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.kPIDLoopIdx,
 				Constants.kTimeoutMs);
 
-//		rightMaster.setSensorPhase(true);
-//		rightMaster.setInverted(true);
+		rightMaster.setSensorPhase(true);
+		leftMaster.setSensorPhase(true);
+
+		rightMaster.setInverted(true);
+		leftMaster.setInverted(true);
 
 	}
 

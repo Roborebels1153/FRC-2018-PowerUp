@@ -23,12 +23,10 @@ public class DriveDistanceCommand extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		Robot.autoDrive.resetEncoders();
 		Robot.autoDrive.configRightMotionMagic();
 		Robot.autoDrive.configLeftMotionMagic();
-		Robot.autoDrive.resetEncoders();
 		
-		Robot.autoDrive.enactRightMotorMotionMagic(targetPosRight);
-		Robot.autoDrive.enactLeftMotorMotionMagic(targetPosLeft);
 
 	}
 
@@ -38,7 +36,8 @@ public class DriveDistanceCommand extends Command {
 		// sb.append(motorSpeed);
 		// sb.append("\tVel:");
 		// sb.append(motorOutput);
-
+		Robot.autoDrive.enactLeftMotorMotionMagic(targetPosLeft);
+		Robot.autoDrive.enactRightMotorMotionMagic(targetPosRight);
 		
 		// error = Robot.drive.getRightMotorClosedLoopError();
 		// sb.append("\terr:");

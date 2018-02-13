@@ -49,6 +49,7 @@ public class Robot extends TimedRobot {
 		 * a deefault auto mode without choosers chooser.addObject("My Auto", new
 		 * MyAutoCommand()); chooser.addDefault("Default Auto", new ShiftHighCommand());
 		 */
+		autoDrive.resetEncoders();
 		autoDrive.setFollowers();
 		drRightTrigger = new RebelTrigger(oi.getDriverStick(), 3);
 		SmartDashboard.putData("Auto mode", chooser);
@@ -62,8 +63,7 @@ public class Robot extends TimedRobot {
 		// autoDrive.getRightMotorOutputPercent());
 		// SmartDashboard.putNumber("Right Motor Motor Speed",
 		// autoDrive.getRightMotorSpeed());
-		// SmartDashboard.putNumber("Right Motor Motion Magic Error",
-		// autoDrive.getRightMotorClosedLoopError());
+		SmartDashboard.putNumber("Right Motor Motion Magic Error", autoDrive.getRightMotorClosedLoopError());
 		// // SmartDashboard.putNumber("Right Motor Active Trajectory Position",
 		// // drive.getRightMotorActiveTrajectoryPosition());
 		// // SmartDashboard.putNumber("Right Motor Active Trajectory Velocity",
@@ -76,8 +76,7 @@ public class Robot extends TimedRobot {
 		// autoDrive.getLeftMotorOutputPercent());
 		// SmartDashboard.putNumber("Left Motor Motor Speed",
 		// autoDrive.getLeftMotorSpeed());
-		// SmartDashboard.putNumber("Left Motor Motion Magic Error",
-		// autoDrive.getLeftMotorClosedLoopError());
+		SmartDashboard.putNumber("Left Motor Motion Magic Error", autoDrive.getLeftMotorClosedLoopError());
 		// // SmartDashboard.putNumber("Left Motor Active Trajectory Position",
 		// // drive.getLeftMotorActiveTrajectoryPosition());
 		// // SmartDashboard.putNumber("Left Motor Active Trajectory Velocity",
@@ -136,6 +135,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		autoDrive.setFollowers();
+		autoDrive.resetEncoders();
 		autoCommand = new DriveDistanceCommand(15000, -15000);
 		// m_autonomousCommand = chooser.getSelected();
 
@@ -164,6 +165,8 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+		autoDrive.resetEncoders();
+
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -208,6 +211,7 @@ public class Robot extends TimedRobot {
 			autoDrive.driveBackward();
 		}
 
+//		autoDrive.drive(oi.getDriverStick());
 	}
 
 	/**
