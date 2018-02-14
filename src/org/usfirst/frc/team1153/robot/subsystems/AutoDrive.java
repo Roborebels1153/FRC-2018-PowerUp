@@ -20,21 +20,24 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class AutoDrive extends Subsystem {
-	private WPI_TalonSRX leftMaster;
-	private WPI_TalonSRX leftBackSlave;
-	private WPI_TalonSRX leftFrontSlave;
-	private WPI_TalonSRX rightMaster;
-	private WPI_TalonSRX rightBackSlave;
-	private WPI_TalonSRX rightFrontSlave;
+	protected WPI_TalonSRX leftMaster;
+	protected WPI_TalonSRX leftBackSlave;
+	protected WPI_TalonSRX leftFrontSlave;
+	protected WPI_TalonSRX rightMaster;
+	protected WPI_TalonSRX rightBackSlave;
+	protected WPI_TalonSRX rightFrontSlave;
 
 	/*
 	 * Transmission Shifting Related
 	 */
 	private DoubleSolenoid transmissionShifter;
+
+	private Solenoid newShifter;
 
 	public enum Shifter {
 		High, Low
@@ -44,7 +47,7 @@ public class AutoDrive extends Subsystem {
 
 	private double turnValue;
 
-	// DifferentialDrive drive;
+	DifferentialDrive drive;
 
 	/**
 	 * Assigns what the Robot should instantiate every time the Drive subsystem
@@ -61,11 +64,32 @@ public class AutoDrive extends Subsystem {
 		transmissionShifter = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_LEFT_A,
 				RobotMap.TRANSMISSION_SOLENOID_LEFT_B);
 
+		newShifter = new Solenoid(2);
+
 		configTalonOutput();
 		setEncoderAsFeedback();
 		setFollowers();
 
-		// drive = new DifferentialDrive(leftMaster, rightMaster);
+	}
+
+	public void initializeDiffDrive() {
+		drive = new DifferentialDrive(leftMaster, rightMaster);
+	}
+	
+	public void removeDiffDrive() {
+		drive = null;
+	}
+
+	/**
+	 * New shifter test Code
+	 */
+
+	public void shiftHighTest() {
+		newShifter.set(false);
+	}
+
+	public void shiftLowTest() {
+		newShifter.set(true);
 	}
 
 	@Override
@@ -95,10 +119,6 @@ public class AutoDrive extends Subsystem {
 		// rightFrontSlave.set(ControlMode.PercentOutput, 0);
 	}
 
-	// public void drive(Joystick joystick) {
-	// drive.arcadeDrive(-0.8 * joystick.getY(), 0.8 * joystick.getRawAxis(4));
-	// }
-
 	/**
 	 * Below is drive code which is used in the cheesy Drive Command
 	 */
@@ -121,6 +141,10 @@ public class AutoDrive extends Subsystem {
 		}
 	}
 
+	public void drive(Joystick joystick) {
+		drive.arcadeDrive(-1 * joystick.getY(), 1 * joystick.getRawAxis(4));
+	}
+
 	public void configTalonOutput() {
 		rightMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
 		rightMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
@@ -132,11 +156,11 @@ public class AutoDrive extends Subsystem {
 		leftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
 		leftMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
-		rightMaster.enableCurrentLimit(true);
-		rightMaster.configContinuousCurrentLimit(20, Constants.kTimeoutMs);
-
-		leftMaster.enableCurrentLimit(true);
-		leftMaster.configContinuousCurrentLimit(20, Constants.kTimeoutMs);
+		// rightMaster.enableCurrentLimit(true);
+		// rightMaster.configPeakCurrentLimit(20, Constants.kTimeoutMs);
+		//
+		// leftMaster.enableCurrentLimit(true);
+		// leftMaster.configPeakCurrentLimit(20, Constants.kTimeoutMs);
 	}
 
 	public void setFollowers() {
@@ -152,11 +176,11 @@ public class AutoDrive extends Subsystem {
 		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.kPIDLoopIdx,
 				Constants.kTimeoutMs);
 
-		rightMaster.setSensorPhase(true);
-		leftMaster.setSensorPhase(true);
+		// rightMaster.setSensorPhase(true);
+		// leftMaster.setSensorPhase(true);
 
-		rightMaster.setInverted(true);
-		leftMaster.setInverted(true);
+		// rightMaster.setInverted(true);
+		// leftMaster.setInverted(true);
 
 	}
 
@@ -223,7 +247,7 @@ public class AutoDrive extends Subsystem {
 		rightMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
 		/* set acceleration and vcruise velocity - see documentation */
 		rightMaster.configMotionCruiseVelocity(1500, Constants.kTimeoutMs);
-		rightMaster.configMotionAcceleration(4500, Constants.kTimeoutMs);
+		rightMaster.configMotionAcceleration(2000, Constants.kTimeoutMs);
 		/* zero the sensor */
 		rightMaster.getSensorCollection().setQuadraturePosition(0, 10);
 	}
@@ -242,7 +266,7 @@ public class AutoDrive extends Subsystem {
 		leftMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
 		/* set acceleration and vcruise velocity - see documentation */
 		leftMaster.configMotionCruiseVelocity(1500, Constants.kTimeoutMs);
-		leftMaster.configMotionAcceleration(4500, Constants.kTimeoutMs);
+		leftMaster.configMotionAcceleration(2000, Constants.kTimeoutMs);
 		// 3400
 		/* zero the sensor */
 		leftMaster.getSensorCollection().setQuadraturePosition(0, 10);

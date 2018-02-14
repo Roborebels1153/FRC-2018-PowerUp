@@ -10,6 +10,7 @@ package org.usfirst.frc.team1153.robot;
 import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
 import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
 import org.usfirst.frc.team1153.robot.subsystems.AutoDrive;
+import org.usfirst.frc.team1153.robot.subsystems.TeleDrive;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
 
 	// public static Drive drive = new Drive();
 	public static AutoDrive autoDrive = new AutoDrive();
+
 	public static OI oi = new OI();
 	static int loops = 0;
 
@@ -43,14 +45,16 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
+		autoDrive.setFollowers();
+		autoDrive.resetEncoders();
+
 		chooser = new SendableChooser<Command>();
 		/**
 		 * Below is the sample syntax for adding an auto mode to the chooser and adding
 		 * a deefault auto mode without choosers chooser.addObject("My Auto", new
 		 * MyAutoCommand()); chooser.addDefault("Default Auto", new ShiftHighCommand());
 		 */
-		autoDrive.resetEncoders();
-		autoDrive.setFollowers();
+		
 		drRightTrigger = new RebelTrigger(oi.getDriverStick(), 3);
 		SmartDashboard.putData("Auto mode", chooser);
 
@@ -135,6 +139,9 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		autoDrive.removeDiffDrive();
+		autoDrive.setEncoderAsFeedback();
+		autoDrive.configTalonOutput();
 		autoDrive.setFollowers();
 		autoDrive.resetEncoders();
 		autoCommand = new DriveDistanceCommand(15000, -15000);
@@ -166,6 +173,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		autoDrive.resetEncoders();
+		autoDrive.initializeDiffDrive();
 
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
@@ -194,11 +202,18 @@ public class Robot extends TimedRobot {
 		 */
 		// autoDrive.drive(oi.getDriverStick());
 
+		if (oi.getDriverStick().getRawButtonPressed(8)) {
+			autoDrive.shiftHighTest();
+		} else {
+			autoDrive.shiftLowTest();
+		}
+
 		if (drRightTrigger.get()) {
 			autoDrive.shiftHigh();
 		} else {
 			autoDrive.shiftLow();
 		}
+
 		if (oi.getDriverStick().getRawButtonPressed(2)) {
 			autoDrive.resetEncoders();
 		}
@@ -211,7 +226,7 @@ public class Robot extends TimedRobot {
 			autoDrive.driveBackward();
 		}
 
-//		autoDrive.drive(oi.getDriverStick());
+		autoDrive.drive(oi.getDriverStick());
 	}
 
 	/**
