@@ -7,15 +7,17 @@
 
 package org.usfirst.frc.team1153.robot;
 
+import org.usfirst.frc.team1153.robot.lib.StateScheduler;
+import org.usfirst.frc.team1153.robot.subsystems.Collector;
+import org.usfirst.frc.team1153.robot.subsystems.Drive;
+import org.usfirst.frc.team1153.robot.subsystems.Shooter;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team1153.robot.commands.ShiftHighCommand;
-import org.usfirst.frc.team1153.robot.subsystems.Drive;
-import org.usfirst.frc.team1153.robot.subsystems.ExampleSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,6 +30,8 @@ public class Robot extends TimedRobot {
 
 	public static Drive drive;
 	public static OI oi;
+	public static Shooter shooter;
+	public static Collector collector;
 
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -39,6 +43,12 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		drive = new Drive();
 		oi = new OI();
+    shooter = new Shooter();
+		collector = new Collector();
+		chooser = new SendableChooser<Command>();
+		
+		StateScheduler.getInstance().addStateSubsystem(shooter);
+		StateScheduler.getInstance().addStateSubsystem(collector);
 		
 		m_chooser.addDefault("Center", "Center");
 		m_chooser.addDefault("Left", "Left");
@@ -56,12 +66,13 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
+		StateScheduler.getInstance().notifyDisabled();
 	}
 
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		StateScheduler.getInstance().runAll();
 	}
 	
 	private boolean robotPosEqual(String position) {
@@ -82,6 +93,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+    StateScheduler.getInstance().notifyAuto();
+
 		String autoPattern = DriverStation.getInstance().getGameSpecificMessage();
 		char switchPos = autoPattern.charAt(0);
 		
@@ -98,7 +111,7 @@ public class Robot extends TimedRobot {
 			// TODO: Add far right switch right default command
 		} else if (robotPosEqual("Far Right") && switchPos == 'L') {
 			// TODO; Add far right switch left default command
-		}
+    }
 	}
 
 	/**
@@ -107,11 +120,12 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		StateScheduler.getInstance().runAll();
 	}
 
 	@Override
 	public void teleopInit() {
-
+    StateScheduler.getInstance().notifyTeleop();
 	}
 
 	/**
@@ -120,6 +134,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		StateScheduler.getInstance().runAll();
+		
 		drive.drive(oi.getDriverStick());
 	}
 
