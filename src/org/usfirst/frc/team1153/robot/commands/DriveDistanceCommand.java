@@ -13,6 +13,7 @@ public class DriveDistanceCommand extends Command {
 	private double targetPosLeft;
 
 	StringBuilder sb = new StringBuilder();
+	long timeAtStart;
 
 	public DriveDistanceCommand(double targetPosLeft, double targetPosRight) {
 		requires(Robot.autoDrive);
@@ -26,7 +27,10 @@ public class DriveDistanceCommand extends Command {
 		Robot.autoDrive.resetEncoders();
 		Robot.autoDrive.configRightMotionMagic();
 		Robot.autoDrive.configLeftMotionMagic();
-		
+
+		timeAtStart = System.currentTimeMillis();
+
+		System.out.println("Init Command is called");
 
 	}
 
@@ -38,7 +42,7 @@ public class DriveDistanceCommand extends Command {
 		// sb.append(motorOutput);
 		Robot.autoDrive.enactLeftMotorMotionMagic(targetPosLeft);
 		Robot.autoDrive.enactRightMotorMotionMagic(targetPosRight);
-		
+
 		// error = Robot.drive.getRightMotorClosedLoopError();
 		// sb.append("\terr:");
 		// sb.append(error);
@@ -54,11 +58,23 @@ public class DriveDistanceCommand extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return false;
+		// return false;
+		// return (Math.abs(Robot.autoDrive.getLeftMotorClosedLoopError()) < 30 &&
+		// Math.abs(Robot.autoDrive.getLeftMotorClosedLoopError()) < 30
+		// && System.currentTimeMillis() - timeAtStart > 1000);
+		boolean rightTolerated = Math.abs(Robot.autoDrive.getRightMotorSensorPosition()) > 14900
+				&& Math.abs(Robot.autoDrive.getRightMotorSensorPosition()) < 15100;
+		boolean leftTolerated = Math.abs(Robot.autoDrive.getLeftMotorSensorPosition()) > 14900
+				&& Math.abs(Robot.autoDrive.getLeftMotorSensorPosition()) < 15100;
+
+		return (rightTolerated && leftTolerated && System.currentTimeMillis() - timeAtStart > 500);
+
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
+		System.out.println("MotionMagic Finished");
+		Robot.autoDrive.stopMotionMagic();
 	}
 
 	// Called when another command which requires one or more of the same

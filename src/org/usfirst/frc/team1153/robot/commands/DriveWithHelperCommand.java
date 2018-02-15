@@ -8,6 +8,7 @@ import org.usfirst.frc.team1153.robot.lib.DriveSignal;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -42,6 +43,9 @@ public class DriveWithHelperCommand extends Command {
 		double rotateValue =Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X);
 		DriveSignal driveSignal = helper.cheesyDrive(-moveValue, rotateValue, quickTurn, false);
     	Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
+    	
+    	
+    	SmartDashboard.putNumber("Cheesy Move Value", moveValue);
 
 	}
 

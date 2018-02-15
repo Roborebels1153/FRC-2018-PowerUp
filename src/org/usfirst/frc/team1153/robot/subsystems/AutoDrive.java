@@ -11,15 +11,20 @@ import org.usfirst.frc.team1153.robot.Constants;
 import org.usfirst.frc.team1153.robot.OI;
 import org.usfirst.frc.team1153.robot.Robot;
 import org.usfirst.frc.team1153.robot.RobotMap;
+import org.usfirst.frc.team1153.robot.lib.CheesyDriveHelper;
 import org.usfirst.frc.team1153.robot.lib.DriveSignal;
+import org.usfirst.frc.team1153.robot.lib.DummyOutput;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -32,10 +37,16 @@ public class AutoDrive extends Subsystem {
 	protected WPI_TalonSRX rightBackSlave;
 	protected WPI_TalonSRX rightFrontSlave;
 
+	private ADXRS450_Gyro gyro;
+	
 	/*
 	 * Transmission Shifting Related
 	 */
 	private DoubleSolenoid transmissionShifter;
+	
+	PIDController gyroPID;
+	
+	private DummyOutput gyroOutput;
 
 	private Solenoid newShifter;
 
@@ -49,6 +60,9 @@ public class AutoDrive extends Subsystem {
 
 	DifferentialDrive drive;
 
+	CheesyDriveHelper helper;
+
+	
 	/**
 	 * Assigns what the Robot should instantiate every time the Drive subsystem
 	 * initializes.
@@ -60,18 +74,69 @@ public class AutoDrive extends Subsystem {
 		rightMaster = new WPI_TalonSRX(4);
 		rightBackSlave = new WPI_TalonSRX(6);
 		rightFrontSlave = new WPI_TalonSRX(5);
+		
+		gyro = new ADXRS450_Gyro();
+		double kP = 0.01;
+		double kI = 0;
+		double kD = 0;
+		double kF = 0.3;
+		
+		gyroOutput = new DummyOutput();
+		
+		gyroPID = new PIDController(kP,kI,kD,kF, gyro, gyroOutput);
+		
+		//gyroPID.setContinuous(true);
+		
+		gyroPID.setOutputRange(0, 0.6);
 
 		transmissionShifter = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_LEFT_A,
 				RobotMap.TRANSMISSION_SOLENOID_LEFT_B);
 
-		newShifter = new Solenoid(2);
+		newShifter = new Solenoid(11,0);
 
+		helper = new CheesyDriveHelper();
+
+		
 		configTalonOutput();
 		setEncoderAsFeedback();
 		setFollowers();
-
 	}
-
+	
+	public void resetGyro() {
+		gyro.reset();
+	}
+	
+	public void setGyroPID(double setpt) {
+		gyroPID.setSetpoint(setpt);
+	}
+	
+	public double getGyroOutput() {
+		return gyroOutput.getOutput();
+	}
+	
+	public void runGyroPID(boolean enabled) {
+		if (enabled) {
+			gyroPID.enable();
+			configTalonOutput();
+			leftMaster.set(ControlMode.PercentOutput, gyroOutput.getOutput());
+			rightMaster.set(ControlMode.PercentOutput, gyroOutput.getOutput());
+		} else {
+			gyroPID.disable();
+		}
+	}
+	
+	public boolean gyroWithinTolerance() {
+		return (Math.abs(gyroPID.getError()) < 150);
+	}
+	
+	public double gyroError() {
+		return gyroPID.getError();
+	}
+	
+	public double getGyroAngle() {
+		return gyro.getAngle();
+	}
+	
 	public void initializeDiffDrive() {
 		drive = new DifferentialDrive(leftMaster, rightMaster);
 	}
@@ -85,11 +150,11 @@ public class AutoDrive extends Subsystem {
 	 */
 
 	public void shiftHighTest() {
-		newShifter.set(false);
+		newShifter.set(true);
 	}
 
 	public void shiftLowTest() {
-		newShifter.set(true);
+		newShifter.set(false);
 	}
 
 	@Override
@@ -129,6 +194,12 @@ public class AutoDrive extends Subsystem {
 
 	public void driveWithHelper(ControlMode controlMode, DriveSignal driveSignal) {
 		// System.out.println(driveSignal.toString());
+//		boolean quickTurn = Robot.autoDrive.quickTurnController();
+//		double moveValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y);
+//		double rotateValue =Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X);
+//		DriveSignal driveSignal = helper.cheesyDrive(-moveValue, rotateValue, quickTurn, false);
+//    	Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
+    	
 		this.configDrive(controlMode, driveSignal.getLeft(), driveSignal.getRight());
 	}
 
@@ -314,6 +385,11 @@ public class AutoDrive extends Subsystem {
 
 	public void enactLeftMotorMotionMagic(double targetPos) {
 		leftMaster.set(ControlMode.MotionMagic, targetPos);
+	}
+	
+	public void stopMotionMagic() {
+		leftMaster.set(ControlMode.PercentOutput, 0);
+		rightMaster.set(ControlMode.PercentOutput, 0);
 	}
 
 	public double getLeftMotorClosedLoopError() {

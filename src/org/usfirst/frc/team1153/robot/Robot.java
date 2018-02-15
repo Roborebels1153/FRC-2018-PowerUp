@@ -8,6 +8,8 @@
 package org.usfirst.frc.team1153.robot;
 
 import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
+import org.usfirst.frc.team1153.robot.commands.DriveWithHelperCommand;
+import org.usfirst.frc.team1153.robot.commands.GyroTurnCommand;
 import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
 import org.usfirst.frc.team1153.robot.subsystems.AutoDrive;
 import org.usfirst.frc.team1153.robot.subsystems.TeleDrive;
@@ -45,8 +47,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		autoDrive.setFollowers();
-		autoDrive.resetEncoders();
+//		autoDrive.setFollowers();
+//		autoDrive.resetEncoders();
 
 		chooser = new SendableChooser<Command>();
 		/**
@@ -87,6 +89,9 @@ public class Robot extends TimedRobot {
 		// // drive.getLeftMotorActiveTrajectoryVelocity());
 		SmartDashboard.putNumber("Left Motor Sensor Position", autoDrive.getLeftMotorSensorPosition());
 		SmartDashboard.putNumber("Left Motor Sensor Velocity", autoDrive.getLeftMotorSensorVelocity());
+		
+		SmartDashboard.putNumber("PID ERROR", autoDrive.gyroError());
+		SmartDashboard.putNumber("PID Output", autoDrive.getGyroOutput());
 		//
 		// SmartDashboard.putNumber("Left Motor Sensor Position",
 		// autoDrive.getLeftMotorSensorPosition());
@@ -107,6 +112,8 @@ public class Robot extends TimedRobot {
 		// // SmartDashboard.putNumber("Right Motor Output Signal",
 		// // rightMaster.getMotorOutputVoltage() / rightMaster.getBusVoltage());
 		// }
+		
+		SmartDashboard.putNumber("AD Gyro Reading", autoDrive.getGyroAngle());
 	}
 
 	/**
@@ -139,21 +146,16 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autoDrive.removeDiffDrive();
+//		autoDrive.resetGyro();
+		
 		autoDrive.setEncoderAsFeedback();
 		autoDrive.configTalonOutput();
 		autoDrive.setFollowers();
 		autoDrive.resetEncoders();
+		//DRIVE FORWARD
 		autoCommand = new DriveDistanceCommand(15000, -15000);
-		// m_autonomousCommand = chooser.getSelected();
-
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
-		 * switch(autoSelected) { case "My Auto": autonomousCommand = new
-		 * MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new
-		 * ExampleCommand(); break; }
-		 */
-
+		
+		//autoCommand = new GyroTurnCommand(90);
 		// schedule the autonomous command (example)
 		if (autoCommand != null) {
 			autoCommand.start();
@@ -183,6 +185,7 @@ public class Robot extends TimedRobot {
 			autoCommand.cancel();
 		}
 		// drive.resetEncoders();
+		
 	}
 
 	/**
@@ -202,9 +205,9 @@ public class Robot extends TimedRobot {
 		 */
 		// autoDrive.drive(oi.getDriverStick());
 
-		if (oi.getDriverStick().getRawButtonPressed(8)) {
+		if (oi.getDriverStick().getRawButtonPressed(2)) {
 			autoDrive.shiftHighTest();
-		} else {
+		} else if (oi.getDriverStick().getRawButtonReleased(2)) {
 			autoDrive.shiftLowTest();
 		}
 
@@ -214,9 +217,9 @@ public class Robot extends TimedRobot {
 			autoDrive.shiftLow();
 		}
 
-		if (oi.getDriverStick().getRawButtonPressed(2)) {
-			autoDrive.resetEncoders();
-		}
+//		if (oi.getDriverStick().getRawButtonPressed(2)) {
+//			autoDrive.resetEncoders();
+//		}
 
 		if (oi.getDriverStick().getRawButtonPressed(3)) {
 			autoDrive.stop();
@@ -227,6 +230,8 @@ public class Robot extends TimedRobot {
 		}
 
 		autoDrive.drive(oi.getDriverStick());
+		//autoCommand = new DriveWithHelperCommand();
+
 	}
 
 	/**
