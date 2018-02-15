@@ -43,19 +43,18 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		drive = new Drive();
 		oi = new OI();
-    shooter = new Shooter();
+		shooter = new Shooter();
 		collector = new Collector();
-		chooser = new SendableChooser<Command>();
-		
+
 		StateScheduler.getInstance().addStateSubsystem(shooter);
 		StateScheduler.getInstance().addStateSubsystem(collector);
-		
+
 		m_chooser.addDefault("Center", "Center");
 		m_chooser.addDefault("Left", "Left");
 		m_chooser.addDefault("Right", "Right");
 		m_chooser.addDefault("Far Right", "Far Right");
 		SmartDashboard.putData("Position", m_chooser);
-		
+
 		drive.setIndenturedServants();
 	}
 
@@ -74,7 +73,7 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 		StateScheduler.getInstance().runAll();
 	}
-	
+
 	private boolean robotPosEqual(String position) {
 		return m_chooser.getSelected().equalsIgnoreCase(position);
 	}
@@ -93,11 +92,11 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-    StateScheduler.getInstance().notifyAuto();
+		StateScheduler.getInstance().notifyAuto();
 
 		String autoPattern = DriverStation.getInstance().getGameSpecificMessage();
 		char switchPos = autoPattern.charAt(0);
-		
+
 		if ((robotPosEqual("Right") && switchPos == 'R') || (robotPosEqual("Left") && switchPos == 'L')) {
 			// continue driving (with vision)
 			// TODO: Add forward default command
@@ -111,7 +110,7 @@ public class Robot extends TimedRobot {
 			// TODO: Add far right switch right default command
 		} else if (robotPosEqual("Far Right") && switchPos == 'L') {
 			// TODO; Add far right switch left default command
-    }
+		}
 	}
 
 	/**
@@ -125,7 +124,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-    StateScheduler.getInstance().notifyTeleop();
+		StateScheduler.getInstance().notifyTeleop();
 	}
 
 	/**
@@ -135,7 +134,7 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		StateScheduler.getInstance().runAll();
-		
+
 		drive.drive(oi.getDriverStick());
 	}
 
