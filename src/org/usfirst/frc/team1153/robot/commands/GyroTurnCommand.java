@@ -18,21 +18,24 @@ public class GyroTurnCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.autoDrive.configTalonOutput();
     	Robot.autoDrive.runGyroPID(true);
-    	
+
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.autoDrive.runGyroPID(true);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.autoDrive.gyroWithinTolerance();
+        return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	System.out.println("GYRO TURN FINISHED");
     	Robot.autoDrive.runGyroPID(false);
     }
 

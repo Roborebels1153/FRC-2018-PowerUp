@@ -57,7 +57,7 @@ public class AutoDrive extends Subsystem {
 
 	private double turnValue;
 
-	//DifferentialDrive drive;
+	// DifferentialDrive drive;
 
 	CheesyDriveHelper helper;
 
@@ -74,18 +74,19 @@ public class AutoDrive extends Subsystem {
 		rightFrontSlave = new WPI_TalonSRX(5);
 
 		gyro = new ADXRS450_Gyro();
-		double kP = 0.01;
-		double kI = 0;
-		double kD = 0;
-		double kF = 0.3;
+		double kP = 0.016;
+		double kI = 0.00001;
+		double kD = 0.045;
 
 		gyroOutput = new DummyOutput();
 
-		gyroPID = new PIDController(kP, kI, kD, kF, gyro, gyroOutput);
+		gyroPID = new PIDController(kP, kI, kD, gyro, gyroOutput);
 
-		// gyroPID.setContinuous(true);
+		gyroPID.setInputRange(-180, 180);
+		
+		gyroPID.setContinuous();
 
-		gyroPID.setOutputRange(0, 0.6);
+		gyroPID.setOutputRange(-0.6, 0.6);
 
 		transmissionShifter = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_LEFT_A,
 				RobotMap.TRANSMISSION_SOLENOID_LEFT_B);
@@ -103,8 +104,8 @@ public class AutoDrive extends Subsystem {
 		gyro.reset();
 	}
 
-	public void setGyroPID(double setpt) {
-		gyroPID.setSetpoint(setpt);
+	public void setGyroPID(double setpoint) {
+		gyroPID.setSetpoint(gyro.getAngle() + setpoint);
 	}
 
 	public double getGyroOutput() {
@@ -114,16 +115,17 @@ public class AutoDrive extends Subsystem {
 	public void runGyroPID(boolean enabled) {
 		if (enabled) {
 			gyroPID.enable();
-			configTalonOutput();
-			leftMaster.set(ControlMode.PercentOutput, gyroOutput.getOutput());
-			rightMaster.set(ControlMode.PercentOutput, gyroOutput.getOutput());
+			leftMaster.set(gyroOutput.getOutput());
+			rightMaster.set(gyroOutput.getOutput());
 		} else {
 			gyroPID.disable();
+			DriveSignal autoDriveSignal = helper.cheesyDrive(0, 0, false, false);
+			Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, autoDriveSignal);
 		}
 	}
 
 	public boolean gyroWithinTolerance() {
-		return (Math.abs(gyroPID.getError()) < 150);
+		return (Math.abs(gyroPID.getError()) < 1);
 	}
 
 	public double gyroError() {
@@ -134,13 +136,13 @@ public class AutoDrive extends Subsystem {
 		return gyro.getAngle();
 	}
 
-//	public void initializeDiffDrive() {
-//		drive = new DifferentialDrive(leftMaster, rightMaster);
-//	}
-//
-//	public void removeDiffDrive() {
-//		drive = null;
-//	}
+	// public void initializeDiffDrive() {
+	// drive = new DifferentialDrive(leftMaster, rightMaster);
+	// }
+	//
+	// public void removeDiffDrive() {
+	// drive = null;
+	// }
 
 	/**
 	 * New shifter test Code
@@ -212,9 +214,9 @@ public class AutoDrive extends Subsystem {
 		}
 	}
 
-//	public void drive(Joystick joystick) {
-//		drive.arcadeDrive(-1 * joystick.getY(), 1 * joystick.getRawAxis(4));
-//	}
+	// public void drive(Joystick joystick) {
+	// drive.arcadeDrive(-1 * joystick.getY(), 1 * joystick.getRawAxis(4));
+	// }
 
 	public void configTalonOutput() {
 		rightMaster.configNominalOutputForward(0, Constants.kTimeoutMs);

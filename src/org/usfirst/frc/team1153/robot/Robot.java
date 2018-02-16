@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team1153.robot;
 
+import org.usfirst.frc.team1153.autonomous.DriveAndTurn;
 import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
 import org.usfirst.frc.team1153.robot.commands.DriveWithHelperCommand;
 import org.usfirst.frc.team1153.robot.commands.GyroTurnCommand;
@@ -47,8 +48,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-//		autoDrive.setFollowers();
-//		autoDrive.resetEncoders();
+		// autoDrive.setFollowers();
+		// autoDrive.resetEncoders();
 
 		chooser = new SendableChooser<Command>();
 		/**
@@ -56,7 +57,7 @@ public class Robot extends TimedRobot {
 		 * a deefault auto mode without choosers chooser.addObject("My Auto", new
 		 * MyAutoCommand()); chooser.addDefault("Default Auto", new ShiftHighCommand());
 		 */
-		
+
 		drRightTrigger = new RebelTrigger(oi.getDriverStick(), 3);
 		SmartDashboard.putData("Auto mode", chooser);
 
@@ -89,7 +90,7 @@ public class Robot extends TimedRobot {
 		// // drive.getLeftMotorActiveTrajectoryVelocity());
 		SmartDashboard.putNumber("Left Motor Sensor Position", autoDrive.getLeftMotorSensorPosition());
 		SmartDashboard.putNumber("Left Motor Sensor Velocity", autoDrive.getLeftMotorSensorVelocity());
-		
+
 		SmartDashboard.putNumber("PID ERROR", autoDrive.gyroError());
 		SmartDashboard.putNumber("PID Output", autoDrive.getGyroOutput());
 		//
@@ -112,7 +113,7 @@ public class Robot extends TimedRobot {
 		// // SmartDashboard.putNumber("Right Motor Output Signal",
 		// // rightMaster.getMotorOutputVoltage() / rightMaster.getBusVoltage());
 		// }
-		
+
 		SmartDashboard.putNumber("AD Gyro Reading", autoDrive.getGyroAngle());
 	}
 
@@ -146,16 +147,18 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-//		autoDrive.resetGyro();
-		
+		autoDrive.resetGyro();
+
 		autoDrive.setEncoderAsFeedback();
 		autoDrive.configTalonOutput();
 		autoDrive.setFollowers();
 		autoDrive.resetEncoders();
-		//DRIVE FORWARD
-		autoCommand = new DriveDistanceCommand(15000, -15000);
-		
-		//autoCommand = new GyroTurnCommand(90);
+		// DRIVE FORWARD
+		//autoCommand = new DriveDistanceCommand(15000, -15000);
+
+		autoCommand = new DriveAndTurn();
+		// autoCommand = new GyroTurnCommand(90);
+
 		// schedule the autonomous command (example)
 		if (autoCommand != null) {
 			autoCommand.start();
@@ -175,7 +178,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		autoDrive.resetEncoders();
-		//autoDrive.initializeDiffDrive();
+		// autoDrive.initializeDiffDrive();
 
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
@@ -185,7 +188,7 @@ public class Robot extends TimedRobot {
 			autoCommand.cancel();
 		}
 		// drive.resetEncoders();
-		
+
 	}
 
 	/**
@@ -217,9 +220,9 @@ public class Robot extends TimedRobot {
 			autoDrive.shiftLow();
 		}
 
-//		if (oi.getDriverStick().getRawButtonPressed(2)) {
-//			autoDrive.resetEncoders();
-//		}
+		// if (oi.getDriverStick().getRawButtonPressed(2)) {
+		// autoDrive.resetEncoders();
+		// }
 
 		if (oi.getDriverStick().getRawButtonPressed(3)) {
 			autoDrive.stop();
@@ -229,11 +232,10 @@ public class Robot extends TimedRobot {
 			autoDrive.driveBackward();
 		}
 
-//		autoDrive.drive(oi.getDriverStick());
-		
+		// autoDrive.drive(oi.getDriverStick());
+
 		autoDrive.createDriveSignal();
-		
-		
+
 	}
 
 	/**
