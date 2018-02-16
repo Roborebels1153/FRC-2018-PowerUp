@@ -175,7 +175,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		autoDrive.resetEncoders();
-		autoDrive.initializeDiffDrive();
+		//autoDrive.initializeDiffDrive();
 
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
@@ -229,9 +229,11 @@ public class Robot extends TimedRobot {
 			autoDrive.driveBackward();
 		}
 
-		autoDrive.drive(oi.getDriverStick());
-		//autoCommand = new DriveWithHelperCommand();
-
+//		autoDrive.drive(oi.getDriverStick());
+		
+		autoDrive.createDriveSignal();
+		
+		
 	}
 
 	/**

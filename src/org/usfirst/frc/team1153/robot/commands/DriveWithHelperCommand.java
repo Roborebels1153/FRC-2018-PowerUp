@@ -37,15 +37,14 @@ public class DriveWithHelperCommand extends Command {
 		// DriveSignal driveSignal = helper.cheesyDrive(-moveValue, rotateValue,
 		// quickTurn, false);
 		// Robot.autoDrive.drive(ControlMode.PercentOutput, driveSignal);
-		
+
 		boolean quickTurn = Robot.autoDrive.quickTurnController();
-		double moveValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y);
-		double rotateValue =Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X);
-		DriveSignal driveSignal = helper.cheesyDrive(-moveValue, rotateValue, quickTurn, false);
-    	Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
-    	
-    	
-    	SmartDashboard.putNumber("Cheesy Move Value", moveValue);
+		double moveValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X);
+		double rotateValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y);
+		DriveSignal driveSignal = helper.cheesyDrive(moveValue, rotateValue, quickTurn, false);
+		Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
+
+		// SmartDashboard.putNumber("Cheesy Move Value", moveValue);
 
 	}
 
