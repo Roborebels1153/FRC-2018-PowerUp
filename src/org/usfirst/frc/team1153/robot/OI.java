@@ -7,7 +7,9 @@
 
 package org.usfirst.frc.team1153.robot;
 
+import org.usfirst.frc.team1153.robot.commands.FireShooterCommand;
 import org.usfirst.frc.team1153.robot.commands.ResetCommand;
+import org.usfirst.frc.team1153.robot.commands.RetractShooterCommand;
 import org.usfirst.frc.team1153.robot.commands.ShiftHighCommand;
 import org.usfirst.frc.team1153.robot.commands.ShiftLowCommand;
 import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
@@ -43,9 +45,11 @@ public class OI {
     	
     	drTriggerL.whenPressed(new ShiftHighCommand());
     	drTriggerL.whenReleased(new ShiftLowCommand());
-    	
+
     	drButtonY.whenActive(new ResetCommand());
-    	
+
+    	drButtonB.whenPressed(new FireShooterCommand());
+    	drButtonB.whenReleased(new RetractShooterCommand());
     }
     
     

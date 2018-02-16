@@ -7,17 +7,15 @@
 
 package org.usfirst.frc.team1153.robot;
 
-import org.usfirst.frc.team1153.autonomous.DriveAndTurn;
-import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
-import org.usfirst.frc.team1153.robot.commands.DriveWithHelperCommand;
-import org.usfirst.frc.team1153.robot.commands.GyroTurnCommand;
 import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
+import org.usfirst.frc.team1153.robot.lib.StateScheduler;
 import org.usfirst.frc.team1153.robot.subsystems.AutoDrive;
-import org.usfirst.frc.team1153.robot.subsystems.TeleDrive;
+import org.usfirst.frc.team1153.robot.subsystems.Collector;
+import org.usfirst.frc.team1153.robot.subsystems.Shooter;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,36 +29,38 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
-	// public static Drive drive = new Drive();
-	public static AutoDrive autoDrive = new AutoDrive();
-
-	public static OI oi = new OI();
 	static int loops = 0;
 
-	private Command autoCommand;
-	SendableChooser<Command> chooser = new SendableChooser<>();
+	public static OI oi;
+	public static AutoDrive autoDrive;
+	public static Shooter shooter;
+	public static Collector collector;
+
+	private SendableChooser<String> m_chooser = new SendableChooser<>();
 
 	Button drRightTrigger;
 
 	/**
-	 * This function is run when the robot is first started up and should be used
-	 * for any initialization code.
+	 * This function is run when the robot is first started up and should be
+	 * used for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
-		// autoDrive.setFollowers();
-		// autoDrive.resetEncoders();
+		autoDrive = new AutoDrive();
+		shooter = new Shooter();
+		collector = new Collector();
+		oi = new OI();
 
-		chooser = new SendableChooser<Command>();
-		/**
-		 * Below is the sample syntax for adding an auto mode to the chooser and adding
-		 * a deefault auto mode without choosers chooser.addObject("My Auto", new
-		 * MyAutoCommand()); chooser.addDefault("Default Auto", new ShiftHighCommand());
-		 */
+		StateScheduler.getInstance().addStateSubsystem(shooter);
+		StateScheduler.getInstance().addStateSubsystem(collector);
+
+		m_chooser.addDefault("Center", "Center");
+		m_chooser.addDefault("Left", "Left");
+		m_chooser.addDefault("Right", "Right");
+		m_chooser.addDefault("Far Right", "Far Right");
+		SmartDashboard.putData("Position", m_chooser);
 
 		drRightTrigger = new RebelTrigger(oi.getDriverStick(), 3);
-		SmartDashboard.putData("Auto mode", chooser);
-
 	}
 
 	public static void updateDashboard() {
@@ -111,26 +111,32 @@ public class Robot extends TimedRobot {
 		// // SmartDashboard.putNumber("Right Motor Bus Voltage",
 		// // rightMaster.getBusVoltage());
 		// // SmartDashboard.putNumber("Right Motor Output Signal",
-		// // rightMaster.getMotorOutputVoltage() / rightMaster.getBusVoltage());
+		// // rightMaster.getMotorOutputVoltage() /
+		// rightMaster.getBusVoltage());
 		// }
 
 		SmartDashboard.putNumber("AD Gyro Reading", autoDrive.getGyroAngle());
 	}
 
 	/**
-	 * This function is called once each time the robot enters Disabled mode. You
-	 * can use it to reset any subsystem information you want to clear when the
-	 * robot is disabled.
+	 * This function is called once each time the robot enters Disabled mode.
+	 * You can use it to reset any subsystem information you want to clear when
+	 * the robot is disabled.
 	 */
 	@Override
 	public void disabledInit() {
-
+		StateScheduler.getInstance().notifyDisabled();
 	}
 
 	@Override
 	public void disabledPeriodic() {
 		updateDashboard();
 		Scheduler.getInstance().run();
+		StateScheduler.getInstance().runAll();
+	}
+
+	private boolean robotPosEqual(String position) {
+		return m_chooser.getSelected().equalsIgnoreCase(position);
 	}
 
 	/**
@@ -147,6 +153,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		StateScheduler.getInstance().notifyAuto();
+
 		autoDrive.resetGyro();
 
 		autoDrive.setEncoderAsFeedback();
@@ -156,12 +164,27 @@ public class Robot extends TimedRobot {
 		// DRIVE FORWARD
 		//autoCommand = new DriveDistanceCommand(15000, -15000);
 
-		autoCommand = new DriveAndTurn();
+		// TODO With the new way Stuart has designed the choosers, commands can no longer be run in the manner that they are below
+		
+		// autoCommand = new DriveAndTurn();
 		// autoCommand = new GyroTurnCommand(90);
 
-		// schedule the autonomous command (example)
-		if (autoCommand != null) {
-			autoCommand.start();
+		String autoPattern = DriverStation.getInstance().getGameSpecificMessage();
+		char switchPos = autoPattern.charAt(0);
+
+		if ((robotPosEqual("Right") && switchPos == 'R') || (robotPosEqual("Left") && switchPos == 'L')) {
+			// continue driving (with vision)
+			// TODO: Add forward default command
+		} else if (robotPosEqual("Center") && switchPos == 'R') {
+			// turn Right then use vision to target the switch
+			// TODO: Add right center default command
+		} else if (robotPosEqual("Center") && switchPos == 'L') {
+			// turn Left then use vision to target the switch
+			// TODO: Add left center default command
+		} else if (robotPosEqual("Far Right") && switchPos == 'R') {
+			// TODO: Add far right switch right default command
+		} else if (robotPosEqual("Far Right") && switchPos == 'L') {
+			// TODO; Add far right switch left default command
 		}
 	}
 
@@ -171,24 +194,16 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		updateDashboard();
+		StateScheduler.getInstance().runAll();
 
+		updateDashboard();
 	}
 
 	@Override
 	public void teleopInit() {
+		StateScheduler.getInstance().notifyTeleop();
+
 		autoDrive.resetEncoders();
-		// autoDrive.initializeDiffDrive();
-
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-		if (autoCommand != null) {
-			autoCommand.cancel();
-		}
-		// drive.resetEncoders();
-
 	}
 
 	/**
@@ -197,6 +212,11 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		StateScheduler.getInstance().runAll();
+
+		// TODO Integrate drive code from TeleDrive, talk with subclassing TeleDrive
+		//autoDrive.drive(oi.getDriverStick());
+
 		// drive.drive(oi.getDriverStick());
 		updateDashboard();
 		// autoDrive.drive(oi.getDriverStick());
@@ -235,7 +255,6 @@ public class Robot extends TimedRobot {
 		// autoDrive.drive(oi.getDriverStick());
 
 		autoDrive.createDriveSignal();
-
 	}
 
 	/**
