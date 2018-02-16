@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team1153.robot;
 
+import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
 import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
 import org.usfirst.frc.team1153.robot.lib.StateScheduler;
 import org.usfirst.frc.team1153.robot.subsystems.AutoDrive;
@@ -16,6 +17,7 @@ import org.usfirst.frc.team1153.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,6 +31,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
+	 private Command autoCommand;
+	 
 	static int loops = 0;
 
 	public static OI oi;
@@ -41,8 +45,8 @@ public class Robot extends TimedRobot {
 	Button drRightTrigger;
 
 	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
+	 * This function is run when the robot is first started up and should be used
+	 * for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
@@ -119,9 +123,9 @@ public class Robot extends TimedRobot {
 	}
 
 	/**
-	 * This function is called once each time the robot enters Disabled mode.
-	 * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
+	 * This function is called once each time the robot enters Disabled mode. You
+	 * can use it to reset any subsystem information you want to clear when the
+	 * robot is disabled.
 	 */
 	@Override
 	public void disabledInit() {
@@ -162,15 +166,19 @@ public class Robot extends TimedRobot {
 		autoDrive.setFollowers();
 		autoDrive.resetEncoders();
 		// DRIVE FORWARD
-		//autoCommand = new DriveDistanceCommand(15000, -15000);
-
-		// TODO With the new way Stuart has designed the choosers, commands can no longer be run in the manner that they are below
 		
+		// TODO With the new way Stuart has designed the choosers, commands can no
+		// longer be run in the manner that they are below
+
 		// autoCommand = new DriveAndTurn();
 		// autoCommand = new GyroTurnCommand(90);
 
 		String autoPattern = DriverStation.getInstance().getGameSpecificMessage();
 		char switchPos = autoPattern.charAt(0);
+		
+		System.out.println("switchPos\t" + switchPos);
+		System.out.println("chooser:\t" + m_chooser.getSelected());
+		
 
 		if ((robotPosEqual("Right") && switchPos == 'R') || (robotPosEqual("Left") && switchPos == 'L')) {
 			// continue driving (with vision)
@@ -178,6 +186,8 @@ public class Robot extends TimedRobot {
 		} else if (robotPosEqual("Center") && switchPos == 'R') {
 			// turn Right then use vision to target the switch
 			// TODO: Add right center default command
+			System.out.println("Message Receieved");
+			autoCommand =  new DriveDistanceCommand(108, -108);
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
 			// turn Left then use vision to target the switch
 			// TODO: Add left center default command
@@ -186,6 +196,8 @@ public class Robot extends TimedRobot {
 		} else if (robotPosEqual("Far Right") && switchPos == 'L') {
 			// TODO; Add far right switch left default command
 		}
+		
+		autoCommand.start();
 	}
 
 	/**
@@ -215,7 +227,7 @@ public class Robot extends TimedRobot {
 		StateScheduler.getInstance().runAll();
 
 		// TODO Integrate drive code from TeleDrive, talk with subclassing TeleDrive
-		//autoDrive.drive(oi.getDriverStick());
+		// autoDrive.drive(oi.getDriverStick());
 
 		// drive.drive(oi.getDriverStick());
 		updateDashboard();
@@ -234,25 +246,15 @@ public class Robot extends TimedRobot {
 			autoDrive.shiftLowTest();
 		}
 
-		if (drRightTrigger.get()) {
-			autoDrive.shiftHigh();
-		} else {
-			autoDrive.shiftLow();
-		}
-
-		// if (oi.getDriverStick().getRawButtonPressed(2)) {
-		// autoDrive.resetEncoders();
+		/**
+		 * Code to shift in case OI Commands are not working - they are working fine,
+		 * but lets still keep this just in case
+		 */
+		// if (drRightTrigger.get()) {
+		// autoDrive.shiftHigh();
+		// } else {
+		// autoDrive.shiftLow();
 		// }
-
-		if (oi.getDriverStick().getRawButtonPressed(3)) {
-			autoDrive.stop();
-		} else if (oi.getDriverStick().getRawButtonPressed(4)) {
-			autoDrive.driveForward();
-		} else if (oi.getDriverStick().getRawButtonPressed(1)) {
-			autoDrive.driveBackward();
-		}
-
-		// autoDrive.drive(oi.getDriverStick());
 
 		autoDrive.createDriveSignal();
 	}
