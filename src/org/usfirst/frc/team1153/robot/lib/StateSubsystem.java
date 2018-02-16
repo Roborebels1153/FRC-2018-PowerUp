@@ -32,13 +32,14 @@ public abstract class StateSubsystem extends Subsystem {
 	public void run() {
 		try {
 			if (!isInit) {
-				StateSubsystem.class.getMethod(state.name + "Init").invoke(this);
+				getClass().getMethod(state.name + "Init").invoke(this);
 				isInit = true;
 			} else {
-				StateSubsystem.class.getMethod(state.name + "Periodic").invoke(this);
+				getClass().getMethod(state.name + "Periodic").invoke(this);
 			}
 		} catch (NoSuchMethodException e) {
 			// Subclasses of StateSubsystem are not required to implement either method
+			e.printStackTrace();
 		} catch (InvocationTargetException|IllegalAccessException e) {
 			throw new RuntimeException("Invalid subclass of StateSubsystem");
 		}
@@ -68,7 +69,10 @@ public abstract class StateSubsystem extends Subsystem {
 		if (!knownStates.contains(in)) {
 			throw new IllegalArgumentException("Invalid state, maybe missing calls to registerState(StateSubsystem.State)?");
 		}
-		isInit = false;
+		// Only call the initialize methods if the state has actually changed
+		if (state != in) {
+			isInit = false;
+		}
 		state = in;
 	}
 	
