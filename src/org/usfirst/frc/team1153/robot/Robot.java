@@ -7,14 +7,15 @@
 
 package org.usfirst.frc.team1153.robot;
 
+import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
 import org.usfirst.frc.team1153.robot.lib.StateScheduler;
+import org.usfirst.frc.team1153.robot.subsystems.AutoDrive;
 import org.usfirst.frc.team1153.robot.subsystems.Collector;
-import org.usfirst.frc.team1153.robot.subsystems.Drive;
 import org.usfirst.frc.team1153.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,23 +29,27 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
-	public static Drive drive;
+	static int loops = 0;
+
 	public static OI oi;
+	public static AutoDrive autoDrive;
 	public static Shooter shooter;
 	public static Collector collector;
 
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 
+	Button drRightTrigger;
+
 	/**
-	 * This function is run when the robot is first started up and should be used
-	 * for any initialization code.
+	 * This function is run when the robot is first started up and should be
+	 * used for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
-		drive = new Drive();
-		oi = new OI();
+		autoDrive = new AutoDrive();
 		shooter = new Shooter();
 		collector = new Collector();
+		oi = new OI();
 
 		StateScheduler.getInstance().addStateSubsystem(shooter);
 		StateScheduler.getInstance().addStateSubsystem(collector);
@@ -55,13 +60,68 @@ public class Robot extends TimedRobot {
 		m_chooser.addDefault("Far Right", "Far Right");
 		SmartDashboard.putData("Position", m_chooser);
 
-		drive.setIndenturedServants();
+		drRightTrigger = new RebelTrigger(oi.getDriverStick(), 3);
+	}
+
+	public static void updateDashboard() {
+		// if (++loops >= 10) {
+		// loops = 0;
+		// SmartDashboard.putNumber("Right Motor Motor Output",
+		// autoDrive.getRightMotorOutputPercent());
+		// SmartDashboard.putNumber("Right Motor Motor Speed",
+		// autoDrive.getRightMotorSpeed());
+		SmartDashboard.putNumber("Right Motor Motion Magic Error", autoDrive.getRightMotorClosedLoopError());
+		// // SmartDashboard.putNumber("Right Motor Active Trajectory Position",
+		// // drive.getRightMotorActiveTrajectoryPosition());
+		// // SmartDashboard.putNumber("Right Motor Active Trajectory Velocity",
+		// // drive.getRightMotorActiveTrajectoryVelocity());
+		SmartDashboard.putNumber("Right Motor Sensor Position", autoDrive.getRightMotorSensorPosition());
+		SmartDashboard.putNumber("Right Motor Sensor Velocity", autoDrive.getRightMotorSensorVelocity());
+		//
+
+		// SmartDashboard.putNumber("Left Motor Motor Output",
+		// autoDrive.getLeftMotorOutputPercent());
+		// SmartDashboard.putNumber("Left Motor Motor Speed",
+		// autoDrive.getLeftMotorSpeed());
+		SmartDashboard.putNumber("Left Motor Motion Magic Error", autoDrive.getLeftMotorClosedLoopError());
+		// // SmartDashboard.putNumber("Left Motor Active Trajectory Position",
+		// // drive.getLeftMotorActiveTrajectoryPosition());
+		// // SmartDashboard.putNumber("Left Motor Active Trajectory Velocity",
+		// // drive.getLeftMotorActiveTrajectoryVelocity());
+		SmartDashboard.putNumber("Left Motor Sensor Position", autoDrive.getLeftMotorSensorPosition());
+		SmartDashboard.putNumber("Left Motor Sensor Velocity", autoDrive.getLeftMotorSensorVelocity());
+
+		SmartDashboard.putNumber("PID ERROR", autoDrive.gyroError());
+		SmartDashboard.putNumber("PID Output", autoDrive.getGyroOutput());
+		//
+		// SmartDashboard.putNumber("Left Motor Sensor Position",
+		// autoDrive.getLeftMotorSensorPosition());
+		// SmartDashboard.putNumber("Left Motor Sensor Velocity",
+		// autoDrive.getLeftMotorSensorVelocity());
+		//
+		// // SmartDashboard.putNumber("Left Motor Output Voltage",
+		// // leftMaster.getMotorOutputVoltage());
+		// // SmartDashboard.putNumber("Left Motor Bus Voltage",
+		// // leftMaster.getBusVoltage());
+		// // SmartDashboard.putNumber("Left Motor Output Signal",
+		// // leftMaster.getMotorOutputVoltage() / leftMaster.getBusVoltage());
+		// //
+		// // SmartDashboard.putNumber("Right Motor Output Voltage",
+		// // rightMaster.getMotorOutputVoltage());
+		// // SmartDashboard.putNumber("Right Motor Bus Voltage",
+		// // rightMaster.getBusVoltage());
+		// // SmartDashboard.putNumber("Right Motor Output Signal",
+		// // rightMaster.getMotorOutputVoltage() /
+		// rightMaster.getBusVoltage());
+		// }
+
+		SmartDashboard.putNumber("AD Gyro Reading", autoDrive.getGyroAngle());
 	}
 
 	/**
-	 * This function is called once each time the robot enters Disabled mode. You
-	 * can use it to reset any subsystem information you want to clear when the
-	 * robot is disabled.
+	 * This function is called once each time the robot enters Disabled mode.
+	 * You can use it to reset any subsystem information you want to clear when
+	 * the robot is disabled.
 	 */
 	@Override
 	public void disabledInit() {
@@ -70,6 +130,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledPeriodic() {
+		updateDashboard();
 		Scheduler.getInstance().run();
 		StateScheduler.getInstance().runAll();
 	}
@@ -93,6 +154,20 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		StateScheduler.getInstance().notifyAuto();
+
+		autoDrive.resetGyro();
+
+		autoDrive.setEncoderAsFeedback();
+		autoDrive.configTalonOutput();
+		autoDrive.setFollowers();
+		autoDrive.resetEncoders();
+		// DRIVE FORWARD
+		//autoCommand = new DriveDistanceCommand(15000, -15000);
+
+		// TODO With the new way Stuart has designed the choosers, commands can no longer be run in the manner that they are below
+		
+		// autoCommand = new DriveAndTurn();
+		// autoCommand = new GyroTurnCommand(90);
 
 		String autoPattern = DriverStation.getInstance().getGameSpecificMessage();
 		char switchPos = autoPattern.charAt(0);
@@ -120,11 +195,15 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		StateScheduler.getInstance().runAll();
+
+		updateDashboard();
 	}
 
 	@Override
 	public void teleopInit() {
 		StateScheduler.getInstance().notifyTeleop();
+
+		autoDrive.resetEncoders();
 	}
 
 	/**
@@ -135,7 +214,47 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 		StateScheduler.getInstance().runAll();
 
-		drive.drive(oi.getDriverStick());
+		// TODO Integrate drive code from TeleDrive, talk with subclassing TeleDrive
+		//autoDrive.drive(oi.getDriverStick());
+
+		// drive.drive(oi.getDriverStick());
+		updateDashboard();
+		// autoDrive.drive(oi.getDriverStick());
+		// autoDrive.resetEncoders();
+		/**
+		 * Test to make sure individual talons are working
+		 * if(oi.getDriverStick().getRawButtonPressed(1)) { drive.testMotor(1); } else
+		 * if (oi.getDriverStick().getRawButtonPressed(2)) { drive.testMotor(-1); }
+		 */
+		// autoDrive.drive(oi.getDriverStick());
+
+		if (oi.getDriverStick().getRawButtonPressed(2)) {
+			autoDrive.shiftHighTest();
+		} else if (oi.getDriverStick().getRawButtonReleased(2)) {
+			autoDrive.shiftLowTest();
+		}
+
+		if (drRightTrigger.get()) {
+			autoDrive.shiftHigh();
+		} else {
+			autoDrive.shiftLow();
+		}
+
+		// if (oi.getDriverStick().getRawButtonPressed(2)) {
+		// autoDrive.resetEncoders();
+		// }
+
+		if (oi.getDriverStick().getRawButtonPressed(3)) {
+			autoDrive.stop();
+		} else if (oi.getDriverStick().getRawButtonPressed(4)) {
+			autoDrive.driveForward();
+		} else if (oi.getDriverStick().getRawButtonPressed(1)) {
+			autoDrive.driveBackward();
+		}
+
+		// autoDrive.drive(oi.getDriverStick());
+
+		autoDrive.createDriveSignal();
 	}
 
 	/**
