@@ -92,6 +92,20 @@ public class Shooter extends StateSubsystem {
 	public void retractInit() {
 		setAllPistonState(false);
 	}
+	
+	/**
+	 * Called when shooter first begins fire state
+	 */
+	public void firePeriodic() {
+
+	}
+
+	/**
+	 * Called when shooter first begins retract state
+	 */
+	public void retractPeriodic() {
+
+	}
 
 	/**
 	 * Used to set whether or not we use all or half of the pistons

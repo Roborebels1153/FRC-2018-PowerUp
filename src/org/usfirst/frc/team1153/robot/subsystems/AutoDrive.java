@@ -276,12 +276,12 @@ public class AutoDrive extends Subsystem {
 	}
 
 	public void shiftHigh() {
-		transmissionShifter.set(DoubleSolenoid.Value.kForward);
+		transmissionShifter.set(DoubleSolenoid.Value.kReverse);
 
 	}
 
 	public void shiftLow() {
-		transmissionShifter.set(DoubleSolenoid.Value.kReverse);
+		transmissionShifter.set(DoubleSolenoid.Value.kForward);
 
 	}
 

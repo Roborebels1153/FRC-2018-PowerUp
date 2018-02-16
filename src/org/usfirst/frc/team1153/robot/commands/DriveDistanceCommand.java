@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1153.robot.commands;
 
+import org.usfirst.frc.team1153.robot.Constants;
 import org.usfirst.frc.team1153.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -17,8 +18,8 @@ public class DriveDistanceCommand extends Command {
 
 	public DriveDistanceCommand(double targetPosLeft, double targetPosRight) {
 		requires(Robot.autoDrive);
-		this.targetPosRight = targetPosRight;
-		this.targetPosLeft = targetPosLeft;
+		this.targetPosRight = Constants.TALON_TICKS_PER_INCH * targetPosRight;
+		this.targetPosLeft = Constants.TALON_TICKS_PER_INCH * targetPosLeft;
 		// Use requires() here to declare subsystem dependencies
 	}
 

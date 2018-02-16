@@ -83,6 +83,26 @@ public class Collector extends StateSubsystem {
 		setMotorPower(0);
 	}
 	
+	public void collectingPeriodic() {
+
+	}
+	
+	public void collectedPeriodic() {
+
+	}
+	
+	public void retractPeriodic() {
+		
+	}
+	
+	public void reversePeriodic() {
+		
+	}
+	
+	public void extendPeriodic() {
+		
+	}
+	
 	@Override
 	public StateSubsystem.State getDisabledDefaultState() {
 		return STATE_RETRACT;

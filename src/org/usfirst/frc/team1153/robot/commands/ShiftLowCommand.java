@@ -10,11 +10,11 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ShiftLowCommand extends Command {
 
     public ShiftLowCommand() {
-       // requires(Robot.drive);
+        requires(Robot.autoDrive);
     }
 
     protected void initialize() {
-    	//Robot.drive.shiftLow();
+    	Robot.autoDrive.shiftLow();
     }
 
     protected void execute() {

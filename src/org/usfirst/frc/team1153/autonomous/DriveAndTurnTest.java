@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class DriveAndTurn extends CommandGroup {
+public class DriveAndTurnTest extends CommandGroup {
 
-    public DriveAndTurn() {
+    public DriveAndTurnTest() {
     	super();
     	
     	addSequential(new DriveDistanceCommand(15000, -15000));

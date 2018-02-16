@@ -15,12 +15,12 @@ import org.usfirst.frc.team1153.robot.Robot;
  */
 public class ShiftHighCommand extends Command {
 	public ShiftHighCommand() {
-	//	requires(Robot.drive);
+		requires(Robot.autoDrive);
 	}
 
 	@Override
 	protected void initialize() {
-	//	Robot.drive.shiftHigh();
+		Robot.autoDrive.shiftHigh();
 	}
 
 	@Override

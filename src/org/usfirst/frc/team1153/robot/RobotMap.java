@@ -24,8 +24,8 @@ public class RobotMap {
 	public static int RIGHT_BACK_MOTOR = 5;
 	public static int RIGHT_FRONT_MOTOR_SLAVE = 6;
 	
-	public static final int COLLECT_MOTOR_A = 0;
-	public static final int COLLECT_MOTOR_B = 0;
+	public static final int COLLECT_MOTOR_A = 7;
+	public static final int COLLECT_MOTOR_B = 8;
 	
 	public static final int TRANSMISSION_SOLENOID_LEFT_A = 0;
 	public static final int TRANSMISSION_SOLENOID_LEFT_B = 1;
