@@ -63,10 +63,10 @@ public class DriveDistanceCommand extends Command {
 		// return (Math.abs(Robot.autoDrive.getLeftMotorClosedLoopError()) < 30 &&
 		// Math.abs(Robot.autoDrive.getLeftMotorClosedLoopError()) < 30
 		// && System.currentTimeMillis() - timeAtStart > 1000);
-		boolean rightTolerated = Math.abs(Robot.autoDrive.getRightMotorSensorPosition()) > 14900
-				&& Math.abs(Robot.autoDrive.getRightMotorSensorPosition()) < 15100;
-		boolean leftTolerated = Math.abs(Robot.autoDrive.getLeftMotorSensorPosition()) > 14900
-				&& Math.abs(Robot.autoDrive.getLeftMotorSensorPosition()) < 15100;
+		boolean rightTolerated = Math.abs(Robot.autoDrive.getRightMotorSensorPosition()) > (targetPosRight * 0.994)
+				&& Math.abs(Robot.autoDrive.getRightMotorSensorPosition()) < (targetPosRight *  1.006);
+		boolean leftTolerated = Math.abs(Robot.autoDrive.getLeftMotorSensorPosition()) > (targetPosLeft * 0.994)
+				&& Math.abs(Robot.autoDrive.getLeftMotorSensorPosition()) < (targetPosLeft * 1.006);
 
 		return (rightTolerated && leftTolerated && System.currentTimeMillis() - timeAtStart > 500);
 

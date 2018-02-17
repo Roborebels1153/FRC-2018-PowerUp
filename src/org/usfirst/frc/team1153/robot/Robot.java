@@ -7,11 +7,17 @@
 
 package org.usfirst.frc.team1153.robot;
 
+import org.usfirst.frc.team1153.autonomous.CenterSwitch;
+import org.usfirst.frc.team1153.autonomous.DriveForwardAndScore;
+import org.usfirst.frc.team1153.autonomous.DriveForwardNoScore;
+import org.usfirst.frc.team1153.autonomous.FarLeftSwitchScore;
+import org.usfirst.frc.team1153.autonomous.FarRightSwitchScore;
 import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
 import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
 import org.usfirst.frc.team1153.robot.lib.StateScheduler;
 import org.usfirst.frc.team1153.robot.subsystems.AutoDrive;
 import org.usfirst.frc.team1153.robot.subsystems.Collector;
+import org.usfirst.frc.team1153.robot.subsystems.LimelightVision;
 import org.usfirst.frc.team1153.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -31,16 +37,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
-	 private Command autoCommand;
-	 
+	private Command autoCommand;
+
 	static int loops = 0;
 
 	public static OI oi;
 	public static AutoDrive autoDrive;
 	public static Shooter shooter;
 	public static Collector collector;
+	public static LimelightVision vision;
+	
+	public static double initialWait = 0;
+	public static double middleWait = 0;
 
-	private SendableChooser<String> m_chooser = new SendableChooser<>();
+	
+	private SendableChooser<String> routineChooser = new SendableChooser<>();
 
 	Button drRightTrigger;
 
@@ -54,17 +65,29 @@ public class Robot extends TimedRobot {
 		shooter = new Shooter();
 		collector = new Collector();
 		oi = new OI();
+		vision = new LimelightVision();
+
+		autoDrive.calibrateGyro();
 
 		StateScheduler.getInstance().addStateSubsystem(shooter);
 		StateScheduler.getInstance().addStateSubsystem(collector);
 
-		m_chooser.addDefault("Center", "Center");
-		m_chooser.addDefault("Left", "Left");
-		m_chooser.addDefault("Right", "Right");
-		m_chooser.addDefault("Far Right", "Far Right");
-		SmartDashboard.putData("Position", m_chooser);
+		routineChooser.addDefault("Center", "Center");
+		routineChooser.addDefault("Left", "Left");
+		routineChooser.addDefault("Right", "Right");
+		routineChooser.addDefault("Far Right", "Far Right");
+		routineChooser.addDefault("Far Left", "Far Left");
+		SmartDashboard.putData("Position", routineChooser);
 
 		drRightTrigger = new RebelTrigger(oi.getDriverStick(), 3);
+
+		/**
+		 * text boxes for delays
+		 */
+
+		SmartDashboard.putNumber("Initial Delay", 0);
+		SmartDashboard.putNumber("Middle Delay", 0);
+
 	}
 
 	public static void updateDashboard() {
@@ -140,7 +163,7 @@ public class Robot extends TimedRobot {
 	}
 
 	private boolean robotPosEqual(String position) {
-		return m_chooser.getSelected().equalsIgnoreCase(position);
+		return routineChooser.getSelected().equalsIgnoreCase(position);
 	}
 
 	/**
@@ -160,43 +183,46 @@ public class Robot extends TimedRobot {
 		StateScheduler.getInstance().notifyAuto();
 
 		autoDrive.resetGyro();
-
 		autoDrive.setEncoderAsFeedback();
 		autoDrive.configTalonOutput();
 		autoDrive.setFollowers();
 		autoDrive.resetEncoders();
-		// DRIVE FORWARD
 		
-		// TODO With the new way Stuart has designed the choosers, commands can no
-		// longer be run in the manner that they are below
+		initialWait = SmartDashboard.getNumber("Initial Delay", 0);
+		middleWait = SmartDashboard.getNumber("Middle Delay", 0);
+
+		// DRIVE FORWARD
 
 		// autoCommand = new DriveAndTurn();
 		// autoCommand = new GyroTurnCommand(90);
 
 		String autoPattern = DriverStation.getInstance().getGameSpecificMessage();
 		char switchPos = autoPattern.charAt(0);
-		
-		System.out.println("switchPos\t" + switchPos);
-		System.out.println("chooser:\t" + m_chooser.getSelected());
-		
 
-		if ((robotPosEqual("Right") && switchPos == 'R') || (robotPosEqual("Left") && switchPos == 'L')) {
-			// continue driving (with vision)
-			// TODO: Add forward default command
-		} else if (robotPosEqual("Center") && switchPos == 'R') {
-			// turn Right then use vision to target the switch
-			// TODO: Add right center default command
-			System.out.println("Message Receieved");
-			autoCommand =  new DriveDistanceCommand(108, -108);
-		} else if (robotPosEqual("Center") && switchPos == 'L') {
-			// turn Left then use vision to target the switch
-			// TODO: Add left center default command
-		} else if (robotPosEqual("Far Right") && switchPos == 'R') {
-			// TODO: Add far right switch right default command
-		} else if (robotPosEqual("Far Right") && switchPos == 'L') {
-			// TODO; Add far right switch left default command
-		}
+		System.out.println("switchPos\t" + switchPos);
+		System.out.println("chooser:\t" + routineChooser.getSelected());
+
 		
+		if ((robotPosEqual("Right") && switchPos == 'R') || (robotPosEqual("Left") && switchPos == 'L')) {
+			autoCommand = new DriveForwardAndScore();
+		} else if (robotPosEqual("Center") && switchPos == 'R') {
+			autoCommand = new CenterSwitch(30);
+		} else if (robotPosEqual("Center") && switchPos == 'L') {
+
+			autoCommand = new CenterSwitch(-30);
+		} else if (robotPosEqual("Far Right") && switchPos == 'R') {
+
+			autoCommand = new FarRightSwitchScore();
+		} else if (robotPosEqual("Far Right") && switchPos == 'L') {
+
+		} else if (robotPosEqual("Far Left") && switchPos == 'R') {
+
+		} else if (robotPosEqual("Far Left") && switchPos == 'L') {
+
+			autoCommand = new FarLeftSwitchScore();
+		} else {
+			autoCommand = new DriveForwardNoScore();
+		}
 		autoCommand.start();
 	}
 

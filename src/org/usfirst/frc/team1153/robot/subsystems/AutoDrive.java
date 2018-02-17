@@ -135,6 +135,10 @@ public class AutoDrive extends Subsystem {
 	public double getGyroAngle() {
 		return gyro.getAngle();
 	}
+	
+	public void calibrateGyro() {
+		gyro.calibrate();
+	}
 
 	// public void initializeDiffDrive() {
 	// drive = new DifferentialDrive(leftMaster, rightMaster);
@@ -160,6 +164,11 @@ public class AutoDrive extends Subsystem {
 	public void initDefaultCommand() {
 	}
 
+	public void turnWithLimelight(double motorValue) {
+		leftMaster.set(motorValue);
+		rightMaster.set(motorValue);
+	}
+	
 	public void driveForward() {
 		configTalonOutput();
 		leftMaster.set(ControlMode.PercentOutput, -1);
@@ -212,6 +221,13 @@ public class AutoDrive extends Subsystem {
 		} else {
 			return false;
 		}
+	}
+	
+	public void cheesyDriveWithoutJoysticks(double move, double rotate) {
+		double moveValue = move;
+		double rotateValue = rotate;
+		DriveSignal driveSignal = helper.cheesyDrive(-1 * moveValue, rotateValue, false, false);
+		Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
 	}
 
 	// public void drive(Joystick joystick) {
