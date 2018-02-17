@@ -106,4 +106,14 @@ public class LimelightVision extends Subsystem {
     	public double y;
     	public double a;
     }
+    
+    public void turnOffLight() {
+    	NetworkTableEntry ledMode = table.getEntry("ledMode");
+    	ledMode.setNumber(1);
+    }
+    
+    public void turnOnLight() {
+    	NetworkTableEntry ledMode = table.getEntry("ledMode");
+    	ledMode.setNumber(0);
+    }
 }

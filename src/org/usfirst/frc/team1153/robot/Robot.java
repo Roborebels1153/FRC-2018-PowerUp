@@ -242,6 +242,7 @@ public class Robot extends TimedRobot {
 		StateScheduler.getInstance().notifyTeleop();
 
 		autoDrive.resetEncoders();
+		vision.turnOffLight();
 	}
 
 	/**
