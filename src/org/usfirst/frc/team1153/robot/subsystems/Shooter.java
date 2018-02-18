@@ -23,7 +23,7 @@ public class Shooter extends StateSubsystem {
 		FULL, HALF
 	}
 
-	private Power power = Power.FULL;
+	private Power power = Power.HALF;
 
 	private Solenoid shooterA;
 	private Solenoid shooterB;
@@ -31,10 +31,10 @@ public class Shooter extends StateSubsystem {
 	private Solenoid shooterD;
 
 	public Shooter() {
-		shooterA = new Solenoid(RobotMap.SHOOTER_SOLENOID_A);
-		shooterB = new Solenoid(RobotMap.SHOOTER_SOLENOID_B);
-		shooterC = new Solenoid(RobotMap.SHOOTER_SOLENOID_C);
-		shooterD = new Solenoid(RobotMap.SHOOTER_SOLENOID_D);
+		shooterA = new Solenoid(11, RobotMap.SHOOTER_SOLENOID_A);
+		shooterB = new Solenoid(11, RobotMap.SHOOTER_SOLENOID_B);
+//		shooterC = new Solenoid(11, RobotMap.SHOOTER_SOLENOID_C);
+//		shooterD = new Solenoid(11, RobotMap.SHOOTER_SOLENOID_D);
 
 		registerState(STATE_FIRE);
 		registerState(STATE_RETRACT);
@@ -75,8 +75,8 @@ public class Shooter extends StateSubsystem {
 	 *            State to set to secondary pistons
 	 */
 	private void setSecondaryPistonState(boolean state) {
-		shooterC.set(state);
-		shooterD.set(state);
+//		shooterC.set(state);
+//		shooterD.set(state);
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class Shooter extends StateSubsystem {
 	public void retractInit() {
 		setAllPistonState(false);
 	}
-	
+
 	/**
 	 * Called when shooter first begins fire state
 	 */
@@ -144,4 +144,5 @@ public class Shooter extends StateSubsystem {
 	public StateSubsystem.State getAutoDefaultState() {
 		return STATE_RETRACT;
 	}
+
 }

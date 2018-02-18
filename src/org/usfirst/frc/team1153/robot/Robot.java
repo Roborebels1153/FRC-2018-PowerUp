@@ -16,6 +16,7 @@ import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
 import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
 import org.usfirst.frc.team1153.robot.lib.StateScheduler;
 import org.usfirst.frc.team1153.robot.subsystems.AutoDrive;
+import org.usfirst.frc.team1153.robot.subsystems.Carriage;
 import org.usfirst.frc.team1153.robot.subsystems.Collector;
 import org.usfirst.frc.team1153.robot.subsystems.LimelightVision;
 import org.usfirst.frc.team1153.robot.subsystems.Shooter;
@@ -44,6 +45,7 @@ public class Robot extends TimedRobot {
 	public static OI oi;
 	public static AutoDrive autoDrive;
 	public static Shooter shooter;
+	public static Carriage carriage;
 	public static Collector collector;
 	public static LimelightVision vision;
 	
@@ -63,6 +65,7 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		autoDrive = new AutoDrive();
 		shooter = new Shooter();
+		carriage = new Carriage();
 		collector = new Collector();
 		oi = new OI();
 		vision = new LimelightVision();
@@ -241,6 +244,7 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		StateScheduler.getInstance().notifyTeleop();
 
+		carriage.upInit();
 		autoDrive.resetEncoders();
 		vision.turnOffLight();
 	}
@@ -282,6 +286,12 @@ public class Robot extends TimedRobot {
 		// } else {
 		// autoDrive.shiftLow();
 		// }
+		
+//		if(oi.getDriverStick().getRawButtonPressed(1)) {
+//			carriage.setArticulatorPistonState(true);
+//		} else if (oi.getDriverStick().getRawButtonReleased(1)) {
+//			carriage.setArticulatorPistonState(false);
+//		}
 
 		autoDrive.createDriveSignal();
 	}

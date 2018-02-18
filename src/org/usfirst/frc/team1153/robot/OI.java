@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team1153.robot;
 
+import org.usfirst.frc.team1153.robot.commands.CarriageDownCommand;
+import org.usfirst.frc.team1153.robot.commands.CarriageUpCommand;
 import org.usfirst.frc.team1153.robot.commands.FireShooterCommand;
 import org.usfirst.frc.team1153.robot.commands.ResetCommand;
 import org.usfirst.frc.team1153.robot.commands.RetractShooterCommand;
@@ -50,6 +52,9 @@ public class OI {
 
     	drButtonB.whenPressed(new FireShooterCommand());
     	drButtonB.whenReleased(new RetractShooterCommand());
+    	
+    	drButtonA.whenPressed(new CarriageUpCommand());
+    	drButtonA.whenReleased(new CarriageDownCommand());
     }
     
     
