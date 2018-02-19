@@ -12,7 +12,6 @@ import org.usfirst.frc.team1153.autonomous.DriveForwardAndScore;
 import org.usfirst.frc.team1153.autonomous.DriveForwardNoScore;
 import org.usfirst.frc.team1153.autonomous.FarLeftSwitchScore;
 import org.usfirst.frc.team1153.autonomous.FarRightSwitchScore;
-import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
 import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
 import org.usfirst.frc.team1153.robot.lib.StateScheduler;
 import org.usfirst.frc.team1153.robot.subsystems.AutoDrive;
@@ -48,11 +47,10 @@ public class Robot extends TimedRobot {
 	public static Carriage carriage;
 	public static Collector collector;
 	public static LimelightVision vision;
-	
+
 	public static double initialWait = 0;
 	public static double middleWait = 0;
 
-	
 	private SendableChooser<String> routineChooser = new SendableChooser<>();
 
 	Button drRightTrigger;
@@ -74,6 +72,7 @@ public class Robot extends TimedRobot {
 
 		StateScheduler.getInstance().addStateSubsystem(shooter);
 		StateScheduler.getInstance().addStateSubsystem(collector);
+		// StateScheduler.getInstance().addStateSubsystem(carriage);
 
 		routineChooser.addDefault("Center", "Center");
 		routineChooser.addDefault("Left", "Left");
@@ -146,6 +145,8 @@ public class Robot extends TimedRobot {
 		// }
 
 		SmartDashboard.putNumber("AD Gyro Reading", autoDrive.getGyroAngle());
+		// SmartDashboard.putNumber("Collector Motor Value",
+		// collector.getMotorOutput());
 	}
 
 	/**
@@ -190,7 +191,7 @@ public class Robot extends TimedRobot {
 		autoDrive.configTalonOutput();
 		autoDrive.setFollowers();
 		autoDrive.resetEncoders();
-		
+
 		initialWait = SmartDashboard.getNumber("Initial Delay", 0);
 		middleWait = SmartDashboard.getNumber("Middle Delay", 0);
 
@@ -205,7 +206,6 @@ public class Robot extends TimedRobot {
 		System.out.println("switchPos\t" + switchPos);
 		System.out.println("chooser:\t" + routineChooser.getSelected());
 
-		
 		if ((robotPosEqual("Right") && switchPos == 'R') || (robotPosEqual("Left") && switchPos == 'L')) {
 			autoCommand = new DriveForwardAndScore();
 		} else if (robotPosEqual("Center") && switchPos == 'R') {
@@ -244,7 +244,7 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		StateScheduler.getInstance().notifyTeleop();
 
-		carriage.upInit();
+		carriage.downInit();
 		autoDrive.resetEncoders();
 		vision.turnOffLight();
 	}
@@ -281,19 +281,18 @@ public class Robot extends TimedRobot {
 		 * Code to shift in case OI Commands are not working - they are working fine,
 		 * but lets still keep this just in case
 		 */
-		// if (drRightTrigger.get()) {
-		// autoDrive.shiftHigh();
-		// } else {
-		// autoDrive.shiftLow();
-		// }
-		
-//		if(oi.getDriverStick().getRawButtonPressed(1)) {
-//			carriage.setArticulatorPistonState(true);
-//		} else if (oi.getDriverStick().getRawButtonReleased(1)) {
-//			carriage.setArticulatorPistonState(false);
-//		}
 
-		autoDrive.createDriveSignal();
+//		if (oi.getOpStick().getRawButtonPressed(4)) {
+//			collector.setMotorPower(0.8);
+//		} else if (oi.getOpStick().getRawButtonPressed(3)) {
+//			collector.setMotorPower(-0.8);
+//		} else {
+//			collector.setMotorPower(0);
+//			// collector.setMotorPower(0.8);
+//	}
+		
+
+		autoDrive.createDriveSignal(true);
 	}
 
 	/**

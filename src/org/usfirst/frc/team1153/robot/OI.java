@@ -9,6 +9,13 @@ package org.usfirst.frc.team1153.robot;
 
 import org.usfirst.frc.team1153.robot.commands.CarriageDownCommand;
 import org.usfirst.frc.team1153.robot.commands.CarriageUpCommand;
+import org.usfirst.frc.team1153.robot.commands.CollectorLeftRightToggleCommand;
+import org.usfirst.frc.team1153.robot.commands.CollectorOffCommand;
+import org.usfirst.frc.team1153.robot.commands.CollectorOnCommand;
+import org.usfirst.frc.team1153.robot.commands.CollectorReverseCommand;
+import org.usfirst.frc.team1153.robot.commands.CollectorUpDownInCommand;
+import org.usfirst.frc.team1153.robot.commands.CollectorUpDownOutCommand;
+import org.usfirst.frc.team1153.robot.commands.CollectorUpDownToggleCommand;
 import org.usfirst.frc.team1153.robot.commands.FireShooterCommand;
 import org.usfirst.frc.team1153.robot.commands.ResetCommand;
 import org.usfirst.frc.team1153.robot.commands.RetractShooterCommand;
@@ -37,11 +44,28 @@ public class OI {
     
     public Button drTriggerL = new RebelTrigger(driverStick, 2);
     public Button drTriggerR = new RebelTrigger(driverStick, 3);
-    
+   
     public Button drButtonY = new JoystickButton(driverStick, 4);
     public Button drButtonA = new JoystickButton(driverStick, 1);
     public Button drButtonB = new JoystickButton(driverStick, 2);
     public Button drButtonX = new JoystickButton(driverStick, 3);
+    
+    public Button drBumperL = new JoystickButton(driverStick, 5);
+    public Button drBumperR = new JoystickButton(driverStick, 6);
+    
+    
+    
+    
+    public Button opTriggerL = new RebelTrigger(opStick, 2);
+    public Button opTriggerR = new RebelTrigger(opStick, 3);
+    
+    public Button opButtonY = new JoystickButton(opStick, 4);
+    public Button opButtonA = new JoystickButton(opStick, 1);
+    public Button opButtonB = new JoystickButton(opStick, 2);
+    public Button opButtonX = new JoystickButton(opStick, 3);
+
+    public Button opBumperL = new JoystickButton(opStick, 5);
+    public Button opBumperR = new JoystickButton(opStick, 6);
 
     public OI() {
     	
@@ -50,11 +74,26 @@ public class OI {
 
     	drButtonY.whenActive(new ResetCommand());
 
-    	drButtonB.whenPressed(new FireShooterCommand());
-    	drButtonB.whenReleased(new RetractShooterCommand());
+    	opButtonA.whenPressed(new FireShooterCommand());
+    	opButtonA.whenReleased(new RetractShooterCommand());
     	
-    	drButtonA.whenPressed(new CarriageUpCommand());
-    	drButtonA.whenReleased(new CarriageDownCommand());
+    	opButtonB.whenPressed(new CarriageUpCommand());
+    	opButtonB.whenReleased(new CarriageDownCommand());
+    	
+    	opButtonY.whileHeld(new CollectorOnCommand());
+    	opButtonY.whenReleased(new CollectorOffCommand());
+    	
+    	opButtonX.whileHeld(new CollectorReverseCommand());
+    	opButtonX.whenReleased(new CollectorOffCommand());
+    	
+//    	opTriggerL.whenPressed(new CollectorUpDownInCommand());
+//    	opTriggerL.whenReleased(new CollectorUpDownOutCommand());
+    	
+    	opTriggerR.whenPressed(new CollectorLeftRightToggleCommand());
+    	
+    	opTriggerL.whenPressed(new CollectorUpDownToggleCommand());
+    	
+    	
     }
     
     

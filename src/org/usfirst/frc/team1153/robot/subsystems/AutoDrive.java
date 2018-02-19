@@ -83,7 +83,7 @@ public class AutoDrive extends Subsystem {
 		gyroPID = new PIDController(kP, kI, kD, gyro, gyroOutput);
 
 		gyroPID.setInputRange(-180, 180);
-		
+
 		gyroPID.setContinuous();
 
 		gyroPID.setOutputRange(-0.6, 0.6);
@@ -135,7 +135,7 @@ public class AutoDrive extends Subsystem {
 	public double getGyroAngle() {
 		return gyro.getAngle();
 	}
-	
+
 	public void calibrateGyro() {
 		gyro.calibrate();
 	}
@@ -168,7 +168,7 @@ public class AutoDrive extends Subsystem {
 		leftMaster.set(motorValue);
 		rightMaster.set(motorValue);
 	}
-	
+
 	public void driveForward() {
 		configTalonOutput();
 		leftMaster.set(ControlMode.PercentOutput, -1);
@@ -200,12 +200,45 @@ public class AutoDrive extends Subsystem {
 		rightMaster.set(controlMode, -right);
 	}
 
-	public void createDriveSignal() {
+	/**
+	 * Adjusting cheesy drive
+	 * 
+	 * @param value
+	 * @param deadband
+	 * @return
+	 */
+	protected double applyDeadband(double value, double deadband) {
+		if (Math.abs(value) > deadband) {
+			if (value > 0.0) {
+				return (value - deadband) / (1.0 - deadband);
+			} else {
+				return (value + deadband) / (1.0 - deadband);
+			}
+		} else {
+			return 0.0;
+		}
+	}
+
+	public void createDriveSignal(boolean squaredInputs) {
 		boolean quickTurn = Robot.autoDrive.quickTurnController();
-		double moveValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y);
-		double rotateValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X);
+		double rawMoveValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y);
+		double rawRotateValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X);
+
+		double moveValue = 0;
+		double rotateValue = 0;
+		if (squaredInputs == true) {
+			double deadBandMoveValue = applyDeadband(rawMoveValue, 0.02);
+			double deadBandRotateValue = applyDeadband(rawRotateValue, 0.02);
+			moveValue = Math.copySign(deadBandMoveValue * deadBandMoveValue, deadBandMoveValue);
+			rotateValue = Math.copySign(deadBandRotateValue * deadBandRotateValue, deadBandRotateValue);
+		} else {
+			rawMoveValue = moveValue;
+			rotateValue = rawRotateValue;
+		}
+
 		DriveSignal driveSignal = helper.cheesyDrive(-1 * moveValue, rotateValue, quickTurn, false);
 		Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
+
 	}
 
 	public void driveWithHelper(ControlMode controlMode, DriveSignal driveSignal) {
@@ -222,7 +255,7 @@ public class AutoDrive extends Subsystem {
 			return false;
 		}
 	}
-	
+
 	public void cheesyDriveWithoutJoysticks(double move, double rotate) {
 		double moveValue = move;
 		double rotateValue = rotate;

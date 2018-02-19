@@ -33,9 +33,9 @@ public class Carriage extends StateSubsystem {
 	public void setArticulatorPistonState(boolean state) {
 		// articulator.set(Value.kForward);
 		if (state == true) {
-			articulator.set(Value.kForward);
-		} else {
 			articulator.set(Value.kReverse);
+		} else {
+			articulator.set(Value.kForward);
 		}
 	}
 
