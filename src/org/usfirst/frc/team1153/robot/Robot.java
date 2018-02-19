@@ -14,6 +14,8 @@ import org.usfirst.frc.team1153.autonomous.FarLeftSwitchScore;
 import org.usfirst.frc.team1153.autonomous.FarRightSwitchScore;
 import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
 import org.usfirst.frc.team1153.robot.lib.StateScheduler;
+import org.usfirst.frc.team1153.robot.subsystems.ArmsHorizontal;
+import org.usfirst.frc.team1153.robot.subsystems.ArmsVertical;
 import org.usfirst.frc.team1153.robot.subsystems.AutoDrive;
 import org.usfirst.frc.team1153.robot.subsystems.Carriage;
 import org.usfirst.frc.team1153.robot.subsystems.Collector;
@@ -46,6 +48,8 @@ public class Robot extends TimedRobot {
 	public static Shooter shooter;
 	public static Carriage carriage;
 	public static Collector collector;
+	public static ArmsHorizontal collectorArmsHorizontal;
+	public static ArmsVertical collectorArmsVertical;
 	public static LimelightVision vision;
 
 	public static double initialWait = 0;
@@ -72,6 +76,8 @@ public class Robot extends TimedRobot {
 
 		StateScheduler.getInstance().addStateSubsystem(shooter);
 		StateScheduler.getInstance().addStateSubsystem(collector);
+		StateScheduler.getInstance().addStateSubsystem(collectorArmsHorizontal);
+		StateScheduler.getInstance().addStateSubsystem(collectorArmsVertical);
 		StateScheduler.getInstance().addStateSubsystem(carriage);
 
 		routineChooser.addDefault("Center", "Center");

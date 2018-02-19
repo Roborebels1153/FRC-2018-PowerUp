@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1153.robot.commands;
 
 import org.usfirst.frc.team1153.robot.Robot;
+import org.usfirst.frc.team1153.robot.subsystems.ArmsHorizontal;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -10,12 +11,12 @@ import edu.wpi.first.wpilibj.command.Command;
 public class CollectorLeftRightInCommand extends Command {
 
     public CollectorLeftRightInCommand() {
-        requires(Robot.collector);
+        requires(Robot.collectorArmsHorizontal);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.collector.leftRightPistonsIn();
+    	Robot.collectorArmsHorizontal.setState(ArmsHorizontal.STATE_IN);
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -1,8 +1,8 @@
 package org.usfirst.frc.team1153.robot.commands;
 
 import org.usfirst.frc.team1153.robot.Robot;
-import org.usfirst.frc.team1153.robot.subsystems.Collector.LeftRight;
-import org.usfirst.frc.team1153.robot.subsystems.Collector.UpDown;
+import org.usfirst.frc.team1153.robot.lib.StateSubsystem;
+import org.usfirst.frc.team1153.robot.subsystems.ArmsVertical;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -12,18 +12,17 @@ import edu.wpi.first.wpilibj.command.Command;
 public class CollectorUpDownToggleCommand extends Command {
 
     public CollectorUpDownToggleCommand() {
-        requires(Robot.collector);
+        requires(Robot.collectorArmsVertical);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	UpDown newState = Robot.collector.toggleUpDownPistons();
-    	if (UpDown.UP.equals(newState)) {
-    		Robot.collector.upDownPistonsIn();
-    	} else if (UpDown.DOWN.equals(newState)) {
-    		Robot.collector.upDownPistonOut();
+    	StateSubsystem.State currState = Robot.collectorArmsVertical.getState();
+    	if (ArmsVertical.STATE_UP.equals(currState)) {
+    		Robot.collectorArmsVertical.setState(ArmsVertical.STATE_DOWN);
+    	} else if (ArmsVertical.STATE_DOWN.equals(currState)) {
+    		Robot.collectorArmsVertical.setState(ArmsVertical.STATE_UP);
     	}
-    	
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1153.robot.commands;
 
 import org.usfirst.frc.team1153.robot.Robot;
+import org.usfirst.frc.team1153.robot.subsystems.Collector;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -15,7 +16,7 @@ public class CollectorOnCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.collector.collectingInit();
+    	Robot.collector.setState(Collector.STATE_RUNNING);
     }
 
     // Called repeatedly when this Command is scheduled to run

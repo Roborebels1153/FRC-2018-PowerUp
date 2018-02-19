@@ -35,14 +35,13 @@ public class RobotMap {
 	
 	public static final int SHOOTER_SOLENOID_A = 2;
 	public static final int SHOOTER_SOLENOID_B = 3;
-//	public static final int SHOOTER_SOLENOID_C = 6;
-//	public static final int SHOOTER_SOLENOID_D = 7;
-//	
+
 	public static final int SHOOTER_ARTICULATOR = 7;
-
-
-
-
-
 	
+	public static final int ARM_HORIZONTAL_A = 6;
+	public static final int ARM_HORIZONTAL_B = 7;
+	
+	public static final int ARM_VERTICAL_A = 4;
+	public static final int ARM_VERTICAL_B = 5;
+
 }
