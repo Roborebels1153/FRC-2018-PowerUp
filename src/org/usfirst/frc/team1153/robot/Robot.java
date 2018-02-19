@@ -72,7 +72,7 @@ public class Robot extends TimedRobot {
 
 		StateScheduler.getInstance().addStateSubsystem(shooter);
 		StateScheduler.getInstance().addStateSubsystem(collector);
-		// StateScheduler.getInstance().addStateSubsystem(carriage);
+		StateScheduler.getInstance().addStateSubsystem(carriage);
 
 		routineChooser.addDefault("Center", "Center");
 		routineChooser.addDefault("Left", "Left");
