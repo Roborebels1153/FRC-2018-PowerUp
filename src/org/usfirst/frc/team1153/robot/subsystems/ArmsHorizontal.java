@@ -36,7 +36,7 @@ public class ArmsHorizontal extends StateSubsystem {
 	}
 	
 	public void inInit() {
-		horizontalSolenoid.set(Value.kReverse);
+		horizontalSolenoid.set(Value.kForward);
 	}
 	
 	public void inPeriodic() {
@@ -44,7 +44,7 @@ public class ArmsHorizontal extends StateSubsystem {
 	}
 	
 	public void outInit() {
-		horizontalSolenoid.set(Value.kForward);
+		horizontalSolenoid.set(Value.kReverse);
 	}
 	
 	public void outPeriodic() {

@@ -43,5 +43,9 @@ public class RobotMap {
 	
 	public static final int ARM_VERTICAL_A = 4;
 	public static final int ARM_VERTICAL_B = 5;
+	
+	public static final int RIGHT_LIMIT_SWITCH = 3;
+	public static final int LEFT_LIMIT_SWITCH = 2;
+
 
 }

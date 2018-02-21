@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1153.autonomous;
+package org.usfirst.frc.team1153.robot.commandGroups;
 
 import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
 import org.usfirst.frc.team1153.robot.commands.GyroTurnCommand;

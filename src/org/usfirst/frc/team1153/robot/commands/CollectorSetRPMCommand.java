@@ -1,27 +1,27 @@
 package org.usfirst.frc.team1153.robot.commands;
 
 import org.usfirst.frc.team1153.robot.Robot;
-import org.usfirst.frc.team1153.robot.subsystems.Collector;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class CollectorOffCommand extends Command {
+public class CollectorSetRPMCommand extends Command {
 
-    public CollectorOffCommand() {
-        requires(Robot.collector);
+    public CollectorSetRPMCommand() {
+      requires(Robot.collector);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.collector.setState(Collector.STATE_IDLE);
-    	Robot.collector.stopMotors();
+    	Robot.collector.resetEncoder();
+    	Robot.collector.configCollectorMotionMagic();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.collector.enactCollectorMotionMagic();
     }
 
     // Make this return true when this Command no longer needs to run execute()

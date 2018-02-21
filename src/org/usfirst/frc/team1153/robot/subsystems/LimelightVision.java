@@ -108,7 +108,7 @@ public class LimelightVision extends Subsystem {
     }
     
     public void turnOffLight() {
-    	NetworkTableEntry ledMode = table.getEntry("ledMode");
+    	NetworkTableEntry ledMode = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode");
     	ledMode.setNumber(1);
     }
     

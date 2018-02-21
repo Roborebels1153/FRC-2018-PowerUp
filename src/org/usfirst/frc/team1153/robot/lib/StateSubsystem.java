@@ -68,7 +68,7 @@ public abstract class StateSubsystem extends Subsystem {
 	 */
 	public void setState(StateSubsystem.State in) {
 		if (!knownStates.contains(in)) {
-			throw new IllegalArgumentException("Invalid state, maybe missing calls to registerState(StateSubsystem.State)?");
+			throw new IllegalArgumentException("Invalid state (" + in.name + ", " + in.getClass() + "), maybe missing calls to registerState(StateSubsystem.State)?");
 		}
 		// Only call the initialize methods if the state has actually changed
 		if (state != in) {

@@ -1,18 +1,20 @@
-package org.usfirst.frc.team1153.autonomous;
+package org.usfirst.frc.team1153.robot.commandGroups;
 
 import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
+import org.usfirst.frc.team1153.robot.commands.FireShooterCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class DriveForwardNoScore extends CommandGroup {
+public class DriveForwardAndScore extends CommandGroup {
 	
 	double baselineToSwitchDistance = 112;
-
 	
-	public DriveForwardNoScore () {
+	public DriveForwardAndScore () {
 		super();
 		
 		addSequential(new DriveDistanceCommand(baselineToSwitchDistance, -1  * baselineToSwitchDistance));
+		addSequential(new FireShooterCommand());
+		
 	}
 
 }

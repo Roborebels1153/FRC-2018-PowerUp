@@ -17,6 +17,7 @@ import org.usfirst.frc.team1153.robot.lib.DummyOutput;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -236,7 +237,7 @@ public class AutoDrive extends Subsystem {
 			rotateValue = rawRotateValue;
 		}
 
-		DriveSignal driveSignal = helper.cheesyDrive(-1 * moveValue, rotateValue, quickTurn, false);
+		DriveSignal driveSignal = helper.cheesyDrive(-1 * moveValue, 0.7 * rotateValue, quickTurn, false);
 		Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
 
 	}
@@ -277,6 +278,10 @@ public class AutoDrive extends Subsystem {
 		leftMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
 		leftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
 		leftMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+		
+		leftMaster.setNeutralMode(NeutralMode.Brake);
+		rightMaster.setNeutralMode(NeutralMode.Brake);
+
 
 		// rightMaster.enableCurrentLimit(true);
 		// rightMaster.configPeakCurrentLimit(20, Constants.kTimeoutMs);

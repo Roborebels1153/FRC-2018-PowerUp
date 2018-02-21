@@ -7,11 +7,11 @@
 
 package org.usfirst.frc.team1153.robot;
 
-import org.usfirst.frc.team1153.autonomous.CenterSwitch;
-import org.usfirst.frc.team1153.autonomous.DriveForwardAndScore;
-import org.usfirst.frc.team1153.autonomous.DriveForwardNoScore;
-import org.usfirst.frc.team1153.autonomous.FarLeftSwitchScore;
-import org.usfirst.frc.team1153.autonomous.FarRightSwitchScore;
+import org.usfirst.frc.team1153.robot.commandGroups.CenterSwitch;
+import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardAndScore;
+import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardNoScore;
+import org.usfirst.frc.team1153.robot.commandGroups.FarLeftSwitchScore;
+import org.usfirst.frc.team1153.robot.commandGroups.FarRightSwitchScore;
 import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
 import org.usfirst.frc.team1153.robot.lib.StateScheduler;
 import org.usfirst.frc.team1153.robot.subsystems.ArmsHorizontal;
@@ -69,6 +69,8 @@ public class Robot extends TimedRobot {
 		shooter = new Shooter();
 		carriage = new Carriage();
 		collector = new Collector();
+		collectorArmsHorizontal = new ArmsHorizontal();
+		collectorArmsVertical = new ArmsVertical();
 		oi = new OI();
 		vision = new LimelightVision();
 
@@ -153,6 +155,12 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("AD Gyro Reading", autoDrive.getGyroAngle());
 		// SmartDashboard.putNumber("Collector Motor Value",
 		// collector.getMotorOutput());
+		
+		SmartDashboard.putBoolean("Right Limit Switch", collectorArmsVertical.getRightLimitSwitchState());
+		SmartDashboard.putBoolean("Left Limit Switch", collectorArmsVertical.getLeftLimitSwitchState());
+		
+		
+
 	}
 
 	/**
@@ -212,26 +220,27 @@ public class Robot extends TimedRobot {
 		System.out.println("switchPos\t" + switchPos);
 		System.out.println("chooser:\t" + routineChooser.getSelected());
 
-		if ((robotPosEqual("Right") && switchPos == 'R') || (robotPosEqual("Left") && switchPos == 'L')) {
-			autoCommand = new DriveForwardAndScore();
-		} else if (robotPosEqual("Center") && switchPos == 'R') {
-			autoCommand = new CenterSwitch(30);
-		} else if (robotPosEqual("Center") && switchPos == 'L') {
-
-			autoCommand = new CenterSwitch(-30);
-		} else if (robotPosEqual("Far Right") && switchPos == 'R') {
-
-			autoCommand = new FarRightSwitchScore();
-		} else if (robotPosEqual("Far Right") && switchPos == 'L') {
-
-		} else if (robotPosEqual("Far Left") && switchPos == 'R') {
-
-		} else if (robotPosEqual("Far Left") && switchPos == 'L') {
-
-			autoCommand = new FarLeftSwitchScore();
-		} else {
-			autoCommand = new DriveForwardNoScore();
-		}
+//		if ((robotPosEqual("Right") && switchPos == 'R') || (robotPosEqual("Left") && switchPos == 'L')) {
+//			autoCommand = new DriveForwardAndScore();
+//		} else if (robotPosEqual("Center") && switchPos == 'R') {
+//			autoCommand = new CenterSwitch(30);
+//		} else if (robotPosEqual("Center") && switchPos == 'L') {
+//
+//			autoCommand = new CenterSwitch(-30);
+//		} else if (robotPosEqual("Far Right") && switchPos == 'R') {
+//
+//			autoCommand = new FarRightSwitchScore();
+//		} else if (robotPosEqual("Far Right") && switchPos == 'L') {
+//
+//		} else if (robotPosEqual("Far Left") && switchPos == 'R') {
+//
+//		} else if (robotPosEqual("Far Left") && switchPos == 'L') {
+//
+//			autoCommand = new FarLeftSwitchScore();
+//		} else {
+//			autoCommand = new DriveForwardNoScore();
+//		}
+		autoCommand = new FarRightSwitchScore();
 		autoCommand.start();
 	}
 
@@ -253,6 +262,8 @@ public class Robot extends TimedRobot {
 		carriage.downInit();
 		autoDrive.resetEncoders();
 		vision.turnOffLight();
+		
+		autoDrive.shiftLow();
 	}
 
 	/**
@@ -278,9 +289,9 @@ public class Robot extends TimedRobot {
 		// autoDrive.drive(oi.getDriverStick());
 
 		if (oi.getDriverStick().getRawButtonPressed(2)) {
-			autoDrive.shiftHighTest();
+			autoDrive.shiftLow();
 		} else if (oi.getDriverStick().getRawButtonReleased(2)) {
-			autoDrive.shiftLowTest();
+			autoDrive.shiftHigh();
 		}
 
 		/**
