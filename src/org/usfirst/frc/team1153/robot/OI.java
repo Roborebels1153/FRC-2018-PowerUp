@@ -16,11 +16,12 @@ import org.usfirst.frc.team1153.robot.commands.CollectorLeftRightToggleCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorOffCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorOnCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorReverseCommand;
-import org.usfirst.frc.team1153.robot.commands.CollectorSetRPMCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorUpDownToggleCommand;
 import org.usfirst.frc.team1153.robot.commands.FireShooterCommand;
 import org.usfirst.frc.team1153.robot.commands.ResetCommand;
 import org.usfirst.frc.team1153.robot.commands.RetractShooterCommand;
+import org.usfirst.frc.team1153.robot.commands.ShiftHighCommand;
+import org.usfirst.frc.team1153.robot.commands.ShiftLowCommand;
 import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -69,8 +70,8 @@ public class OI {
 
     public OI() {
     	
-//    	drTriggerL.whenPressed(new ShiftHighCommand());
-//    	drTriggerL.whenReleased(new ShiftLowCommand());
+    	drTriggerL.whenPressed(new ShiftHighCommand());
+    	drTriggerL.whenReleased(new ShiftLowCommand());
 
     	drButtonY.whenActive(new ResetCommand());
 

@@ -74,6 +74,7 @@ public class Robot extends TimedRobot {
 		oi = new OI();
 		vision = new LimelightVision();
 
+		vision.turnOffLight();
 		autoDrive.calibrateGyro();
 
 		StateScheduler.getInstance().addStateSubsystem(shooter);
@@ -288,12 +289,6 @@ public class Robot extends TimedRobot {
 		 * if (oi.getDriverStick().getRawButtonPressed(2)) { drive.testMotor(-1); }
 		 */
 		// autoDrive.drive(oi.getDriverStick());
-
-		if (oi.getDriverStick().getRawButtonPressed(2)) {
-			autoDrive.shiftLow();
-		} else if (oi.getDriverStick().getRawButtonReleased(2)) {
-			autoDrive.shiftHigh();
-		}
 
 		/**
 		 * Code to shift in case OI Commands are not working - they are working fine,

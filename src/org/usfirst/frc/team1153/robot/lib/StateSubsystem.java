@@ -39,7 +39,7 @@ public abstract class StateSubsystem extends Subsystem {
 			}
 		} catch (NoSuchMethodException e) {
 			// Subclasses of StateSubsystem are not required to implement either method
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (InvocationTargetException|IllegalAccessException e) {
 			throw new RuntimeException("Invalid subclass of StateSubsystem , " + getClass());
 		}
