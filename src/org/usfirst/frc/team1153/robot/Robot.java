@@ -200,6 +200,7 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		StateScheduler.getInstance().notifyAuto();
 
+		vision.turnOnLight();
 		autoDrive.resetGyro();
 		autoDrive.setEncoderAsFeedback();
 		autoDrive.configTalonOutput();
