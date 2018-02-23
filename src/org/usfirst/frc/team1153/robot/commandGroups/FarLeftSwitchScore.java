@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1153.robot.commandGroups;
 
+import org.usfirst.frc.team1153.robot.commands.CarriageUpCommand;
 import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
 import org.usfirst.frc.team1153.robot.commands.FireShooterCommand;
 import org.usfirst.frc.team1153.robot.commands.GyroTurnCommand;
@@ -14,7 +15,8 @@ public class FarLeftSwitchScore extends CommandGroup {
 
 	public FarLeftSwitchScore() {
 		super();
-
+		
+		addSequential (new CarriageUpCommand());
 		addSequential(new DriveDistanceCommand(baselineToSideSwitchDistance, -1 * baselineToSideSwitchDistance));
 		addSequential(new WaitCommand(1));
 		addSequential(new GyroTurnCommand(90));

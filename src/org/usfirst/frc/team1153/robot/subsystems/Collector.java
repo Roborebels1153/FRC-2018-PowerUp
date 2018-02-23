@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1153.robot.subsystems;
 
 import org.usfirst.frc.team1153.robot.Constants;
+import org.usfirst.frc.team1153.robot.RobotMap;
 import org.usfirst.frc.team1153.robot.lib.StateSubsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -35,8 +36,8 @@ public class Collector extends StateSubsystem {
 	private WPI_TalonSRX motorB;
 
 	public Collector() {
-		motorA = new WPI_TalonSRX(7);
-		motorB = new WPI_TalonSRX(8);
+		motorA = new WPI_TalonSRX(RobotMap.COLLECT_MOTOR_A);
+		motorB = new WPI_TalonSRX(RobotMap.COLLECT_MOTOR_B);
 		configCollectorMotorOutput();
 
 		registerState(STATE_RUNNING);

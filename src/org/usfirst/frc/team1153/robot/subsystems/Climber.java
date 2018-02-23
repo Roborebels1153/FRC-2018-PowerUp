@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1153.robot.subsystems;
 
+import org.usfirst.frc.team1153.robot.RobotMap;
 import org.usfirst.frc.team1153.robot.lib.StateSubsystem;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -20,7 +21,7 @@ public class Climber extends StateSubsystem {
 	// here. Call these from Commands.
 
 	public Climber() {
-		climber = new DoubleSolenoid(12, 0, 1);
+		climber = new DoubleSolenoid(RobotMap.THIRD_PCM, RobotMap.CLIMBER_PISTON_A, RobotMap.CLIMBER_PISTON_B);
 
 		registerState(STATE_RETRACTED);
 		registerState(STATE_EXTENDED);

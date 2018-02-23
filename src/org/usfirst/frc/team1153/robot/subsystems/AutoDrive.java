@@ -56,12 +56,12 @@ public class AutoDrive extends Subsystem {
 	 * initializes.
 	 */
 	public AutoDrive() {
-		leftMaster = new WPI_TalonSRX(1);
-		leftBackSlave = new WPI_TalonSRX(2);
-		leftFrontSlave = new WPI_TalonSRX(3);
-		rightMaster = new WPI_TalonSRX(4);
-		rightBackSlave = new WPI_TalonSRX(6);
-		rightFrontSlave = new WPI_TalonSRX(5);
+		leftMaster = new WPI_TalonSRX(RobotMap.LEFT_MASTER);
+		leftBackSlave = new WPI_TalonSRX(RobotMap.LEFT_BACK_SLAVE);
+		leftFrontSlave = new WPI_TalonSRX(RobotMap.LEFT_FRONT_SLAVE);
+		rightMaster = new WPI_TalonSRX(RobotMap.RIGHT_MASTER);
+		rightBackSlave = new WPI_TalonSRX(RobotMap.RIGHT_BACK_SLAVE);
+		rightFrontSlave = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_SLAVE);
 
 		gyro = new ADXRS450_Gyro();
 		double kP = 0.016;
@@ -78,8 +78,8 @@ public class AutoDrive extends Subsystem {
 
 		gyroPID.setOutputRange(-0.6, 0.6);
 
-		transmissionShifter = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_LEFT_A,
-				RobotMap.TRANSMISSION_SOLENOID_LEFT_B);
+		transmissionShifter = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_A,
+				RobotMap.TRANSMISSION_SOLENOID_B);
 
 		newShifter = new Solenoid(11, 0);
 

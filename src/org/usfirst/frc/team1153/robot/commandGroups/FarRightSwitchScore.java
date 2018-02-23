@@ -21,7 +21,6 @@ public class FarRightSwitchScore extends CommandGroup {
 		addSequential(new WaitCommand(1));
 		addSequential(new GyroTurnCommand(-90));
 		addSequential(new DriveDistanceCommand(turnToSwitchDistance, -1 * turnToSwitchDistance));
-		addSequential( new WaitCommand (2));
 		addSequential(new FireShooterCommand());
 		
 	}

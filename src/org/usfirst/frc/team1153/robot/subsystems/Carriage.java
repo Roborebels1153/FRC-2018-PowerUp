@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1153.robot.subsystems;
 
+import org.usfirst.frc.team1153.robot.RobotMap;
 import org.usfirst.frc.team1153.robot.lib.StateSubsystem;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -20,7 +21,7 @@ public class Carriage extends StateSubsystem {
 	private DoubleSolenoid articulator;
 
 	public Carriage() {
-		articulator = new DoubleSolenoid(2, 3);
+		articulator = new DoubleSolenoid(RobotMap.SHOOTER_ARTICULATOR_A, RobotMap.SHOOTER_ARTICULATOR_B);
 
 		registerState(STATE_UP);
 		registerState(STATE_DOWN);

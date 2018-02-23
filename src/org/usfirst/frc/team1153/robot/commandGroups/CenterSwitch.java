@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class CenterSwitch extends CommandGroup {
 
+	/**
+	 * @param degreesToTurn
+	 */
 	public CenterSwitch(int degreesToTurn) {
 		// addSequential (new WaitCommand(Robot.initialWait));
 		addSequential(new GyroTurnCommand(degreesToTurn));
