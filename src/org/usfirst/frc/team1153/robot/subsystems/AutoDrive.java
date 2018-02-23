@@ -23,9 +23,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -39,9 +37,6 @@ public class AutoDrive extends Subsystem {
 
 	private ADXRS450_Gyro gyro;
 
-	/*
-	 * Transmission Shifting Related
-	 */
 	private DoubleSolenoid transmissionShifter;
 
 	PIDController gyroPID;
@@ -53,12 +48,6 @@ public class AutoDrive extends Subsystem {
 	public enum Shifter {
 		High, Low
 	}
-
-	private boolean turboMode = false;
-
-	private double turnValue;
-
-	// DifferentialDrive drive;
 
 	CheesyDriveHelper helper;
 
@@ -141,14 +130,6 @@ public class AutoDrive extends Subsystem {
 		gyro.calibrate();
 	}
 
-	// public void initializeDiffDrive() {
-	// drive = new DifferentialDrive(leftMaster, rightMaster);
-	// }
-	//
-	// public void removeDiffDrive() {
-	// drive = null;
-	// }
-
 	/**
 	 * New shifter test Code
 	 */
@@ -163,34 +144,6 @@ public class AutoDrive extends Subsystem {
 
 	@Override
 	public void initDefaultCommand() {
-	}
-
-	public void turnWithLimelight(double motorValue) {
-		leftMaster.set(motorValue);
-		rightMaster.set(motorValue);
-	}
-
-	public void driveForward() {
-		configTalonOutput();
-		leftMaster.set(ControlMode.PercentOutput, -1);
-		rightMaster.set(ControlMode.PercentOutput, 1);
-		// rightBackSlave.set(ControlMode.PercentOutput, -.8);
-		// rightFrontSlave.set(ControlMode.PercentOutput, -.8);
-
-	}
-
-	public void driveBackward() {
-		configTalonOutput();
-		leftMaster.set(ControlMode.PercentOutput, 1);
-		rightMaster.set(ControlMode.PercentOutput, -1);
-	}
-
-	public void stop() {
-		configTalonOutput();
-		leftMaster.set(ControlMode.PercentOutput, 0);
-		rightMaster.set(ControlMode.PercentOutput, 0);
-		// rightBackSlave.set(ControlMode.PercentOutput, 0);
-		// rightFrontSlave.set(ControlMode.PercentOutput, 0);
 	}
 
 	/**
@@ -243,8 +196,6 @@ public class AutoDrive extends Subsystem {
 	}
 
 	public void driveWithHelper(ControlMode controlMode, DriveSignal driveSignal) {
-		// System.out.println(driveSignal.toString());
-
 		this.configDrive(controlMode, driveSignal.getLeft(), driveSignal.getRight());
 	}
 
@@ -264,10 +215,6 @@ public class AutoDrive extends Subsystem {
 		Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
 	}
 
-	// public void drive(Joystick joystick) {
-	// drive.arcadeDrive(-1 * joystick.getY(), 1 * joystick.getRawAxis(4));
-	// }
-
 	public void configTalonOutput() {
 		rightMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
 		rightMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
@@ -278,16 +225,40 @@ public class AutoDrive extends Subsystem {
 		leftMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
 		leftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
 		leftMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-		
+
 		leftMaster.setNeutralMode(NeutralMode.Brake);
 		rightMaster.setNeutralMode(NeutralMode.Brake);
 
+		rightMaster.configPeakCurrentLimit(35, 10); /* 35 A */
+		rightMaster.configPeakCurrentDuration(200, 10); /* 200ms */
+		rightMaster.configContinuousCurrentLimit(30, 10); /* 30A */
+		rightMaster.enableCurrentLimit(true);
 
-		// rightMaster.enableCurrentLimit(true);
-		// rightMaster.configPeakCurrentLimit(20, Constants.kTimeoutMs);
-		//
-		// leftMaster.enableCurrentLimit(true);
-		// leftMaster.configPeakCurrentLimit(20, Constants.kTimeoutMs);
+		leftMaster.configPeakCurrentLimit(35, 10); /* 35 A */
+		leftMaster.configPeakCurrentDuration(200, 10); /* 200ms */
+		leftMaster.configContinuousCurrentLimit(30, 10); /* 30A */
+		leftMaster.enableCurrentLimit(true);
+		
+		rightBackSlave.configPeakCurrentLimit(35, 10); /* 35 A */
+		rightBackSlave.configPeakCurrentDuration(200, 10); /* 200ms */
+		rightBackSlave.configContinuousCurrentLimit(30, 10); /* 30A */
+		rightBackSlave.enableCurrentLimit(true);
+		
+		leftBackSlave.configPeakCurrentLimit(35, 10); /* 35 A */
+		leftBackSlave.configPeakCurrentDuration(200, 10); /* 200ms */
+		leftBackSlave.configContinuousCurrentLimit(30, 10); /* 30A */
+		leftBackSlave.enableCurrentLimit(true);
+
+		rightFrontSlave.configPeakCurrentLimit(35, 10); /* 35 A */
+		rightFrontSlave.configPeakCurrentDuration(200, 10); /* 200ms */
+		rightFrontSlave.configContinuousCurrentLimit(30, 10); /* 30A */
+		rightFrontSlave.enableCurrentLimit(true);
+
+		leftFrontSlave.configPeakCurrentLimit(35, 10); /* 35 A */
+		leftFrontSlave.configPeakCurrentDuration(200, 10); /* 200ms */
+		leftFrontSlave.configContinuousCurrentLimit(30, 10); /* 30A */
+		leftFrontSlave.enableCurrentLimit(true);
+
 	}
 
 	public void setFollowers() {
@@ -321,13 +292,6 @@ public class AutoDrive extends Subsystem {
 	 * functions as a variable setter to allow us to autonomously control the stage
 	 * that the transmissions are on.
 	 */
-	public void turboOn() {
-		turboMode = true;
-	}
-
-	public void turboOff() {
-		turboMode = false;
-	}
 
 	public void shiftHigh() {
 		transmissionShifter.set(DoubleSolenoid.Value.kReverse);

@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class GyroTurnCommand extends Command {
 
+	long startTime;
+	
     public GyroTurnCommand(double setpoint) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -18,6 +20,7 @@ public class GyroTurnCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	startTime = System.currentTimeMillis();
     	Robot.autoDrive.configTalonOutput();
     	Robot.autoDrive.runGyroPID(true);
 
@@ -30,7 +33,7 @@ public class GyroTurnCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return System.currentTimeMillis() - startTime >= 2000;
     }
 
     // Called once after isFinished returns true

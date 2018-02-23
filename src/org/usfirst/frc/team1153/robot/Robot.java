@@ -8,11 +8,6 @@
 package org.usfirst.frc.team1153.robot;
 
 import org.usfirst.frc.team1153.robot.commandGroups.CenterSwitch;
-import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardAndScore;
-import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardNoScore;
-import org.usfirst.frc.team1153.robot.commandGroups.FarLeftSwitchScore;
-import org.usfirst.frc.team1153.robot.commandGroups.FarRightSwitchScore;
-import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
 import org.usfirst.frc.team1153.robot.lib.StateScheduler;
 import org.usfirst.frc.team1153.robot.subsystems.ArmsHorizontal;
 import org.usfirst.frc.team1153.robot.subsystems.ArmsVertical;
@@ -24,7 +19,6 @@ import org.usfirst.frc.team1153.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -57,7 +51,6 @@ public class Robot extends TimedRobot {
 
 	private SendableChooser<String> routineChooser = new SendableChooser<>();
 
-	Button drRightTrigger;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -90,7 +83,6 @@ public class Robot extends TimedRobot {
 		routineChooser.addDefault("Far Left", "Far Left");
 		SmartDashboard.putData("Position", routineChooser);
 
-		drRightTrigger = new RebelTrigger(oi.getDriverStick(), 3);
 
 		/**
 		 * text boxes for delays
@@ -104,53 +96,20 @@ public class Robot extends TimedRobot {
 	public static void updateDashboard() {
 		// if (++loops >= 10) {
 		// loops = 0;
-		// SmartDashboard.putNumber("Right Motor Motor Output",
-		// autoDrive.getRightMotorOutputPercent());
-		// SmartDashboard.putNumber("Right Motor Motor Speed",
-		// autoDrive.getRightMotorSpeed());
+		
 		SmartDashboard.putNumber("Right Motor Motion Magic Error", autoDrive.getRightMotorClosedLoopError());
-		// // SmartDashboard.putNumber("Right Motor Active Trajectory Position",
-		// // drive.getRightMotorActiveTrajectoryPosition());
-		// // SmartDashboard.putNumber("Right Motor Active Trajectory Velocity",
-		// // drive.getRightMotorActiveTrajectoryVelocity());
+		
 		SmartDashboard.putNumber("Right Motor Sensor Position", autoDrive.getRightMotorSensorPosition());
 		SmartDashboard.putNumber("Right Motor Sensor Velocity", autoDrive.getRightMotorSensorVelocity());
-		//
-
-		// SmartDashboard.putNumber("Left Motor Motor Output",
-		// autoDrive.getLeftMotorOutputPercent());
-		// SmartDashboard.putNumber("Left Motor Motor Speed",
-		// autoDrive.getLeftMotorSpeed());
+		
 		SmartDashboard.putNumber("Left Motor Motion Magic Error", autoDrive.getLeftMotorClosedLoopError());
-		// // SmartDashboard.putNumber("Left Motor Active Trajectory Position",
-		// // drive.getLeftMotorActiveTrajectoryPosition());
-		// // SmartDashboard.putNumber("Left Motor Active Trajectory Velocity",
-		// // drive.getLeftMotorActiveTrajectoryVelocity());
+		
 		SmartDashboard.putNumber("Left Motor Sensor Position", autoDrive.getLeftMotorSensorPosition());
 		SmartDashboard.putNumber("Left Motor Sensor Velocity", autoDrive.getLeftMotorSensorVelocity());
 
 		SmartDashboard.putNumber("PID ERROR", autoDrive.gyroError());
 		SmartDashboard.putNumber("PID Output", autoDrive.getGyroOutput());
-		//
-		// SmartDashboard.putNumber("Left Motor Sensor Position",
-		// autoDrive.getLeftMotorSensorPosition());
-		// SmartDashboard.putNumber("Left Motor Sensor Velocity",
-		// autoDrive.getLeftMotorSensorVelocity());
-		//
-		// // SmartDashboard.putNumber("Left Motor Output Voltage",
-		// // leftMaster.getMotorOutputVoltage());
-		// // SmartDashboard.putNumber("Left Motor Bus Voltage",
-		// // leftMaster.getBusVoltage());
-		// // SmartDashboard.putNumber("Left Motor Output Signal",
-		// // leftMaster.getMotorOutputVoltage() / leftMaster.getBusVoltage());
-		// //
-		// // SmartDashboard.putNumber("Right Motor Output Voltage",
-		// // rightMaster.getMotorOutputVoltage());
-		// // SmartDashboard.putNumber("Right Motor Bus Voltage",
-		// // rightMaster.getBusVoltage());
-		// // SmartDashboard.putNumber("Right Motor Output Signal",
-		// // rightMaster.getMotorOutputVoltage() /
-		// rightMaster.getBusVoltage());
+	
 		// }
 
 		SmartDashboard.putNumber("AD Gyro Reading", autoDrive.getGyroAngle());
@@ -242,7 +201,7 @@ public class Robot extends TimedRobot {
 //		} else {
 //			autoCommand = new DriveForwardNoScore();
 //		}
-		autoCommand = new FarRightSwitchScore();
+		autoCommand = new CenterSwitch(30);
 		autoCommand.start();
 	}
 
@@ -253,8 +212,9 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		StateScheduler.getInstance().runAll();
-
 		updateDashboard();
+		
+		vision.updateLimelightData();
 	}
 
 	@Override
@@ -275,36 +235,8 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		StateScheduler.getInstance().runAll();
-
-		// TODO Integrate drive code from TeleDrive, talk with subclassing TeleDrive
-		// autoDrive.drive(oi.getDriverStick());
-
-		// drive.drive(oi.getDriverStick());
 		updateDashboard();
-		// autoDrive.drive(oi.getDriverStick());
-		// autoDrive.resetEncoders();
-		/**
-		 * Test to make sure individual talons are working
-		 * if(oi.getDriverStick().getRawButtonPressed(1)) { drive.testMotor(1); } else
-		 * if (oi.getDriverStick().getRawButtonPressed(2)) { drive.testMotor(-1); }
-		 */
-		// autoDrive.drive(oi.getDriverStick());
-
-		/**
-		 * Code to shift in case OI Commands are not working - they are working fine,
-		 * but lets still keep this just in case
-		 */
-
-//		if (oi.getOpStick().getRawButtonPressed(4)) {
-//			collector.setMotorPower(0.8);
-//		} else if (oi.getOpStick().getRawButtonPressed(3)) {
-//			collector.setMotorPower(-0.8);
-//		} else {
-//			collector.setMotorPower(0);
-//			// collector.setMotorPower(0.8);
-//	}
 		
-
 		autoDrive.createDriveSignal(true);
 	}
 

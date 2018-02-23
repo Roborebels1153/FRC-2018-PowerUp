@@ -18,13 +18,14 @@ public class VisionDriveSwitch extends Command {
     }
 
     protected void initialize() {
+    	System.out.println("Vision ENABLED");
     }
 
     protected void execute() {
     	Target target = Robot.vision.getTargetValues();
     	if (target != null) {
 			//Robot.drive.arcadeDrive(0.55, Robot.vision.getHorizontalAlignOutput() * -1);
-    		Robot.autoDrive.cheesyDriveWithoutJoysticks(0.55, Robot.vision.getHorizontalAlignOutput());
+    		Robot.autoDrive.cheesyDriveWithoutJoysticks(-0.65, Robot.vision.getHorizontalAlignOutput() * -1);
     		if(target.a > 7.0) {
     			bApproachedTarget = true;
     			Robot.autoDrive.cheesyDriveWithoutJoysticks(0, 0);
