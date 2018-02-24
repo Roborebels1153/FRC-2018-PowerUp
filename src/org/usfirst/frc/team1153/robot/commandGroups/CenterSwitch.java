@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1153.robot.commandGroups;
 
 import org.usfirst.frc.team1153.robot.commands.CarriageUpCommand;
+import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
 import org.usfirst.frc.team1153.robot.commands.FireShooterCommand;
 import org.usfirst.frc.team1153.robot.commands.GyroTurnRelativeCommand;
 import org.usfirst.frc.team1153.robot.commands.TimedDriveCommand;
@@ -24,6 +25,7 @@ public class CenterSwitch extends CommandGroup {
 		 */
 		// addSequential (new WaitCommand(Robot.initialWait));
 		addSequential(new GyroTurnRelativeCommand(degreesToTurn));
+		addSequential(new DriveDistanceCommand(timeToDrive, -1 * timeToDrive));
 		addSequential( new TimedDriveCommand(0.4, timeToDrive));
 		addSequential(new GyroTurnRelativeCommand(-(degreesToTurn/turnDiviser)));
 		addSequential(new VisionDriveSwitch());
