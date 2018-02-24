@@ -17,8 +17,10 @@ import org.usfirst.frc.team1153.robot.subsystems.ArmsHorizontal;
 import org.usfirst.frc.team1153.robot.subsystems.ArmsVertical;
 import org.usfirst.frc.team1153.robot.subsystems.AutoDrive;
 import org.usfirst.frc.team1153.robot.subsystems.Carriage;
+import org.usfirst.frc.team1153.robot.subsystems.Climber;
 import org.usfirst.frc.team1153.robot.subsystems.Collector;
 import org.usfirst.frc.team1153.robot.subsystems.LimelightVision;
+import org.usfirst.frc.team1153.robot.subsystems.PTO;
 import org.usfirst.frc.team1153.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -49,6 +51,9 @@ public class Robot extends TimedRobot {
 	public static ArmsHorizontal collectorArmsHorizontal;
 	public static ArmsVertical collectorArmsVertical;
 	public static LimelightVision vision;
+	public static Climber climber;
+	public static PTO pto;
+
 
 	public static double initialWait = 0;
 	public static double middleWait = 0;
@@ -68,8 +73,10 @@ public class Robot extends TimedRobot {
 		collector = new Collector();
 		collectorArmsHorizontal = new ArmsHorizontal();
 		collectorArmsVertical = new ArmsVertical();
+		climber = new Climber();
 		oi = new OI();
 		vision = new LimelightVision();
+		pto  = new PTO();
 
 		vision.turnOffLight();
 		autoDrive.calibrateGyro();
@@ -249,6 +256,13 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 		StateScheduler.getInstance().runAll();
 		updateDashboard();
+		
+		if (oi.getDriverStick().getRawButtonPressed(4)){
+			climber.firePTO();
+		} else if (oi.getDriverStick().getRawButtonReleased(4)) {
+			climber.retractPTO();
+		}
+		
 		
 		autoDrive.createDriveSignal(true);
 	}

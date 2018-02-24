@@ -3,8 +3,6 @@ package org.usfirst.frc.team1153.robot.subsystems;
 import org.usfirst.frc.team1153.robot.RobotMap;
 import org.usfirst.frc.team1153.robot.lib.StateSubsystem;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Solenoid;
 
 /**
@@ -12,7 +10,8 @@ import edu.wpi.first.wpilibj.Solenoid;
  */
 public class Climber extends StateSubsystem {
 
-	DoubleSolenoid climber;
+	Solenoid climber;
+	Solenoid PTO;
 
 	public static final StateSubsystem.State STATE_RETRACTED = new StateSubsystem.State("retracted");
 
@@ -21,7 +20,8 @@ public class Climber extends StateSubsystem {
 	// here. Call these from Commands.
 
 	public Climber() {
-		climber = new DoubleSolenoid(RobotMap.THIRD_PCM, RobotMap.CLIMBER_PISTON_A, RobotMap.CLIMBER_PISTON_B);
+		climber = new Solenoid(RobotMap.THIRD_PCM, 0);
+		PTO = new Solenoid(RobotMap.THIRD_PCM,2);
 
 		registerState(STATE_RETRACTED);
 		registerState(STATE_EXTENDED);
@@ -31,6 +31,14 @@ public class Climber extends StateSubsystem {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
 	}
+	
+	public void firePTO() {
+		PTO.set(true);
+	}
+	
+	public void retractPTO() {
+		PTO.set(false);
+	}
 
 	// public void setPistonState(boolean value) {
 	// climberA.set(value);
@@ -38,11 +46,11 @@ public class Climber extends StateSubsystem {
 	// }
 
 	public void retractedInit() {
-		climber.set(Value.kReverse);
+		climber.set(true);
 	}
 
 	public void extendedInit() {
-		climber.set(Value.kForward);
+		climber.set(false);
 	}
 
 	public void retractedPeriodic() {
