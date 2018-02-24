@@ -48,7 +48,7 @@ public class LimelightVision extends Subsystem {
 			}
     		
     	};
-    	horizontalAlignPid = new PIDController(0.05, 0.0015, 0.015, source, output);
+    	horizontalAlignPid = new PIDController(0.045, 0.0015, 0.015, source, output);
     	//horizontalAlignPid = new PIDController(0.015, 0.001, 0.01, source, output);
     	horizontalAlignPid.setSetpoint(0);
     	horizontalAlignPid.setInputRange(-27, 27);

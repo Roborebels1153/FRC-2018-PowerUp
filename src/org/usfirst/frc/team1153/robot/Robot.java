@@ -191,11 +191,11 @@ public class Robot extends TimedRobot {
 			
 		} else if (robotPosEqual("Center") && switchPos == 'R') {
 			
-			autoCommand = new CenterSwitch(45);
+			autoCommand = new CenterSwitch(45, 0.8, 1.5);
 			
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
 
-			autoCommand = new CenterSwitch(-30);
+			autoCommand = new CenterSwitch(-50, 1.25, 1.75);
 			
 		} else if (robotPosEqual("Far Right") && switchPos == 'R') {
 
