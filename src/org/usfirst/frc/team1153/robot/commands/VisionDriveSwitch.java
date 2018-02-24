@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class VisionDriveSwitch extends Command {
 
 	boolean bApproachedTarget = false;
+	long startTime;
 	
     public VisionDriveSwitch() {
         requires(Robot.autoDrive);
@@ -19,6 +20,7 @@ public class VisionDriveSwitch extends Command {
 
     protected void initialize() {
     	System.out.println("Vision ENABLED");
+    	startTime = System.currentTimeMillis();
     }
 
     protected void execute() {
@@ -32,6 +34,9 @@ public class VisionDriveSwitch extends Command {
     		}
     	} else {
     		Robot.autoDrive.cheesyDriveWithoutJoysticks(0, 0);
+    		if ((System.currentTimeMillis() - startTime) > 1000) {
+    			bApproachedTarget = true;
+    		}
     	}
     }
 
@@ -40,6 +45,8 @@ public class VisionDriveSwitch extends Command {
     }
 
     protected void end() {
+    	
+    	System.out.println("Vision finished");
     }
 
 

@@ -24,7 +24,7 @@ public class CenterSwitch extends CommandGroup {
 		 */
 		// addSequential (new WaitCommand(Robot.initialWait));
 		addSequential(new GyroTurnRelativeCommand(degreesToTurn));
-		addSequential( new TimedDriveCommand(0.4, 1.5));
+		addSequential( new TimedDriveCommand(0.4, 0.8));
 		addSequential(new GyroTurnRelativeCommand(-(degreesToTurn/1.5)));
 		addSequential(new VisionDriveSwitch());
 		addSequential(new CarriageUpCommand());
