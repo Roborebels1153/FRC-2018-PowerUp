@@ -7,11 +7,11 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class GyroTurnCommand extends Command {
+public class GyroTurnAbsoluteCommand extends Command {
 
 	long startTime;
 	
-    public GyroTurnCommand(double setpoint) {
+    public GyroTurnAbsoluteCommand(double setpoint) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	Robot.autoDrive.setGyroPID(setpoint);

@@ -1,12 +1,11 @@
 package org.usfirst.frc.team1153.robot.commandGroups;
 
-import org.usfirst.frc.team1153.robot.Robot;
 import org.usfirst.frc.team1153.robot.commands.CarriageUpCommand;
 import org.usfirst.frc.team1153.robot.commands.FireShooterCommand;
-import org.usfirst.frc.team1153.robot.commands.GyroTurnCommand;
+import org.usfirst.frc.team1153.robot.commands.GyroTurnAbsoluteCommand;
+import org.usfirst.frc.team1153.robot.commands.GyroTurnRelativeCommand;
 import org.usfirst.frc.team1153.robot.commands.TimedDriveCommand;
 import org.usfirst.frc.team1153.robot.commands.VisionDriveSwitch;
-import org.usfirst.frc.team1153.robot.commands.WaitCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -19,11 +18,15 @@ public class CenterSwitch extends CommandGroup {
 	 * @param degreesToTurn
 	 */
 	public CenterSwitch(int degreesToTurn) {
+		
+		/**
+		 * Working code for 
+		 */
 		// addSequential (new WaitCommand(Robot.initialWait));
-		addSequential(new GyroTurnCommand(degreesToTurn));
-		// addSequential (new WaitCommand(Robot.middleWait));
+		addSequential(new GyroTurnRelativeCommand(degreesToTurn));
+		addSequential( new TimedDriveCommand(0.4, 1.5));
+		addSequential(new GyroTurnRelativeCommand(-(degreesToTurn/1.5)));
 		addSequential(new VisionDriveSwitch());
-		addSequential(new TimedDriveCommand(0.6, 0.5));
 		addSequential(new CarriageUpCommand());
 		addSequential(new FireShooterCommand());
 

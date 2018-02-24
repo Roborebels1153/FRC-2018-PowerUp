@@ -105,8 +105,8 @@ public class AutoDrive extends Subsystem {
 	public void runGyroPID(boolean enabled) {
 		if (enabled) {
 			gyroPID.enable();
-			leftMaster.set(gyroOutput.getOutput());
-			rightMaster.set(gyroOutput.getOutput());
+			leftMaster.set(ControlMode.PercentOutput, gyroOutput.getOutput());
+			rightMaster.set(ControlMode.PercentOutput, gyroOutput.getOutput());
 		} else {
 			gyroPID.disable();
 			DriveSignal autoDriveSignal = helper.cheesyDrive(0, 0, false, false);

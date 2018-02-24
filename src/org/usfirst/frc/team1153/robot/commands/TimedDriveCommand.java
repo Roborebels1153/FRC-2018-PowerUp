@@ -23,7 +23,7 @@ public class TimedDriveCommand extends TimedCommand {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.autoDrive.cheesyDriveWithoutJoysticks(speed, 0);
+		Robot.autoDrive.cheesyDriveWithoutJoysticks(-speed, 0);
 	}
 
 	// Called once after isFinished returns true

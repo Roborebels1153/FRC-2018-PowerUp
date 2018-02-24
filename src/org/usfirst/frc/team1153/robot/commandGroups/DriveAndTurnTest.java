@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1153.robot.commandGroups;
 
 import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
-import org.usfirst.frc.team1153.robot.commands.GyroTurnCommand;
+import org.usfirst.frc.team1153.robot.commands.GyroTurnAbsoluteCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

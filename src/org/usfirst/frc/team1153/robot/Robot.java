@@ -8,6 +8,10 @@
 package org.usfirst.frc.team1153.robot;
 
 import org.usfirst.frc.team1153.robot.commandGroups.CenterSwitch;
+import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardAndScore;
+import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardNoScore;
+import org.usfirst.frc.team1153.robot.commandGroups.FarLeftSwitchScore;
+import org.usfirst.frc.team1153.robot.commandGroups.FarRightSwitchScore;
 import org.usfirst.frc.team1153.robot.lib.StateScheduler;
 import org.usfirst.frc.team1153.robot.subsystems.ArmsHorizontal;
 import org.usfirst.frc.team1153.robot.subsystems.ArmsVertical;
@@ -181,27 +185,36 @@ public class Robot extends TimedRobot {
 		System.out.println("switchPos\t" + switchPos);
 		System.out.println("chooser:\t" + routineChooser.getSelected());
 
-//		if ((robotPosEqual("Right") && switchPos == 'R') || (robotPosEqual("Left") && switchPos == 'L')) {
-//			autoCommand = new DriveForwardAndScore();
-//		} else if (robotPosEqual("Center") && switchPos == 'R') {
-//			autoCommand = new CenterSwitch(30);
-//		} else if (robotPosEqual("Center") && switchPos == 'L') {
-//
-//			autoCommand = new CenterSwitch(-30);
-//		} else if (robotPosEqual("Far Right") && switchPos == 'R') {
-//
-//			autoCommand = new FarRightSwitchScore();
-//		} else if (robotPosEqual("Far Right") && switchPos == 'L') {
-//
-//		} else if (robotPosEqual("Far Left") && switchPos == 'R') {
-//
-//		} else if (robotPosEqual("Far Left") && switchPos == 'L') {
-//
-//			autoCommand = new FarLeftSwitchScore();
-//		} else {
-//			autoCommand = new DriveForwardNoScore();
-//		}
-		autoCommand = new CenterSwitch(30);
+		if ((robotPosEqual("Right") && switchPos == 'R') || (robotPosEqual("Left") && switchPos == 'L')) {
+			
+			autoCommand = new DriveForwardAndScore();
+			
+		} else if (robotPosEqual("Center") && switchPos == 'R') {
+			
+			autoCommand = new CenterSwitch(30);
+			
+		} else if (robotPosEqual("Center") && switchPos == 'L') {
+
+			autoCommand = new CenterSwitch(-30);
+			
+		} else if (robotPosEqual("Far Right") && switchPos == 'R') {
+
+			autoCommand = new FarRightSwitchScore();
+		//} else if (robotPosEqual("Far Right") && switchPos == 'L') {
+
+		//} else if (robotPosEqual("Far Left") && switchPos == 'R') {
+
+		} else if (robotPosEqual("Far Left") && switchPos == 'L') {
+
+			autoCommand = new FarLeftSwitchScore();
+			
+		} else {
+			
+			autoCommand = new DriveForwardNoScore();
+			
+		}
+		//autoCommand = new CenterSwitch(30);
+//		autoCommand = new CenterSwitch(30);
 		autoCommand.start();
 	}
 
