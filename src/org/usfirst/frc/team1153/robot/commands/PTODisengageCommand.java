@@ -1,23 +1,22 @@
 package org.usfirst.frc.team1153.robot.commands;
 
 import org.usfirst.frc.team1153.robot.Robot;
-import org.usfirst.frc.team1153.robot.subsystems.Carriage;
+import org.usfirst.frc.team1153.robot.subsystems.PTO;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class CarriageUpCommand extends Command {
+public class PTODisengageCommand extends Command {
 
-    public CarriageUpCommand() {
-    	requires (Robot.carriage);
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+    public PTODisengageCommand() {
+        requires(Robot.pto);
     }
+
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.carriage.setState(Carriage.STATE_UP);
+    	Robot.pto.setState(PTO.STATE_DISENGAGED);
     }
 
     // Called repeatedly when this Command is scheduled to run

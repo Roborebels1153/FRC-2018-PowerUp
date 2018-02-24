@@ -18,6 +18,8 @@ import org.usfirst.frc.team1153.robot.commands.CollectorOnCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorReverseCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorUpDownToggleCommand;
 import org.usfirst.frc.team1153.robot.commands.FireShooterCommand;
+import org.usfirst.frc.team1153.robot.commands.PTODisengageCommand;
+import org.usfirst.frc.team1153.robot.commands.PTOEngageCommand;
 import org.usfirst.frc.team1153.robot.commands.ResetCommand;
 import org.usfirst.frc.team1153.robot.commands.RetractShooterCommand;
 import org.usfirst.frc.team1153.robot.commands.ShiftHighCommand;
@@ -72,6 +74,9 @@ public class OI {
     	
     	drTriggerL.whenPressed(new ShiftLowCommand());
     	drTriggerL.whenReleased(new ShiftHighCommand());
+    	
+    	drButtonY.whenPressed(new PTOEngageCommand());
+    	drButtonY.whenReleased(new PTODisengageCommand());
 
     	drButtonY.whenActive(new ResetCommand());
 
