@@ -227,7 +227,7 @@ public class Robot extends TimedRobot {
 		
 		
 		
-		autoCommand = new DriveDistanceCommand(-120, 120);
+		autoCommand = new DriveDistanceCommand(30, -30);
 		
 		//autoCommand = new CenterSwitch(30);
 //		autoCommand = new CenterSwitch(30);
@@ -267,9 +267,9 @@ public class Robot extends TimedRobot {
 		updateDashboard();
 		
 		if (oi.getDriverStick().getRawButtonPressed(3)) {
-			pto.enagagedInit();
-		} else if (oi.getDriverStick().getRawButtonReleased(3)) {
 			pto.disengagedInit();
+		} else if (oi.getDriverStick().getRawButtonReleased(3)) {
+			pto.enagagedInit();
 		}
 		
 		

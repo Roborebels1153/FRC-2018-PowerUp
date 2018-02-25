@@ -31,6 +31,9 @@ public class DriveDistanceCommand extends Command {
 		timeAtStart = System.currentTimeMillis();
 
 		System.out.println("Init Command is called");
+		System.out.println(targetPosRight);
+		System.out.println(targetPosLeft);
+
 
 	}
 

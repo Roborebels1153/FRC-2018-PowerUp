@@ -78,8 +78,7 @@ public class AutoDrive extends Subsystem {
 
 		gyroPID.setOutputRange(-0.6, 0.6);
 
-		transmissionShifter = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_A,
-				RobotMap.TRANSMISSION_SOLENOID_B);
+		transmissionShifter = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_A, RobotMap.TRANSMISSION_SOLENOID_B);
 
 		newShifter = new Solenoid(11, 0);
 
@@ -238,12 +237,12 @@ public class AutoDrive extends Subsystem {
 		leftMaster.configPeakCurrentDuration(200, 10); /* 200ms */
 		leftMaster.configContinuousCurrentLimit(30, 10); /* 30A */
 		leftMaster.enableCurrentLimit(true);
-		
+
 		rightBackSlave.configPeakCurrentLimit(35, 10); /* 35 A */
 		rightBackSlave.configPeakCurrentDuration(200, 10); /* 200ms */
 		rightBackSlave.configContinuousCurrentLimit(30, 10); /* 30A */
 		rightBackSlave.enableCurrentLimit(true);
-		
+
 		leftBackSlave.configPeakCurrentLimit(35, 10); /* 35 A */
 		leftBackSlave.configPeakCurrentDuration(200, 10); /* 200ms */
 		leftBackSlave.configContinuousCurrentLimit(30, 10); /* 30A */
@@ -259,13 +258,26 @@ public class AutoDrive extends Subsystem {
 		leftFrontSlave.configContinuousCurrentLimit(30, 10); /* 30A */
 		leftFrontSlave.enableCurrentLimit(true);
 
+		leftMaster.configOpenloopRamp(2, 10);
+		leftFrontSlave.configOpenloopRamp(2, 10);
+		leftBackSlave.configOpenloopRamp(2, 10);
+		rightMaster.configOpenloopRamp(2, 10);
+		rightFrontSlave.configOpenloopRamp(2, 10);
+		rightBackSlave.configOpenloopRamp(2, 10);
+
 	}
 
-	public void setFollowers() {
+	public void setFollowers() {		
 		leftFrontSlave.follow(leftMaster);
 		leftBackSlave.follow(leftMaster);
 		rightFrontSlave.follow(rightMaster);
 		rightBackSlave.follow(rightMaster);
+		
+//		leftFrontSlave.follow(leftMaster);
+//		leftBackSlave.follow(leftMaster);
+//		rightMaster.follow(leftMaster);
+//		rightFrontSlave.follow(leftMaster);
+//		rightBackSlave.follow(leftMaster);
 	}
 
 	public void setEncoderAsFeedback() {
@@ -274,8 +286,8 @@ public class AutoDrive extends Subsystem {
 		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.kPIDLoopIdx,
 				Constants.kTimeoutMs);
 
-		// rightMaster.setSensorPhase(true);
-		// leftMaster.setSensorPhase(true);
+		rightMaster.setSensorPhase(true);
+		leftMaster.setSensorPhase(true);
 
 		// rightMaster.setInverted(true);
 		// leftMaster.setInverted(true);
