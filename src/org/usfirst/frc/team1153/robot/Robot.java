@@ -12,6 +12,7 @@ import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardAndScore;
 import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardNoScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarLeftSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarRightSwitchScore;
+import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
 import org.usfirst.frc.team1153.robot.lib.StateScheduler;
 import org.usfirst.frc.team1153.robot.subsystems.ArmsHorizontal;
 import org.usfirst.frc.team1153.robot.subsystems.ArmsVertical;
@@ -74,9 +75,9 @@ public class Robot extends TimedRobot {
 		collectorArmsHorizontal = new ArmsHorizontal();
 		collectorArmsVertical = new ArmsVertical();
 		climber = new Climber();
-		oi = new OI();
-		vision = new LimelightVision();
 		pto  = new PTO();
+		vision = new LimelightVision();
+		oi = new OI();
 
 		vision.turnOffLight();
 		autoDrive.calibrateGyro();
@@ -195,7 +196,7 @@ public class Robot extends TimedRobot {
 		System.out.println("switchPos\t" + switchPos);
 		System.out.println("chooser:\t" + routineChooser.getSelected());
 
-		if ((robotPosEqual("Right") && switchPos == 'R') || (robotPosEqual("Left") && switchPos == 'L')) {
+		/*if ((robotPosEqual("Right") && switchPos == 'R') || (robotPosEqual("Left") && switchPos == 'L')) {
 			
 			autoCommand = new DriveForwardAndScore();
 			
@@ -222,7 +223,12 @@ public class Robot extends TimedRobot {
 			
 			autoCommand = new DriveForwardNoScore();
 			
-		}
+		}*/
+		
+		
+		
+		autoCommand = new DriveDistanceCommand(-120, 120);
+		
 		//autoCommand = new CenterSwitch(30);
 //		autoCommand = new CenterSwitch(30);
 		autoCommand.start();
@@ -260,7 +266,11 @@ public class Robot extends TimedRobot {
 		StateScheduler.getInstance().runAll();
 		updateDashboard();
 		
-		
+		if (oi.getDriverStick().getRawButtonPressed(3)) {
+			pto.enagagedInit();
+		} else if (oi.getDriverStick().getRawButtonReleased(3)) {
+			pto.disengagedInit();
+		}
 		
 		
 		autoDrive.createDriveSignal(true);

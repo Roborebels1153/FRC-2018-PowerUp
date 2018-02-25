@@ -32,7 +32,7 @@ public class PTO extends StateSubsystem {
 		
 	}
 	
-	public void disengegdInit() {
+	public void disengagedInit() {
 		PTO.set(false);
 	}
 	
@@ -44,19 +44,19 @@ public class PTO extends StateSubsystem {
 	@Override
 	protected State getDisabledDefaultState() {
 		// TODO Auto-generated method stub
-		return null;
+		return STATE_DISENGAGED;
 	}
 
 	@Override
 	protected State getTeleopDefaultState() {
 		// TODO Auto-generated method stub
-		return null;
+		return STATE_DISENGAGED;
 	}
 
 	@Override
 	protected State getAutoDefaultState() {
 		// TODO Auto-generated method stub
-		return null;
+		return STATE_DISENGAGED;
 	}
 
 	@Override
