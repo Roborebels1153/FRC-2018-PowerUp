@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 public class Climber extends StateSubsystem {
 
 	Solenoid climber;
-	Solenoid PTO;
 
 	public static final StateSubsystem.State STATE_RETRACTED = new StateSubsystem.State("retracted");
 
@@ -21,7 +20,6 @@ public class Climber extends StateSubsystem {
 
 	public Climber() {
 		climber = new Solenoid(RobotMap.THIRD_PCM, 0);
-		PTO = new Solenoid(RobotMap.THIRD_PCM,2);
 
 		registerState(STATE_RETRACTED);
 		registerState(STATE_EXTENDED);
@@ -32,13 +30,6 @@ public class Climber extends StateSubsystem {
 		// setDefaultCommand(new MySpecialCommand());
 	}
 	
-	public void firePTO() {
-		PTO.set(true);
-	}
-	
-	public void retractPTO() {
-		PTO.set(false);
-	}
 
 	// public void setPistonState(boolean value) {
 	// climberA.set(value);
@@ -46,11 +37,11 @@ public class Climber extends StateSubsystem {
 	// }
 
 	public void retractedInit() {
-		climber.set(true);
+		climber.set(false);
 	}
 
 	public void extendedInit() {
-		climber.set(false);
+		climber.set(true);
 	}
 
 	public void retractedPeriodic() {

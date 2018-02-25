@@ -201,11 +201,11 @@ public class Robot extends TimedRobot {
 			
 		} else if (robotPosEqual("Center") && switchPos == 'R') {
 			
-			autoCommand = new CenterSwitch(45, 84, 1.5);
+			autoCommand = new CenterSwitch(45, 84, 1.5, 'R');
 			
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
 
-			autoCommand = new CenterSwitch(-50, 89, 1.75);
+			autoCommand = new CenterSwitch(-50, 89, 1.75, 'L');
 			
 		} else if (robotPosEqual("Far Right") && switchPos == 'R') {
 
@@ -260,11 +260,7 @@ public class Robot extends TimedRobot {
 		StateScheduler.getInstance().runAll();
 		updateDashboard();
 		
-		if (oi.getDriverStick().getRawButtonPressed(4)){
-			climber.firePTO();
-		} else if (oi.getDriverStick().getRawButtonReleased(4)) {
-			climber.retractPTO();
-		}
+		
 		
 		
 		autoDrive.createDriveSignal(true);

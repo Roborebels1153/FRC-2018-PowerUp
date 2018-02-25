@@ -117,8 +117,21 @@ public class LimelightVision extends Subsystem {
     	ledMode.setNumber(0);
     }
     
+    public void flushNetworkTables() {
+		NetworkTableInstance.getDefault().flush();
+	}
+    
     public void setPipeline(int pipeline) {
-    	NetworkTableEntry pipelineEntry = NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline");
-    	pipelineEntry.setNumber(pipeline);
-    }
+		table = NetworkTableInstance.getDefault().getTable("limelight");
+		NetworkTableEntry pipelineEntry = table.getEntry("pipeline");
+		pipelineEntry.setNumber(pipeline);
+		pipelineEntry.setDefaultNumber(pipeline);
+		pipelineEntry.forceSetNumber(pipeline);
+	}
+    
+    public void setCamMode(int camMode) {
+		NetworkTableEntry camModeEntry = table.getEntry("camMode");
+		camModeEntry.setNumber(camMode);
+
+	}
 }

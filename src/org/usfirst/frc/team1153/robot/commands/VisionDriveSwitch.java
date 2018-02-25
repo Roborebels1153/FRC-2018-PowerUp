@@ -10,17 +10,28 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class VisionDriveSwitch extends Command {
 
+	private char side;
+	
 	boolean bApproachedTarget = false;
 	long startTime;
 	
-    public VisionDriveSwitch() {
+    public VisionDriveSwitch(char side) {
         requires(Robot.autoDrive);
         requires(Robot.vision);
+        
+        this.side = side;
     }
 
     protected void initialize() {
     	System.out.println("Vision ENABLED");
     	startTime = System.currentTimeMillis();
+    	
+    	if (side == 'L') {
+    		Robot.vision.setPipeline(0);
+    	} else if (side =='R') {
+    		Robot.vision.setPipeline(1);
+
+    	}
     }
 
     protected void execute() {
