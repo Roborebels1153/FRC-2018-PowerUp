@@ -51,7 +51,7 @@ public class AutoDrive extends Subsystem {
 	}
 
 	CheesyDriveHelper helper;
-	
+
 	DifferentialDrive robotDrive;
 
 	/**
@@ -86,20 +86,20 @@ public class AutoDrive extends Subsystem {
 		newShifter = new Solenoid(11, 0);
 
 		helper = new CheesyDriveHelper();
-		
+
 		robotDrive = new DifferentialDrive(leftMaster, rightMaster);
 
 		configTalonOutput();
 		setEncoderAsFeedback();
 		setFollowers();
 	}
-	
+
 	public void arcadeDrive() {
 		double moveValue = -1 * Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y);
 		double rotateValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X);
 		robotDrive.arcadeDrive(moveValue, rotateValue);
 	}
-	
+
 	public void arcadeDriveNoJoystick(double value) {
 		double moveValue = value;
 		double rotateValue = 0;
@@ -194,17 +194,19 @@ public class AutoDrive extends Subsystem {
 		double rawMoveValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y);
 		double rawRotateValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X);
 
-//		double moveValue = 0;
-//		double rotateValue = 0;
-//		if (squaredInputs == true) {
-//			double deadBandMoveValue = applyDeadband(rawMoveValue, 0.02);
-//			double deadBandRotateValue = applyDeadband(rawRotateValue, 0.02);
-//			moveValue = Math.copySign(deadBandMoveValue * deadBandMoveValue, deadBandMoveValue);
-//			rotateValue = Math.copySign(deadBandRotateValue * deadBandRotateValue, deadBandRotateValue);
-//		} else {
-//			rawMoveValue = moveValue;
-//			rotateValue = rawRotateValue;
-//		}
+		// double moveValue = 0;
+		// double rotateValue = 0;
+		// if (squaredInputs == true) {
+		// double deadBandMoveValue = applyDeadband(rawMoveValue, 0.02);
+		// double deadBandRotateValue = applyDeadband(rawRotateValue, 0.02);
+		// moveValue = Math.copySign(deadBandMoveValue * deadBandMoveValue,
+		// deadBandMoveValue);
+		// rotateValue = Math.copySign(deadBandRotateValue * deadBandRotateValue,
+		// deadBandRotateValue);
+		// } else {
+		// rawMoveValue = moveValue;
+		// rotateValue = rawRotateValue;
+		// }
 
 		DriveSignal driveSignal = helper.cheesyDrive(-1 * rawMoveValue, 0.7 * rawRotateValue, false, false);
 		Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
@@ -234,7 +236,7 @@ public class AutoDrive extends Subsystem {
 	public void configTalonOutput() {
 		leftMaster.set(ControlMode.PercentOutput, 0);
 		rightMaster.set(ControlMode.PercentOutput, 0);
-		
+
 		rightMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
 		rightMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
 		rightMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
@@ -245,59 +247,50 @@ public class AutoDrive extends Subsystem {
 		leftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
 		leftMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
+		final int kPeakCurrentAmps = 15; /* threshold to trigger current limit */
+		final int kPeakTimeMs = 0; /* how long after Peak current to trigger current limit */
+		final int kContinCurrentAmps = 10; /* hold current after limit is triggered */
+
+		leftMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
+		leftMaster.configPeakCurrentDuration(kPeakTimeMs, 10); /* this is a necessary call to avoid errata. */
+		leftMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
+		leftMaster.enableCurrentLimit(true); /* honor initial setting */
+
+		/* setup a basic closed loop */
 		leftMaster.setNeutralMode(NeutralMode.Brake);
+		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+		leftMaster.setSensorPhase(true); /* flip until sensor is in phase, or closed-loop will not work */
+		leftMaster.config_kP(0, 2.0, 10);
+		leftMaster.config_kI(0, 0.0, 10);
+		leftMaster.config_kD(0, 0.0, 10);
+		leftMaster.config_kF(0, 0.0, 10);
+
+		rightMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
+		rightMaster.configPeakCurrentDuration(kPeakTimeMs, 10); /* this is a necessary call to avoid errata. */
+		rightMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
+		rightMaster.enableCurrentLimit(true); /* honor initial setting */
+
+		/* setup a basic closed loop */
 		rightMaster.setNeutralMode(NeutralMode.Brake);
-
-//		rightMaster.configPeakCurrentLimit(35, 10); /* 35 A */
-//		rightMaster.configPeakCurrentDuration(200, 10); /* 200ms */
-//		rightMaster.configContinuousCurrentLimit(30, 10); /* 30A */
-		rightMaster.enableCurrentLimit(false);
-//
-//		leftMaster.configPeakCurrentLimit(35, 10); /* 35 A */
-//		leftMaster.configPeakCurrentDuration(200, 10); /* 200ms */
-//		leftMaster.configContinuousCurrentLimit(30, 10); /* 30A */
-		leftMaster.enableCurrentLimit(false);
-//
-//		rightBackSlave.configPeakCurrentLimit(35, 10); /* 35 A */
-//		rightBackSlave.configPeakCurrentDuration(200, 10); /* 200ms */
-//		rightBackSlave.configContinuousCurrentLimit(30, 10); /* 30A */
-		rightBackSlave.enableCurrentLimit(false);
-//
-//		leftBackSlave.configPeakCurrentLimit(35, 10); /* 35 A */
-//		leftBackSlave.configPeakCurrentDuration(200, 10); /* 200ms */
-//		leftBackSlave.configContinuousCurrentLimit(30, 10); /* 30A */
-		leftBackSlave.enableCurrentLimit(false);
-//
-//		rightFrontSlave.configPeakCurrentLimit(35, 10); /* 35 A */
-//		rightFrontSlave.configPeakCurrentDuration(200, 10); /* 200ms */
-//		rightFrontSlave.configContinuousCurrentLimit(30, 10); /* 30A */
-		rightFrontSlave.enableCurrentLimit(false);
-//
-//		leftFrontSlave.configPeakCurrentLimit(35, 10); /* 35 A */
-//		leftFrontSlave.configPeakCurrentDuration(200, 10); /* 200ms */
-//		leftFrontSlave.configContinuousCurrentLimit(30, 10); /* 30A */
-		leftFrontSlave.enableCurrentLimit(false);
-
-//		leftMaster.configOpenloopRamp(2, 10);
-//		leftFrontSlave.configOpenloopRamp(2, 10);
-//		leftBackSlave.configOpenloopRamp(2, 10);
-//		rightMaster.configOpenloopRamp(2, 10);
-//		rightFrontSlave.configOpenloopRamp(2, 10);
-//		rightBackSlave.configOpenloopRamp(2, 10);
-
+		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+		rightMaster.setSensorPhase(true); /* flip until sensor is in phase, or closed-loop will not work */
+		rightMaster.config_kP(0, 2.0, 10);
+		rightMaster.config_kI(0, 0.0, 10);
+		rightMaster.config_kD(0, 0.0, 10);
+		rightMaster.config_kF(0, 0.0, 10);
 	}
 
-	public void setFollowers() {		
+	public void setFollowers() {
 		leftFrontSlave.follow(leftMaster);
 		leftBackSlave.follow(leftMaster);
 		rightFrontSlave.follow(rightMaster);
 		rightBackSlave.follow(rightMaster);
-		
-//		leftFrontSlave.follow(leftMaster);
-//		leftBackSlave.follow(leftMaster);
-//		rightMaster.follow(leftMaster);
-//		rightFrontSlave.follow(leftMaster);
-//		rightBackSlave.follow(leftMaster);
+
+		// leftFrontSlave.follow(leftMaster);
+		// leftBackSlave.follow(leftMaster);
+		// rightMaster.follow(leftMaster);
+		// rightFrontSlave.follow(leftMaster);
+		// rightBackSlave.follow(leftMaster);
 	}
 
 	public void setEncoderAsFeedback() {
