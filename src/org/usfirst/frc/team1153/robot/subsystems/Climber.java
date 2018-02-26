@@ -4,6 +4,7 @@ import org.usfirst.frc.team1153.robot.RobotMap;
 import org.usfirst.frc.team1153.robot.lib.StateSubsystem;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Victor;
 
 /**
  *
@@ -11,6 +12,8 @@ import edu.wpi.first.wpilibj.Solenoid;
 public class Climber extends StateSubsystem {
 
 	Solenoid climber;
+	
+	Victor NewClimber;
 
 	public static final StateSubsystem.State STATE_RETRACTED = new StateSubsystem.State("retracted");
 
@@ -21,6 +24,8 @@ public class Climber extends StateSubsystem {
 	public Climber() {
 		climber = new Solenoid(RobotMap.THIRD_PCM, 0);
 
+		NewClimber = new Victor(9);
+		
 		registerState(STATE_RETRACTED);
 		registerState(STATE_EXTENDED);
 	}
@@ -30,6 +35,10 @@ public class Climber extends StateSubsystem {
 		// setDefaultCommand(new MySpecialCommand());
 	}
 	
+	
+	public void moveNewClimber(double value) {
+		NewClimber.set(value);
+	}
 
 	// public void setPistonState(boolean value) {
 	// climberA.set(value);

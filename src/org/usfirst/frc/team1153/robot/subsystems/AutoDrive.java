@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class AutoDrive extends Subsystem {
 	protected WPI_TalonSRX leftMaster;
@@ -50,6 +51,8 @@ public class AutoDrive extends Subsystem {
 	}
 
 	CheesyDriveHelper helper;
+	
+	DifferentialDrive robotDrive;
 
 	/**
 	 * Assigns what the Robot should instantiate every time the Drive subsystem
@@ -83,10 +86,24 @@ public class AutoDrive extends Subsystem {
 		newShifter = new Solenoid(11, 0);
 
 		helper = new CheesyDriveHelper();
+		
+		robotDrive = new DifferentialDrive(leftMaster, rightMaster);
 
 		configTalonOutput();
 		setEncoderAsFeedback();
 		setFollowers();
+	}
+	
+	public void arcadeDrive() {
+		double moveValue = -1 * Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y);
+		double rotateValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X);
+		robotDrive.arcadeDrive(moveValue, rotateValue);
+	}
+	
+	public void arcadeDriveNoJoystick(double value) {
+		double moveValue = value;
+		double rotateValue = 0;
+		robotDrive.arcadeDrive(moveValue, rotateValue);
 	}
 
 	public void resetGyro() {
@@ -177,19 +194,19 @@ public class AutoDrive extends Subsystem {
 		double rawMoveValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y);
 		double rawRotateValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X);
 
-		double moveValue = 0;
-		double rotateValue = 0;
-		if (squaredInputs == true) {
-			double deadBandMoveValue = applyDeadband(rawMoveValue, 0.02);
-			double deadBandRotateValue = applyDeadband(rawRotateValue, 0.02);
-			moveValue = Math.copySign(deadBandMoveValue * deadBandMoveValue, deadBandMoveValue);
-			rotateValue = Math.copySign(deadBandRotateValue * deadBandRotateValue, deadBandRotateValue);
-		} else {
-			rawMoveValue = moveValue;
-			rotateValue = rawRotateValue;
-		}
+//		double moveValue = 0;
+//		double rotateValue = 0;
+//		if (squaredInputs == true) {
+//			double deadBandMoveValue = applyDeadband(rawMoveValue, 0.02);
+//			double deadBandRotateValue = applyDeadband(rawRotateValue, 0.02);
+//			moveValue = Math.copySign(deadBandMoveValue * deadBandMoveValue, deadBandMoveValue);
+//			rotateValue = Math.copySign(deadBandRotateValue * deadBandRotateValue, deadBandRotateValue);
+//		} else {
+//			rawMoveValue = moveValue;
+//			rotateValue = rawRotateValue;
+//		}
 
-		DriveSignal driveSignal = helper.cheesyDrive(-1 * moveValue, 0.7 * rotateValue, quickTurn, false);
+		DriveSignal driveSignal = helper.cheesyDrive(-1 * rawMoveValue, 0.7 * rawRotateValue, false, false);
 		Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
 
 	}
@@ -199,8 +216,8 @@ public class AutoDrive extends Subsystem {
 	}
 
 	public boolean quickTurnController() {
-		if (Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y) < 0.2
-				&& Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y) > -0.2) {
+		if (Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X) < 0.2
+				&& Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X) > -0.2) {
 			return true;
 		} else {
 			return false;
@@ -215,6 +232,9 @@ public class AutoDrive extends Subsystem {
 	}
 
 	public void configTalonOutput() {
+		leftMaster.set(ControlMode.PercentOutput, 0);
+		rightMaster.set(ControlMode.PercentOutput, 0);
+		
 		rightMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
 		rightMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
 		rightMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
@@ -228,42 +248,42 @@ public class AutoDrive extends Subsystem {
 		leftMaster.setNeutralMode(NeutralMode.Brake);
 		rightMaster.setNeutralMode(NeutralMode.Brake);
 
-		rightMaster.configPeakCurrentLimit(35, 10); /* 35 A */
-		rightMaster.configPeakCurrentDuration(200, 10); /* 200ms */
-		rightMaster.configContinuousCurrentLimit(30, 10); /* 30A */
-		rightMaster.enableCurrentLimit(true);
+//		rightMaster.configPeakCurrentLimit(35, 10); /* 35 A */
+//		rightMaster.configPeakCurrentDuration(200, 10); /* 200ms */
+//		rightMaster.configContinuousCurrentLimit(30, 10); /* 30A */
+		rightMaster.enableCurrentLimit(false);
+//
+//		leftMaster.configPeakCurrentLimit(35, 10); /* 35 A */
+//		leftMaster.configPeakCurrentDuration(200, 10); /* 200ms */
+//		leftMaster.configContinuousCurrentLimit(30, 10); /* 30A */
+		leftMaster.enableCurrentLimit(false);
+//
+//		rightBackSlave.configPeakCurrentLimit(35, 10); /* 35 A */
+//		rightBackSlave.configPeakCurrentDuration(200, 10); /* 200ms */
+//		rightBackSlave.configContinuousCurrentLimit(30, 10); /* 30A */
+		rightBackSlave.enableCurrentLimit(false);
+//
+//		leftBackSlave.configPeakCurrentLimit(35, 10); /* 35 A */
+//		leftBackSlave.configPeakCurrentDuration(200, 10); /* 200ms */
+//		leftBackSlave.configContinuousCurrentLimit(30, 10); /* 30A */
+		leftBackSlave.enableCurrentLimit(false);
+//
+//		rightFrontSlave.configPeakCurrentLimit(35, 10); /* 35 A */
+//		rightFrontSlave.configPeakCurrentDuration(200, 10); /* 200ms */
+//		rightFrontSlave.configContinuousCurrentLimit(30, 10); /* 30A */
+		rightFrontSlave.enableCurrentLimit(false);
+//
+//		leftFrontSlave.configPeakCurrentLimit(35, 10); /* 35 A */
+//		leftFrontSlave.configPeakCurrentDuration(200, 10); /* 200ms */
+//		leftFrontSlave.configContinuousCurrentLimit(30, 10); /* 30A */
+		leftFrontSlave.enableCurrentLimit(false);
 
-		leftMaster.configPeakCurrentLimit(35, 10); /* 35 A */
-		leftMaster.configPeakCurrentDuration(200, 10); /* 200ms */
-		leftMaster.configContinuousCurrentLimit(30, 10); /* 30A */
-		leftMaster.enableCurrentLimit(true);
-
-		rightBackSlave.configPeakCurrentLimit(35, 10); /* 35 A */
-		rightBackSlave.configPeakCurrentDuration(200, 10); /* 200ms */
-		rightBackSlave.configContinuousCurrentLimit(30, 10); /* 30A */
-		rightBackSlave.enableCurrentLimit(true);
-
-		leftBackSlave.configPeakCurrentLimit(35, 10); /* 35 A */
-		leftBackSlave.configPeakCurrentDuration(200, 10); /* 200ms */
-		leftBackSlave.configContinuousCurrentLimit(30, 10); /* 30A */
-		leftBackSlave.enableCurrentLimit(true);
-
-		rightFrontSlave.configPeakCurrentLimit(35, 10); /* 35 A */
-		rightFrontSlave.configPeakCurrentDuration(200, 10); /* 200ms */
-		rightFrontSlave.configContinuousCurrentLimit(30, 10); /* 30A */
-		rightFrontSlave.enableCurrentLimit(true);
-
-		leftFrontSlave.configPeakCurrentLimit(35, 10); /* 35 A */
-		leftFrontSlave.configPeakCurrentDuration(200, 10); /* 200ms */
-		leftFrontSlave.configContinuousCurrentLimit(30, 10); /* 30A */
-		leftFrontSlave.enableCurrentLimit(true);
-
-		leftMaster.configOpenloopRamp(2, 10);
-		leftFrontSlave.configOpenloopRamp(2, 10);
-		leftBackSlave.configOpenloopRamp(2, 10);
-		rightMaster.configOpenloopRamp(2, 10);
-		rightFrontSlave.configOpenloopRamp(2, 10);
-		rightBackSlave.configOpenloopRamp(2, 10);
+//		leftMaster.configOpenloopRamp(2, 10);
+//		leftFrontSlave.configOpenloopRamp(2, 10);
+//		leftBackSlave.configOpenloopRamp(2, 10);
+//		rightMaster.configOpenloopRamp(2, 10);
+//		rightFrontSlave.configOpenloopRamp(2, 10);
+//		rightBackSlave.configOpenloopRamp(2, 10);
 
 	}
 

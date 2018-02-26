@@ -25,12 +25,14 @@ public class VisionDriveSwitch extends Command {
     protected void initialize() {
     	System.out.println("Vision ENABLED");
     	startTime = System.currentTimeMillis();
-    	
+		Robot.vision.turnOnLight();
+
     	if (side == 'L') {
     		Robot.vision.setPipeline(0);
     	} else if (side =='R') {
     		Robot.vision.setPipeline(1);
 
+    		System.out.println(side);
     	}
     }
 
@@ -49,6 +51,8 @@ public class VisionDriveSwitch extends Command {
     			bApproachedTarget = true;
     		}
     	}
+    	
+    	System.out.println("Executing Limelight vision");
     }
 
     protected boolean isFinished() {
