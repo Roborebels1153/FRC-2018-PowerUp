@@ -13,7 +13,8 @@ public class Climber extends StateSubsystem {
 
 	Solenoid climber;
 	
-	Victor NewClimber;
+	Victor newClimber1;
+	Victor newClimber2;
 
 	public static final StateSubsystem.State STATE_RETRACTED = new StateSubsystem.State("retracted");
 
@@ -24,7 +25,8 @@ public class Climber extends StateSubsystem {
 	public Climber() {
 		climber = new Solenoid(RobotMap.THIRD_PCM, 0);
 
-		NewClimber = new Victor(9);
+		newClimber1 = new Victor(9);
+		newClimber2 = new Victor(8);
 		
 		registerState(STATE_RETRACTED);
 		registerState(STATE_EXTENDED);
@@ -37,7 +39,9 @@ public class Climber extends StateSubsystem {
 	
 	
 	public void moveNewClimber(double value) {
-		NewClimber.set(value);
+		newClimber1.set(value);
+		newClimber2.set(value);
+
 	}
 
 	// public void setPistonState(boolean value) {

@@ -170,14 +170,14 @@ public class Robot extends TimedRobot {
 		autoDrive.configTalonOutput();
 		autoDrive.setFollowers();
 		autoDrive.resetEncoders();
+		
+		//Carriage and Collector Stuff
+		collectorArmsVertical.upInit();
+		collectorArmsHorizontal.outInit();
+		carriage.upInit();
 
 		initialWait = SmartDashboard.getNumber("Initial Delay", 0);
 		middleWait = SmartDashboard.getNumber("Middle Delay", 0);
-
-		// DRIVE FORWARD
-
-		// autoCommand = new DriveAndTurn();
-		// autoCommand = new GyroTurnCommand(90);
 
 		String autoPattern = DriverStation.getInstance().getGameSpecificMessage();
 		char switchPos = autoPattern.charAt(0);
@@ -255,9 +255,9 @@ public class Robot extends TimedRobot {
 		updateDashboard();
 
 //		if (oi.getDriverStick().getRawButtonPressed(3)) {
-//			pto.disengagedInit();
+//			pto.engagedInit();
 //		} else if (oi.getDriverStick().getRawButtonReleased(3)) {
-//			pto.enagagedInit();
+//			pto.disengagedInit();
 //		}
 
 		if (oi.getDriverStick().getRawButtonPressed(6)) {
@@ -275,11 +275,11 @@ public class Robot extends TimedRobot {
 
 //		climber.moveNewClimber(oi.getOpStick().getRawAxis(1));
 		
-		if (oi.getDriverStick().getRawButtonPressed(4)) {
-			autoDrive.arcadeDriveNoJoystick(0.8);
-		} else if (oi.getDriverStick().getRawButtonReleased(4)) {
-			autoDrive.arcadeDriveNoJoystick(0);
-		}
+//		if (oi.getDriverStick().getRawButtonPressed(4)) {
+//			autoDrive.arcadeDriveNoJoystick(0.8);
+//		} else if (oi.getDriverStick().getRawButtonReleased(4)) {
+//			autoDrive.arcadeDriveNoJoystick(0);
+//		}
 		
 		autoDrive.arcadeDrive();
 		

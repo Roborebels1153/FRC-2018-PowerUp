@@ -24,7 +24,7 @@ public class PTO extends StateSubsystem {
 
 	}
 	
-	public void enagagedInit() {
+	public void engagedInit() {
 		PTO.set(true);
 	}
 	
