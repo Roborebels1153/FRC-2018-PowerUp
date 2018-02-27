@@ -75,7 +75,7 @@ public class OI {
     	drTriggerL.whenPressed(new ShiftLowCommand());
     	drTriggerL.whenReleased(new ShiftHighCommand());
     	
-//    	drButtonY.whenPressed(new PTOToggleCommand());
+    	drButtonY.whenPressed(new PTOToggleCommand());
     
     	drButtonA.whenPressed(new ClimberToggleCommand());
 

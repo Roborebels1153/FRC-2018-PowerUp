@@ -65,7 +65,7 @@ public class Collector extends StateSubsystem {
 	}
 
 	
-	public void setMotorPower(double in) {
+	public void setMotorVelocity(double in) {
 //		motorA.set(ControlMode.PercentOutput, in);
 //		motorB.set(ControlMode.PercentOutput, -in);
 		
@@ -102,51 +102,13 @@ public class Collector extends StateSubsystem {
 		motorB.getSensorCollection().setQuadraturePosition(0, 10);
 	}
 
-	public void configCollectorMotionMagic() {
-		motorA.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
-		motorA.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
-
-		motorA.configNominalOutputForward(0, Constants.kTimeoutMs);
-		motorA.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		motorA.configPeakOutputForward(1, Constants.kTimeoutMs);
-		motorA.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-
-		motorA.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-		/* set acceleration and vcruise velocity - see documentation */
-		motorA.configMotionCruiseVelocity(1400, Constants.kTimeoutMs);
-		motorA.configMotionAcceleration(1400, Constants.kTimeoutMs);
-		// 3400
-		/* zero the sensor */
-		motorA.getSensorCollection().setQuadraturePosition(0, 10);
-
-		motorB.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
-		motorB.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
-
-		motorB.configNominalOutputForward(0, Constants.kTimeoutMs);
-		motorB.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		motorB.configPeakOutputForward(1, Constants.kTimeoutMs);
-		motorB.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-
-		motorB.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-		/* set acceleration and vcruise velocity - see documentation */
-		motorB.configMotionCruiseVelocity(1400, Constants.kTimeoutMs);
-		motorB.configMotionAcceleration(1000, Constants.kTimeoutMs);
-		// 3400
-		/* zero the sensor */
-		motorB.getSensorCollection().setQuadraturePosition(0, 10);
-	}
-
-	public void enactCollectorMotionMagic() {
-		motorA.set(ControlMode.MotionMagic, 5000000);
-		motorB.set(ControlMode.MotionMagic, 5000000);
-
-	}
 	
-	public void stopMotors() {
+	
+	public void setMotorPower(double value) {
 		configCollectorMotorOutput();
 		System.out.println("stop motors");
-		motorA.set(ControlMode.PercentOutput, 0);
-		motorB.set(ControlMode.PercentOutput, 0);
+		motorA.set(ControlMode.PercentOutput, value);
+		motorB.set(ControlMode.PercentOutput, -value);
 	}
 	
 	public int getMotorASensorVelocity() {
@@ -182,7 +144,7 @@ public class Collector extends StateSubsystem {
 	}
 
 	public void runningInit() {
-		setMotorPower(COLLECT_MOTOR_RPM);
+		setMotorVelocity(COLLECT_MOTOR_RPM);
 	}
 
 	public void runningPeriodic() {
@@ -190,7 +152,7 @@ public class Collector extends StateSubsystem {
 	}
 
 	public void idleInit() {
-		setMotorPower(0);
+		setMotorVelocity(0);
 	}
 
 	public void idlePeriodic() {
@@ -198,7 +160,7 @@ public class Collector extends StateSubsystem {
 	}
 
 	public void reverseInit() {
-		setMotorPower(-COLLECT_MOTOR_RPM);
+		setMotorPower(-1);
 	}
 
 	public void reversePeriodic() {

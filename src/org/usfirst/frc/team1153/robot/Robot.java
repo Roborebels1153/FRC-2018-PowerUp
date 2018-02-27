@@ -254,11 +254,11 @@ public class Robot extends TimedRobot {
 		StateScheduler.getInstance().runAll();
 		updateDashboard();
 
-		if (oi.getDriverStick().getRawButtonPressed(3)) {
-			pto.disengagedInit();
-		} else if (oi.getDriverStick().getRawButtonReleased(3)) {
-			pto.enagagedInit();
-		}
+//		if (oi.getDriverStick().getRawButtonPressed(3)) {
+//			pto.disengagedInit();
+//		} else if (oi.getDriverStick().getRawButtonReleased(3)) {
+//			pto.enagagedInit();
+//		}
 
 		if (oi.getDriverStick().getRawButtonPressed(6)) {
 			climber.moveNewClimber(1);

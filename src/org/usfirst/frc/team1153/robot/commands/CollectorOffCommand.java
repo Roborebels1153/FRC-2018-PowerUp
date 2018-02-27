@@ -17,7 +17,7 @@ public class CollectorOffCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.collector.setState(Collector.STATE_IDLE);
-    	Robot.collector.stopMotors();
+    	Robot.collector.setMotorPower(0);
     }
 
     // Called repeatedly when this Command is scheduled to run
