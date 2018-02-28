@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 public class FarRightSwitchScore extends CommandGroup {
 
 	double baselineToSideSwitchDistance = 152;
-	double turnToSwitchDistance = 12;
+	double turnToSwitchDistance = 24;
 
 	public FarRightSwitchScore() {
 		super();
