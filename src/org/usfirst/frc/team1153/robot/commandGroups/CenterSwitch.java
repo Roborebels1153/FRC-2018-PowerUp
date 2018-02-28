@@ -18,14 +18,16 @@ public class CenterSwitch extends CommandGroup {
 	/**
 	 * @param degreesToTurn
 	 */
-	public CenterSwitch(int degreesToTurn, double timeToDrive, double turnDiviser, char switchSide) {
+	public CenterSwitch(int degreesToTurn, double distance, double turnDiviser, char switchSide) {
 		
-		// addSequential (new WaitCommand(Robot.initialWait));
-		addSequential(new GyroTurnRelativeCommand(degreesToTurn));
-		addSequential(new DriveDistanceCommand(timeToDrive, -1 * timeToDrive));
-		addSequential(new GyroTurnRelativeCommand(-(degreesToTurn/turnDiviser)));
-		addSequential(new VisionDriveSwitch(switchSide));
 		addSequential(new CarriageUpCommand());
+		addSequential(new DriveDistanceCommand(12, -1 * 12));
+		addSequential(new GyroTurnRelativeCommand(degreesToTurn));
+		addSequential(new DriveDistanceCommand(distance, -1 * distance));
+		addSequential(new GyroTurnRelativeCommand(-(degreesToTurn/turnDiviser)));
+		//addSequential(new VisionDriveSwitch(switchSide));
+		addSequential(new DriveDistanceCommand(48, -1 * 48));
+		addSequential(new WaitCommand(0.1));
 		addSequential(new FireShooterCommand());
 
 	}

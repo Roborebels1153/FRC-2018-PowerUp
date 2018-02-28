@@ -39,7 +39,7 @@ public class VisionDriveSwitch extends Command {
     protected void execute() {
     	Target target = Robot.vision.getTargetValues();
     	if (target != null) {
-    		if (target.a > 2.0) {
+    		if (target.a > 1.2) {
     			bApproachedTarget = true;
     			Robot.autoDrive.cheesyDriveWithoutJoysticks(0, 0);
     		} else {

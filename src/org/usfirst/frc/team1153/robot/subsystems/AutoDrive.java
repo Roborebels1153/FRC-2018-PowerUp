@@ -24,9 +24,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class AutoDrive extends Subsystem {
 	protected WPI_TalonSRX leftMaster;
@@ -52,8 +52,7 @@ public class AutoDrive extends Subsystem {
 
 	CheesyDriveHelper helper;
 
-	// DifferentialDrive robotDrive;
-
+	Servo ZipTieServo;
 	/**
 	 * Assigns what the Robot should instantiate every time the Drive subsystem
 	 * initializes.
@@ -86,6 +85,8 @@ public class AutoDrive extends Subsystem {
 		newShifter = new Solenoid(11, 0);
 
 		helper = new CheesyDriveHelper();
+		
+		ZipTieServo = new Servo(3);
 
 		// robotDrive = new DifferentialDrive(leftMaster, rightMaster);
 
@@ -94,16 +95,8 @@ public class AutoDrive extends Subsystem {
 		setFollowers();
 	}
 
-	public void arcadeDrive() {
-		double moveValue = -1 * Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y);
-		double rotateValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X);
-		// robotDrive.arcadeDrive(moveValue, rotateValue);
-	}
-
-	public void arcadeDriveNoJoystick(double value) {
-		double moveValue = value;
-		double rotateValue = 0;
-		// robotDrive.arcadeDrive(moveValue, rotateValue);
+	public void setServoValue(double value) {
+		ZipTieServo.set(value);
 	}
 
 	public void resetGyro() {
@@ -298,8 +291,8 @@ public class AutoDrive extends Subsystem {
 		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.kPIDLoopIdx,
 				Constants.kTimeoutMs);
 
-		rightMaster.setSensorPhase(true);
-		leftMaster.setSensorPhase(true);
+		rightMaster.setSensorPhase(false);
+		leftMaster.setSensorPhase(false);
 
 		// rightMaster.setInverted(true);
 		// leftMaster.setInverted(true);
