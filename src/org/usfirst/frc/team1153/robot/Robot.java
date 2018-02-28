@@ -281,7 +281,7 @@ public class Robot extends TimedRobot {
 //			autoDrive.arcadeDriveNoJoystick(0);
 //		}
 		
-		autoDrive.arcadeDrive();
+		autoDrive.createDriveSignal(true);
 		
 	}
 

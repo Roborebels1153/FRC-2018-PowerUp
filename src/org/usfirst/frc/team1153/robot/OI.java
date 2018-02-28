@@ -101,6 +101,7 @@ public class OI {
 		opBumperL.whenPressed(new CollectorUpAction());
 		opBumperL.whenReleased(new CollectorLeftRightOutCommand());
 	}
+	
 
 	public Joystick getOpStick() {
 		return opStick;

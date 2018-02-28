@@ -52,7 +52,7 @@ public class AutoDrive extends Subsystem {
 
 	CheesyDriveHelper helper;
 
-	DifferentialDrive robotDrive;
+	// DifferentialDrive robotDrive;
 
 	/**
 	 * Assigns what the Robot should instantiate every time the Drive subsystem
@@ -87,7 +87,7 @@ public class AutoDrive extends Subsystem {
 
 		helper = new CheesyDriveHelper();
 
-		robotDrive = new DifferentialDrive(leftMaster, rightMaster);
+		// robotDrive = new DifferentialDrive(leftMaster, rightMaster);
 
 		configTalonOutput();
 		setEncoderAsFeedback();
@@ -97,13 +97,13 @@ public class AutoDrive extends Subsystem {
 	public void arcadeDrive() {
 		double moveValue = -1 * Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y);
 		double rotateValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X);
-		robotDrive.arcadeDrive(moveValue, rotateValue);
+		// robotDrive.arcadeDrive(moveValue, rotateValue);
 	}
 
 	public void arcadeDriveNoJoystick(double value) {
 		double moveValue = value;
 		double rotateValue = 0;
-		robotDrive.arcadeDrive(moveValue, rotateValue);
+		// robotDrive.arcadeDrive(moveValue, rotateValue);
 	}
 
 	public void resetGyro() {
@@ -194,21 +194,20 @@ public class AutoDrive extends Subsystem {
 		double rawMoveValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y);
 		double rawRotateValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X);
 
-		// double moveValue = 0;
-		// double rotateValue = 0;
-		// if (squaredInputs == true) {
-		// double deadBandMoveValue = applyDeadband(rawMoveValue, 0.02);
-		// double deadBandRotateValue = applyDeadband(rawRotateValue, 0.02);
-		// moveValue = Math.copySign(deadBandMoveValue * deadBandMoveValue,
-		// deadBandMoveValue);
-		// rotateValue = Math.copySign(deadBandRotateValue * deadBandRotateValue,
-		// deadBandRotateValue);
-		// } else {
-		// rawMoveValue = moveValue;
-		// rotateValue = rawRotateValue;
-		// }
+		System.out.println(rawRotateValue);
+		double moveValue = 0;
+		double rotateValue = 0;
+		if (squaredInputs == true) {
+			double deadBandMoveValue = applyDeadband(rawMoveValue, 0.02);
+			double deadBandRotateValue = applyDeadband(rawRotateValue, 0.02);
+			moveValue = Math.copySign(deadBandMoveValue * deadBandMoveValue, deadBandMoveValue);
+			rotateValue = Math.copySign(deadBandRotateValue * deadBandRotateValue, deadBandRotateValue);
+		} else {
+			rawMoveValue = moveValue;
+			rotateValue = rawRotateValue;
+		}
 
-		DriveSignal driveSignal = helper.cheesyDrive(-1 * rawMoveValue, 0.7 * rawRotateValue, false, false);
+		DriveSignal driveSignal = helper.cheesyDrive(-1 * moveValue, 0.8 * rotateValue, true, false);
 		Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
 
 	}
@@ -218,8 +217,8 @@ public class AutoDrive extends Subsystem {
 	}
 
 	public boolean quickTurnController() {
-		if (Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X) < 0.2
-				&& Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X) > -0.2) {
+		if (Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y) < 0.2
+				&& Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y) > -0.2) {
 			return true;
 		} else {
 			return false;
@@ -252,32 +251,32 @@ public class AutoDrive extends Subsystem {
 		final int kContinCurrentAmps = 10; /* hold current after limit is triggered */
 
 		leftMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
-		leftMaster.configPeakCurrentDuration(kPeakTimeMs, 10); /* this is a necessary call to avoid errata. */
+		leftMaster.configPeakCurrentDuration(kPeakTimeMs, 100); /* this is a necessary call to avoid errata. */
 		leftMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
 		leftMaster.enableCurrentLimit(true); /* honor initial setting */
 
 		/* setup a basic closed loop */
 		leftMaster.setNeutralMode(NeutralMode.Brake);
-		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-		leftMaster.setSensorPhase(true); /* flip until sensor is in phase, or closed-loop will not work */
-		leftMaster.config_kP(0, 2.0, 10);
-		leftMaster.config_kI(0, 0.0, 10);
-		leftMaster.config_kD(0, 0.0, 10);
-		leftMaster.config_kF(0, 0.0, 10);
+//		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+//		leftMaster.setSensorPhase(true); /* flip until sensor is in phase, or closed-loop will not work */
+//		leftMaster.config_kP(0, 2.0, 10);
+//		leftMaster.config_kI(0, 0.0, 10);
+//		leftMaster.config_kD(0, 0.0, 10);
+//		leftMaster.config_kF(0, 0.0, 10);
 
 		rightMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
-		rightMaster.configPeakCurrentDuration(kPeakTimeMs, 10); /* this is a necessary call to avoid errata. */
+		rightMaster.configPeakCurrentDuration(kPeakTimeMs, 100); /* this is a necessary call to avoid errata. */
 		rightMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
 		rightMaster.enableCurrentLimit(true); /* honor initial setting */
 
 		/* setup a basic closed loop */
 		rightMaster.setNeutralMode(NeutralMode.Brake);
-		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-		rightMaster.setSensorPhase(true); /* flip until sensor is in phase, or closed-loop will not work */
-		rightMaster.config_kP(0, 2.0, 10);
-		rightMaster.config_kI(0, 0.0, 10);
-		rightMaster.config_kD(0, 0.0, 10);
-		rightMaster.config_kF(0, 0.0, 10);
+//		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+//		rightMaster.setSensorPhase(true); /* flip until sensor is in phase, or closed-loop will not work */
+//		rightMaster.config_kP(0, 2.0, 10);
+//		rightMaster.config_kI(0, 0.0, 10);
+//		rightMaster.config_kD(0, 0.0, 10);
+//		rightMaster.config_kF(0, 0.0, 10);
 	}
 
 	public void setFollowers() {
