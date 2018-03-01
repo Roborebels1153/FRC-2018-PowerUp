@@ -10,7 +10,9 @@ package org.usfirst.frc.team1153.robot;
 import org.usfirst.frc.team1153.robot.commandGroups.CenterSwitch;
 import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardAndScore;
 import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardNoScore;
+import org.usfirst.frc.team1153.robot.commandGroups.FarLeftOppositeSideSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarLeftSwitchScore;
+import org.usfirst.frc.team1153.robot.commandGroups.FarRightOppositeSideSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarRightSwitchScore;
 import org.usfirst.frc.team1153.robot.lib.StateScheduler;
 import org.usfirst.frc.team1153.robot.subsystems.ArmsHorizontal;
@@ -168,14 +170,16 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		StateScheduler.getInstance().notifyAuto();
 
+		autoDrive.setServoValue(180);
+
 		vision.turnOnLight();
 		autoDrive.resetGyro();
 		autoDrive.setEncoderAsFeedback();
 		autoDrive.configTalonOutput();
 		autoDrive.setFollowers();
 		autoDrive.resetEncoders();
-		
-		//Carriage and Collector Stuff
+
+		// Carriage and Collector Stuff
 		collectorArmsVertical.upInit();
 		collectorArmsHorizontal.outInit();
 		carriage.upInit();
@@ -189,39 +193,43 @@ public class Robot extends TimedRobot {
 		System.out.println("switchPos\t" + switchPos);
 		System.out.println("chooser:\t" + routineChooser.getSelected());
 
-		 if ((robotPosEqual("Right") && switchPos == 'R') || (robotPosEqual("Left") &&
-		 switchPos == 'L')) {
-		
-		 autoCommand = new DriveForwardAndScore();
-		
-		 } else if (robotPosEqual("Center") && switchPos == 'R') {
-		
-		 autoCommand = new CenterSwitch(50, 50, 1, 'R');
-		
-		 } else if (robotPosEqual("Center") && switchPos == 'L') {
-		
-		 autoCommand = new CenterSwitch(-50, 60, 1.5, 'L');
-		
-		 } else if (robotPosEqual("Far Right") && switchPos == 'R') {
-		
-		 autoCommand = new FarRightSwitchScore();
-		 //} else if (robotPosEqual("Far Right") && switchPos == 'L') {
-		
-		 //} else if (robotPosEqual("Far Left") && switchPos == 'R') {
-		
-		 } else if (robotPosEqual("Far Left") && switchPos == 'L') {
-		
-		 autoCommand = new FarLeftSwitchScore();
-		
-		 } else {
-		
-		 autoCommand = new DriveForwardNoScore();
-		
-		 }
+		if ((robotPosEqual("Right") && switchPos == 'R') || (robotPosEqual("Left") && switchPos == 'L')) {
 
-//		autoCommand = new DriveDistanceCommand(120, -120);
+			autoCommand = new DriveForwardAndScore();
 
-		//autoCommand = new CenterSwitch(30, 50, 1.5, 'R');
+		} else if (robotPosEqual("Center") && switchPos == 'R') {
+
+			autoCommand = new CenterSwitch(50, 50, 5, 'R');
+
+		} else if (robotPosEqual("Center") && switchPos == 'L') {
+
+			autoCommand = new CenterSwitch(-50, 60, -5, 'L');
+
+		} else if (robotPosEqual("Far Right") && switchPos == 'R') {
+
+			autoCommand = new FarRightSwitchScore();
+
+		} else if (robotPosEqual("Far Right") && switchPos == 'L') {
+
+			autoCommand = new FarRightOppositeSideSwitchScore();
+			
+		} else if (robotPosEqual("Far Left") && switchPos == 'R') {
+
+			autoCommand = new FarLeftOppositeSideSwitchScore();
+
+		} else if (robotPosEqual("Far Left") && switchPos == 'L') {
+
+			autoCommand = new FarLeftSwitchScore();
+
+		} else {
+
+			autoCommand = new DriveForwardNoScore();
+
+		}
+
+		// autoCommand = new DriveDistanceCommand(120, -120);
+
+		// autoCommand = new CenterSwitch(30, 50, 1.5, 'R');
 		// autoCommand = new CenterSwitch(30);
 		// autoCommand = new CenterSwitch(30);
 		autoCommand.start();
@@ -243,7 +251,9 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		StateScheduler.getInstance().notifyTeleop();
 
-		
+		autoDrive.setServoValue(180);
+
+		autoDrive.resetEncoders();
 		carriage.downInit();
 		autoDrive.resetEncoders();
 		vision.turnOffLight();
@@ -259,35 +269,34 @@ public class Robot extends TimedRobot {
 		StateScheduler.getInstance().runAll();
 		updateDashboard();
 
-//		if (oi.getDriverStick().getRawButtonPressed(3)) {
-//			pto.engagedInit();
-//		} else if (oi.getDriverStick().getRawButtonReleased(3)) {
-//			pto.disengagedInit();
-//		}
+		// if (oi.getDriverStick().getRawButtonPressed(3)) {
+		// pto.engagedInit();
+		// } else if (oi.getDriverStick().getRawButtonReleased(3)) {
+		// pto.disengagedInit();
+		// }
 
 		if (oi.getDriverStick().getRawButtonPressed(6)) {
 			climber.moveNewClimber(1);
 		} else if (oi.getDriverStick().getRawButtonReleased(6)) {
 			climber.moveNewClimber(0);
 		}
-		
+
 		if (oi.getDriverStick().getRawButtonPressed(5)) {
 			climber.moveNewClimber(-1);
 		} else if (oi.getDriverStick().getRawButtonReleased(5)) {
 			climber.moveNewClimber(0);
 		}
 
+		// climber.moveNewClimber(oi.getOpStick().getRawAxis(1));
 
-//		climber.moveNewClimber(oi.getOpStick().getRawAxis(1));
-		
-//		if (oi.getDriverStick().getRawButtonPressed(4)) {
-//			autoDrive.arcadeDriveNoJoystick(0.8);
-//		} else if (oi.getDriverStick().getRawButtonReleased(4)) {
-//			autoDrive.arcadeDriveNoJoystick(0);
-//		}
-		
+		// if (oi.getDriverStick().getRawButtonPressed(4)) {
+		// autoDrive.arcadeDriveNoJoystick(0.8);
+		// } else if (oi.getDriverStick().getRawButtonReleased(4)) {
+		// autoDrive.arcadeDriveNoJoystick(0);
+		// }
+
 		autoDrive.createDriveSignal(true);
-		
+
 	}
 
 	/**

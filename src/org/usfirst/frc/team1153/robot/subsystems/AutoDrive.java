@@ -35,6 +35,8 @@ public class AutoDrive extends Subsystem {
 	protected WPI_TalonSRX rightMaster;
 	protected WPI_TalonSRX rightBackSlave;
 	protected WPI_TalonSRX rightFrontSlave;
+	
+	private Servo ZipTieServo;
 
 	private ADXRS450_Gyro gyro;
 
@@ -52,7 +54,6 @@ public class AutoDrive extends Subsystem {
 
 	CheesyDriveHelper helper;
 
-	Servo ZipTieServo;
 	/**
 	 * Assigns what the Robot should instantiate every time the Drive subsystem
 	 * initializes.
@@ -96,15 +97,19 @@ public class AutoDrive extends Subsystem {
 	}
 
 	public void setServoValue(double value) {
-		ZipTieServo.set(value);
+		ZipTieServo.setAngle(value);
 	}
-
+	
+	public double getServoAngle() {
+		return ZipTieServo.getAngle();
+	}
+	
 	public void resetGyro() {
 		gyro.reset();
 	}
 
 	public void setGyroPID(double setpoint) {
-		gyroPID.setSetpoint(gyro.getAngle() + setpoint);
+		gyroPID.setSetpoint(setpoint);
 	}
 
 	public double getGyroOutput() {

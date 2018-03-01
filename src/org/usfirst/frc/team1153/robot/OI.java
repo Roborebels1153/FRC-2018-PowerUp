@@ -81,8 +81,7 @@ public class OI {
 		opButtonA.whenPressed(new FireShooterCommand());
 		opButtonA.whenReleased(new RetractShooterCommand());
 
-//		opButtonB.whenPressed(new CarriageUpCommand());
-//		opButtonB.whenReleased(new CarriageDownCommand());
+
 		
 		opButtonB.whenPressed(new CarriageToggleCommand());
 

@@ -10,9 +10,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class FarRightOppositeSideSwitchScore extends CommandGroup {
 	
-	double baselineToFirstTurnDistance = 219;
-	double driveAcrossFieldDistance = 264;
-	double driveBackTowardsBaselineDistance = 12;
+	double baselineToFirstTurnDistance = 215;
+	double driveAcrossFieldDistance = 120;//264
+	double driveBackTowardsBaselineDistance = 24;
+	double driveToScoreDistance = 12;
 
 	
 	public FarRightOppositeSideSwitchScore () {
@@ -25,8 +26,8 @@ public class FarRightOppositeSideSwitchScore extends CommandGroup {
 		//TODO: add gyro check to make sure we are still straight after hitting the bump
 		addSequential(new GyroTurnAbsoluteCommand(-90));
 		addSequential(new DriveDistanceCommand(driveBackTowardsBaselineDistance, -1 * driveBackTowardsBaselineDistance));
-		addSequential(new GyroTurnAbsoluteCommand(-90));
-		addSequential(new TimedDriveCommand(0.65, 1));
+		addSequential(new GyroTurnAbsoluteCommand(-135));
+		addSequential(new DriveDistanceCommand(driveToScoreDistance, -1 * driveToScoreDistance));
 		addSequential(new FireShooterCommand());
 
 

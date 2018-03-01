@@ -18,8 +18,8 @@ public class DriveDistanceCommand extends Command {
 
 	public DriveDistanceCommand(double targetPosLeft, double targetPosRight) {
 		requires(Robot.autoDrive);
-		this.targetPosRight = Constants.TALON_TICKS_PER_INCH * targetPosRight;
-		this.targetPosLeft = Constants.TALON_TICKS_PER_INCH * targetPosLeft;
+		this.targetPosRight = Constants.TALON_TICKS_PER_INCH_RIGHT * targetPosRight;
+		this.targetPosLeft = Constants.TALON_TICKS_PER_INCH_LEFT * targetPosLeft;
 	}
 
 	// Called just before this Command runs the first time
