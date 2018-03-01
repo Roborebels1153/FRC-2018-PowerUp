@@ -9,21 +9,18 @@ package org.usfirst.frc.team1153.robot;
 
 import org.usfirst.frc.team1153.robot.commandGroups.CollectorDownAction;
 import org.usfirst.frc.team1153.robot.commandGroups.CollectorUpAction;
-import org.usfirst.frc.team1153.robot.commands.CarriageDownCommand;
 import org.usfirst.frc.team1153.robot.commands.CarriageToggleCommand;
-import org.usfirst.frc.team1153.robot.commands.CarriageUpCommand;
 import org.usfirst.frc.team1153.robot.commands.ClimberToggleCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorLeftRightOutCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorLeftRightToggleCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorOffCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorOnCommand;
-
 import org.usfirst.frc.team1153.robot.commands.CollectorReverseCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorUpDownToggleCommand;
 import org.usfirst.frc.team1153.robot.commands.FireShooterCommand;
 import org.usfirst.frc.team1153.robot.commands.PTOToggleCommand;
-import org.usfirst.frc.team1153.robot.commands.ResetCommand;
 import org.usfirst.frc.team1153.robot.commands.RetractShooterCommand;
+import org.usfirst.frc.team1153.robot.commands.ServoToggleCommand;
 import org.usfirst.frc.team1153.robot.commands.ShiftHighCommand;
 import org.usfirst.frc.team1153.robot.commands.ShiftLowCommand;
 import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
@@ -77,11 +74,12 @@ public class OI {
 		drButtonY.whenPressed(new PTOToggleCommand());
 
 		drButtonA.whenPressed(new ClimberToggleCommand());
+		
+		drButtonB.whenPressed(new ServoToggleCommand());
 
+	
 		opButtonA.whenPressed(new FireShooterCommand());
 		opButtonA.whenReleased(new RetractShooterCommand());
-
-
 		
 		opButtonB.whenPressed(new CarriageToggleCommand());
 
