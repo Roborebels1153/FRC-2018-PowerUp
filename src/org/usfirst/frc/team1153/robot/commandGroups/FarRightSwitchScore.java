@@ -20,7 +20,7 @@ public class FarRightSwitchScore extends CommandGroup {
 		if (Robot.initialWait > 0.0) {
 			addSequential(new WaitCommand(Robot.initialWait));
 		}
-		
+
 		addSequential (new CarriageUpCommand());
 		addSequential(new DriveDistanceCommand(baselineToSideSwitchDistance, -1 * baselineToSideSwitchDistance));
 		addSequential(new WaitCommand(1));
