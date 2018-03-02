@@ -209,15 +209,15 @@ public class Robot extends TimedRobot {
 
 			autoCommand = new FarRightSwitchScore();
 
-		} else if (robotPosEqual("Far Right") && switchPos == 'L') {
+		} /*else if (robotPosEqual("Far Right") && switchPos == 'L') {
 
 			autoCommand = new FarRightOppositeSideSwitchScore();
 			
-		} else if (robotPosEqual("Far Left") && switchPos == 'R') {
+		}*/ /*else if (robotPosEqual("Far Left") && switchPos == 'R') {
 
 			autoCommand = new FarLeftOppositeSideSwitchScore();
 
-		} else if (robotPosEqual("Far Left") && switchPos == 'L') {
+		}*/ else if (robotPosEqual("Far Left") && switchPos == 'L') {
 
 			autoCommand = new FarLeftSwitchScore();
 

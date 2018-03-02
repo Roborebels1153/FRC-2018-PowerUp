@@ -82,7 +82,6 @@ public class AutoDrive extends Subsystem {
 		gyroPID.setContinuous();
 
 		gyroPID.setOutputRange(-0.6, 0.6);
-
 		transmissionShifter = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_A, RobotMap.TRANSMISSION_SOLENOID_B);
 
 		newShifter = new Solenoid(11, 0);
@@ -101,7 +100,7 @@ public class AutoDrive extends Subsystem {
 	}
 
 	public void setServoValue(double value) {
-		ServoA.setAngle(value);
+		ServoA.setAngle(-value);
 		ServoB.setAngle(value);
 	}
 	
@@ -201,7 +200,6 @@ public class AutoDrive extends Subsystem {
 		double rawMoveValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y);
 		double rawRotateValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X);
 
-		System.out.println(rawRotateValue);
 		double moveValue = 0;
 		double rotateValue = 0;
 		if (squaredInputs == true) {

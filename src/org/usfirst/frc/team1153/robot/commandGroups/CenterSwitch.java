@@ -36,9 +36,6 @@ public class CenterSwitch extends CommandGroup {
 			addSequential(new WaitCommand(Robot.initialWait));
 		}
 		
-		if (Robot.initialWait > 0.0) {
-			addSequential(new WaitCommand(Robot.initialWait));
-		}
 		addSequential(new CarriageUpCommand());
 		addSequential(new DriveDistanceCommand(12, -1 * 12));
 		addSequential(new GyroTurnAbsoluteCommand(degreesToTurn));

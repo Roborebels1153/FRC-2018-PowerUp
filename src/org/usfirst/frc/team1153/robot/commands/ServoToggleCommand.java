@@ -15,7 +15,7 @@ public class ServoToggleCommand extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		if (!(Robot.autoDrive.getServoAAngle() > 130)) {
+		if (!(Robot.autoDrive.getServoBAngle() > 130)) {
 			Robot.autoDrive.setServoValue(180);
 		} else {
 			Robot.autoDrive.setServoValue(90);
