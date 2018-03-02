@@ -256,7 +256,7 @@ public class AutoDrive extends Subsystem {
 		final int kContinCurrentAmps = 10; /* hold current after limit is triggered */
 
 		leftMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
-		leftMaster.configPeakCurrentDuration(kPeakTimeMs, 100); /* this is a necessary call to avoid errata. */
+		leftMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /* this is a necessary call to avoid errata. */
 		leftMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
 		leftMaster.enableCurrentLimit(true); /* honor initial setting */
 
@@ -270,7 +270,7 @@ public class AutoDrive extends Subsystem {
 //		leftMaster.config_kF(0, 0.0, 10);
 
 		rightMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
-		rightMaster.configPeakCurrentDuration(kPeakTimeMs, 100); /* this is a necessary call to avoid errata. */
+		rightMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /* this is a necessary call to avoid errata. */
 		rightMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
 		rightMaster.enableCurrentLimit(true); /* honor initial setting */
 
