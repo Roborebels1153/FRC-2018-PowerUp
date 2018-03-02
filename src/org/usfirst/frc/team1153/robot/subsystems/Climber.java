@@ -25,8 +25,8 @@ public class Climber extends StateSubsystem {
 	public Climber() {
 		climber = new Solenoid(RobotMap.THIRD_PCM, 0);
 
-		newClimber1 = new Victor(9);
-		newClimber2 = new Victor(8);
+		newClimber1 = new Victor(1);
+		newClimber2 = new Victor(0);
 		
 		registerState(STATE_RETRACTED);
 		registerState(STATE_EXTENDED);
@@ -40,7 +40,7 @@ public class Climber extends StateSubsystem {
 	
 	public void moveNewClimber(double value) {
 		newClimber1.set(value);
-		newClimber2.set(value);
+		newClimber2.set(-1 * value);
 
 	}
 
