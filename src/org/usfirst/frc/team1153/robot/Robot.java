@@ -141,6 +141,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledInit() {
 		StateScheduler.getInstance().notifyDisabled();
+		
 	}
 
 	@Override
@@ -275,14 +276,18 @@ public class Robot extends TimedRobot {
 		// pto.disengagedInit();
 		// }
 
+		System.out.println("left limist switch:" + collectorArmsVertical.getLeftLimitSwitchState());
+		System.out.println("right limist switch:" + collectorArmsVertical.getRightLimitSwitchState());
+
+		
 		if (oi.getDriverStick().getRawButtonPressed(6)) {
-			climber.moveNewClimber(1);
+			climber.moveNewClimber(0.6);
 		} else if (oi.getDriverStick().getRawButtonReleased(6)) {
 			climber.moveNewClimber(0);
 		}
 
 		if (oi.getDriverStick().getRawButtonPressed(5)) {
-			climber.moveNewClimber(-1);
+			climber.moveNewClimber(-0.6);
 		} else if (oi.getDriverStick().getRawButtonReleased(5)) {
 			climber.moveNewClimber(0);
 		}
