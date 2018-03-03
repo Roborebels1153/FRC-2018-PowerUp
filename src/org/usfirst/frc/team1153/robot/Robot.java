@@ -206,7 +206,7 @@ public class Robot extends TimedRobot {
 
 			autoCommand = new CenterSwitch(-50, 60, -5, 'L');
 
-		} else if (robotPosEqual("Far Right") && switchPos == 'R') {
+		} else if (robotPosEqual("Far Right")) {
 
 			autoCommand = new FarRightSwitchScore();
 

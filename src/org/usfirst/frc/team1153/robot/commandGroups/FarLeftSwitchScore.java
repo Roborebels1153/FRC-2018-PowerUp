@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 public class FarLeftSwitchScore extends CommandGroup {
 
 	double baselineToSideSwitchDistance = 155;
-	double turnToSwitchDistance = 18;
+	double turnToSwitchDistance = 25;
 
 	public FarLeftSwitchScore() {
 		super();
@@ -26,7 +26,7 @@ public class FarLeftSwitchScore extends CommandGroup {
 		addSequential(new WaitCommand(1));
 		addSequential(new GyroTurnAbsoluteCommand(90));
 		addSequential(new DriveDistanceCommand(turnToSwitchDistance, -1 * turnToSwitchDistance));
-		addSequential(new FireShooterCommand());
+//		addSequential(new FireShooterCommand());
 	}
 
 }
