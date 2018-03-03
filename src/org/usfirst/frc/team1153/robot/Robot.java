@@ -255,7 +255,7 @@ public class Robot extends TimedRobot {
 		autoDrive.setServoValue(180);
 
 		autoDrive.resetEncoders();
-		carriage.downInit();
+		//carriage.downInit();
 		autoDrive.resetEncoders();
 		vision.turnOffLight();
 
