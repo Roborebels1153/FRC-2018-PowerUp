@@ -14,7 +14,9 @@ import org.usfirst.frc.team1153.robot.commandGroups.FarLeftOppositeSideSwitchSco
 import org.usfirst.frc.team1153.robot.commandGroups.FarLeftSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarRightOppositeSideSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarRightSwitchScore;
+import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
 import org.usfirst.frc.team1153.robot.lib.StateScheduler;
+import org.usfirst.frc.team1153.robot.lib.StateSubsystem.State;
 import org.usfirst.frc.team1153.robot.subsystems.ArmsHorizontal;
 import org.usfirst.frc.team1153.robot.subsystems.ArmsVertical;
 import org.usfirst.frc.team1153.robot.subsystems.AutoDrive;
@@ -173,6 +175,7 @@ public class Robot extends TimedRobot {
 
 		autoDrive.setServoValue(180);
 
+		autoDrive.shiftHigh();
 		vision.turnOnLight();
 		autoDrive.resetGyro();
 		autoDrive.setEncoderAsFeedback();
@@ -197,30 +200,43 @@ public class Robot extends TimedRobot {
 		if ((robotPosEqual("Right") && switchPos == 'R') || (robotPosEqual("Left") && switchPos == 'L')) {
 
 			autoCommand = new DriveForwardAndScore();
+			System.out.println("Drive Forward Score");
 
 		} else if (robotPosEqual("Center") && switchPos == 'R') {
 
 			autoCommand = new CenterSwitch(50, 50, 5, 'R');
+//			autoCommand = new DriveDistanceCommand(30, -30);
+			System.out.println("Center R");
+
 
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
 
 			autoCommand = new CenterSwitch(-50, 60, -5, 'L');
+			System.out.println("Center L");
+
 
 		} else if (robotPosEqual("Far Right")) {
 
 			autoCommand = new FarRightSwitchScore();
+			System.out.println("Far Right R");
+
 
 		} /*else if (robotPosEqual("Far Right") && switchPos == 'L') {
 
 			autoCommand = new FarRightOppositeSideSwitchScore();
-			
+      System.out.println("Far Right Opposite Side");
+
 		}*/ /*else if (robotPosEqual("Far Left") && switchPos == 'R') {
 
 			autoCommand = new FarLeftOppositeSideSwitchScore();
+			System.out.println("Far Left Opposite Side");
+
 
 		}*/ else if (robotPosEqual("Far Left") && switchPos == 'L') {
 
 			autoCommand = new FarLeftSwitchScore();
+			System.out.println("Far Left L");
+
 
 		} else {
 
@@ -228,6 +244,8 @@ public class Robot extends TimedRobot {
 
 		}
 
+		
+		
 		// autoCommand = new DriveDistanceCommand(120, -120);
 
 		// autoCommand = new CenterSwitch(30, 50, 1.5, 'R');
@@ -290,6 +308,15 @@ public class Robot extends TimedRobot {
 			climber.moveNewClimber(-0.6);
 		} else if (oi.getDriverStick().getRawButtonReleased(5)) {
 			climber.moveNewClimber(0);
+		}
+		
+		if (oi.getDriverStick().getRawButton(1)) {
+	    	State currState = Robot.climber.getState();
+	    	if (Climber.STATE_EXTENDED.equals(currState)) {
+	    		Robot.climber.setState(Climber.STATE_RETRACTED);
+	    	} else if (Climber.STATE_RETRACTED.equals(currState)) {
+	    		Robot.climber.setState(Climber.STATE_EXTENDED);
+	    	}
 		}
 
 		// climber.moveNewClimber(oi.getOpStick().getRawAxis(1));

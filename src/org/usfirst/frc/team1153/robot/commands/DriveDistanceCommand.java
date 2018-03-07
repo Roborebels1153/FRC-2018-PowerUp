@@ -60,7 +60,10 @@ public class DriveDistanceCommand extends Command {
 		boolean leftMotorsStopped = Math.abs(Robot.autoDrive.getLeftMotorOutputPercent()) < 0.02;
 
 
-		return (rightMotorsStopped && leftMotorsStopped && rightTolerated && leftTolerated || System.currentTimeMillis() - timeAtStart > 2500);
+//		return (rightMotorsStopped && leftMotorsStopped && rightTolerated && leftTolerated || System.currentTimeMillis() - timeAtStart > 2500);
+		
+		return (rightMotorsStopped && leftMotorsStopped && rightTolerated && leftTolerated);
+
 
 	}
 
