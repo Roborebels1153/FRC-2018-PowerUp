@@ -303,8 +303,8 @@ public class AutoDrive extends Subsystem {
 		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.kPIDLoopIdx,
 				Constants.kTimeoutMs);
 
-		rightMaster.setSensorPhase(false);
-		leftMaster.setSensorPhase(false);
+		rightMaster.setSensorPhase(true);
+		leftMaster.setSensorPhase(true);
 
 		// rightMaster.setInverted(true);
 		// leftMaster.setInverted(true);
