@@ -35,7 +35,7 @@ public class GyroTurnAbsoluteCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
        // return System.currentTimeMillis() - startTime >= 2000;
-    	return System.currentTimeMillis() - startTime >= 1000 || (Math.abs(Robot.autoDrive.getGyroAngle()) < Math.abs(setpoint) + 5 && Math.abs(Robot.autoDrive.getGyroAngle()) > Math.abs(setpoint) - 5);
+    	return System.currentTimeMillis() - startTime >= 2000 || (Math.abs(Robot.autoDrive.getGyroAngle()) < Math.abs(setpoint) + 5 && Math.abs(Robot.autoDrive.getGyroAngle()) > Math.abs(setpoint) - 5);
     }
 
     // Called once after isFinished returns true

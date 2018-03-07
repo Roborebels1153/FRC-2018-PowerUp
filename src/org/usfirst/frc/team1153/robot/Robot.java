@@ -143,6 +143,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledInit() {
 		StateScheduler.getInstance().notifyDisabled();
+		
 	}
 
 	@Override
@@ -214,25 +215,24 @@ public class Robot extends TimedRobot {
 			System.out.println("Center L");
 
 
-		} else if (robotPosEqual("Far Right") && switchPos == 'R') {
+		} else if (robotPosEqual("Far Right")) {
 
 			autoCommand = new FarRightSwitchScore();
 			System.out.println("Far Right R");
 
 
-		} else if (robotPosEqual("Far Right") && switchPos == 'L') {
+		} /*else if (robotPosEqual("Far Right") && switchPos == 'L') {
 
 			autoCommand = new FarRightOppositeSideSwitchScore();
-			
-			System.out.println("Far Right Opposite Side");
-			
-		} else if (robotPosEqual("Far Left") && switchPos == 'R') {
+      System.out.println("Far Right Opposite Side");
+
+		}*/ /*else if (robotPosEqual("Far Left") && switchPos == 'R') {
 
 			autoCommand = new FarLeftOppositeSideSwitchScore();
 			System.out.println("Far Left Opposite Side");
 
 
-		} else if (robotPosEqual("Far Left") && switchPos == 'L') {
+		}*/ else if (robotPosEqual("Far Left") && switchPos == 'L') {
 
 			autoCommand = new FarLeftSwitchScore();
 			System.out.println("Far Left L");
@@ -273,7 +273,7 @@ public class Robot extends TimedRobot {
 		autoDrive.setServoValue(180);
 
 		autoDrive.resetEncoders();
-		carriage.downInit();
+		//carriage.downInit();
 		autoDrive.resetEncoders();
 		vision.turnOffLight();
 
@@ -294,14 +294,18 @@ public class Robot extends TimedRobot {
 		// pto.disengagedInit();
 		// }
 
+		System.out.println("left limist switch:" + collectorArmsVertical.getLeftLimitSwitchState());
+		System.out.println("right limist switch:" + collectorArmsVertical.getRightLimitSwitchState());
+
+		
 		if (oi.getDriverStick().getRawButtonPressed(6)) {
-			climber.moveNewClimber(1);
+			climber.moveNewClimber(0.6);
 		} else if (oi.getDriverStick().getRawButtonReleased(6)) {
 			climber.moveNewClimber(0);
 		}
 
 		if (oi.getDriverStick().getRawButtonPressed(5)) {
-			climber.moveNewClimber(-1);
+			climber.moveNewClimber(-0.6);
 		} else if (oi.getDriverStick().getRawButtonReleased(5)) {
 			climber.moveNewClimber(0);
 		}

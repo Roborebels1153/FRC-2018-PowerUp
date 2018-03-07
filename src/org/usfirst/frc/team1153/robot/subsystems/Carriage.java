@@ -75,7 +75,7 @@ public class Carriage extends StateSubsystem {
 
 	@Override
 	public StateSubsystem.State getTeleopDefaultState() {
-		return STATE_UP;
+		return null;
 	}
 
 	@Override

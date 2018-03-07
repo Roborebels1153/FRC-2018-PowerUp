@@ -57,11 +57,13 @@ public class Collector extends StateSubsystem {
 		motorA.configNominalOutputReverse(0, Constants.kTimeoutMs);
 		motorA.configPeakOutputForward(1, Constants.kTimeoutMs);
 		motorA.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+		motorA.setInverted(true);
 
 		motorB.configNominalOutputForward(0, Constants.kTimeoutMs);
 		motorB.configNominalOutputReverse(0, Constants.kTimeoutMs);
 		motorB.configPeakOutputForward(1, Constants.kTimeoutMs);
 		motorB.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+		motorB.setInverted(true);
 	}
 
 	

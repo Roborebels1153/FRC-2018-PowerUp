@@ -99,21 +99,30 @@ public abstract class StateSubsystem extends Subsystem {
 	 * Called when the robot first enters the disabled state
 	 */
 	public void robotDisabled() {
-		setState(getDisabledDefaultState());
+		State state = getDisabledDefaultState();
+		if (state != null) {
+			setState(state);
+		}
 	}
 	
 	/**
 	 * Called when the robot first enters the teleop state
 	 */
 	public void robotTeleop() {
-		setState(getTeleopDefaultState());
+		State state = getTeleopDefaultState();
+		if (state != null) {
+			setState(state);
+		}
 	}
 	
 	/**
 	 * Called when the robot first enters the auto state
 	 */
 	public void robotAuto() {
-		setState(getAutoDefaultState());
+		State state = getAutoDefaultState();
+		if (state != null) {
+			setState(state);
+		}
 	}
 	
 	public static class State {
