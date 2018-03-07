@@ -35,10 +35,9 @@ public class AutoDrive extends Subsystem {
 	protected WPI_TalonSRX rightMaster;
 	protected WPI_TalonSRX rightBackSlave;
 	protected WPI_TalonSRX rightFrontSlave;
-	
+
 	private Servo ServoA;
 	private Servo ServoB;
-
 
 	private ADXRS450_Gyro gyro;
 
@@ -88,10 +87,9 @@ public class AutoDrive extends Subsystem {
 		newShifter = new Solenoid(11, 0);
 
 		helper = new CheesyDriveHelper();
-		
+
 		ServoA = new Servo(3);
 		ServoB = new Servo(2);
-
 
 		// robotDrive = new DifferentialDrive(leftMaster, rightMaster);
 
@@ -104,15 +102,15 @@ public class AutoDrive extends Subsystem {
 		ServoA.setAngle(value);
 		ServoB.setAngle(value);
 	}
-	
+
 	public double getServoAAngle() {
 		return ServoA.getAngle();
 	}
-	
+
 	public double getServoBAngle() {
 		return ServoB.getAngle();
 	}
-	
+
 	public void resetGyro() {
 		gyro.reset();
 	}
@@ -264,12 +262,13 @@ public class AutoDrive extends Subsystem {
 
 		/* setup a basic closed loop */
 		leftMaster.setNeutralMode(NeutralMode.Brake);
-//		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-//		leftMaster.setSensorPhase(true); /* flip until sensor is in phase, or closed-loop will not work */
-//		leftMaster.config_kP(0, 2.0, 10);
-//		leftMaster.config_kI(0, 0.0, 10);
-//		leftMaster.config_kD(0, 0.0, 10);
-//		leftMaster.config_kF(0, 0.0, 10);
+		// leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+		// leftMaster.setSensorPhase(true); /* flip until sensor is in phase, or
+		// closed-loop will not work */
+		// leftMaster.config_kP(0, 2.0, 10);
+		// leftMaster.config_kI(0, 0.0, 10);
+		// leftMaster.config_kD(0, 0.0, 10);
+		// leftMaster.config_kF(0, 0.0, 10);
 
 		rightMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
 		rightMaster.configPeakCurrentDuration(kPeakTimeMs, 100); /* this is a necessary call to avoid errata. */
@@ -278,12 +277,13 @@ public class AutoDrive extends Subsystem {
 
 		/* setup a basic closed loop */
 		rightMaster.setNeutralMode(NeutralMode.Brake);
-//		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-//		rightMaster.setSensorPhase(true); /* flip until sensor is in phase, or closed-loop will not work */
-//		rightMaster.config_kP(0, 2.0, 10);
-//		rightMaster.config_kI(0, 0.0, 10);
-//		rightMaster.config_kD(0, 0.0, 10);
-//		rightMaster.config_kF(0, 0.0, 10);
+		// rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+		// rightMaster.setSensorPhase(true); /* flip until sensor is in phase, or
+		// closed-loop will not work */
+		// rightMaster.config_kP(0, 2.0, 10);
+		// rightMaster.config_kI(0, 0.0, 10);
+		// rightMaster.config_kD(0, 0.0, 10);
+		// rightMaster.config_kF(0, 0.0, 10);
 	}
 
 	public void setFollowers() {
@@ -305,8 +305,8 @@ public class AutoDrive extends Subsystem {
 		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.kPIDLoopIdx,
 				Constants.kTimeoutMs);
 
-		rightMaster.setSensorPhase(false);
-		leftMaster.setSensorPhase(false);
+		rightMaster.setSensorPhase(true);
+		leftMaster.setSensorPhase(true);
 
 		// rightMaster.setInverted(true);
 		// leftMaster.setInverted(true);
@@ -369,7 +369,7 @@ public class AutoDrive extends Subsystem {
 		rightMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
 		/* set acceleration and vcruise velocity - see documentation */
 		rightMaster.configMotionCruiseVelocity(1500, Constants.kTimeoutMs);
-		rightMaster.configMotionAcceleration(2000, Constants.kTimeoutMs);
+		rightMaster.configMotionAcceleration(1500, Constants.kTimeoutMs);
 		/* zero the sensor */
 		rightMaster.getSensorCollection().setQuadraturePosition(0, 10);
 	}
@@ -388,7 +388,7 @@ public class AutoDrive extends Subsystem {
 		leftMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
 		/* set acceleration and vcruise velocity - see documentation */
 		leftMaster.configMotionCruiseVelocity(1500, Constants.kTimeoutMs);
-		leftMaster.configMotionAcceleration(2000, Constants.kTimeoutMs);
+		leftMaster.configMotionAcceleration(1500, Constants.kTimeoutMs);
 		// 3400
 		/* zero the sensor */
 		leftMaster.getSensorCollection().setQuadraturePosition(0, 10);

@@ -40,7 +40,7 @@ public class Climber extends StateSubsystem {
 	
 	public void moveNewClimber(double value) {
 		newClimber1.set(value);
-		newClimber2.set(value);
+		newClimber2.set(-value);
 
 	}
 
