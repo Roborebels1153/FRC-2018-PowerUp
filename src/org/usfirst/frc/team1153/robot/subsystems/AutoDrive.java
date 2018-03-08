@@ -249,39 +249,23 @@ public class AutoDrive extends Subsystem {
 		leftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
 		leftMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
-		final int kPeakCurrentAmps = 15; /* threshold to trigger current limit */
-		final int kPeakTimeMs = 0; /* how long after Peak current to trigger current limit */
-		final int kContinCurrentAmps = 10; /* hold current after limit is triggered */
+//		final int kPeakCurrentAmps = 15; /* threshold to trigger current limit */
+//		final int kPeakTimeMs = 0; /* how long after Peak current to trigger current limit */
+//		final int kContinCurrentAmps = 10; /* hold current after limit is triggered */
+//
+//		leftMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
+//		leftMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /* this is a necessary call to avoid errata. */
+//		leftMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
+//		leftMaster.enableCurrentLimit(true); /* honor initial setting */
 
-		leftMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
-		leftMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /* this is a necessary call to avoid errata. */
-		leftMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
-		leftMaster.enableCurrentLimit(true); /* honor initial setting */
+//		rightMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
+//		rightMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /* this is a necessary call to avoid errata. */
+//		rightMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
+//		rightMaster.enableCurrentLimit(true); /* honor initial setting */
+		
+		leftMaster.configOpenloopRamp(2, 10);
+		rightMaster.configOpenloopRamp(2, 10);
 
-		/* setup a basic closed loop */
-		leftMaster.setNeutralMode(NeutralMode.Brake);
-		// leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-		// leftMaster.setSensorPhase(true); /* flip until sensor is in phase, or
-		// closed-loop will not work */
-		// leftMaster.config_kP(0, 2.0, 10);
-		// leftMaster.config_kI(0, 0.0, 10);
-		// leftMaster.config_kD(0, 0.0, 10);
-		// leftMaster.config_kF(0, 0.0, 10);
-
-		rightMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
-		rightMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /* this is a necessary call to avoid errata. */
-		rightMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
-		rightMaster.enableCurrentLimit(true); /* honor initial setting */
-
-		/* setup a basic closed loop */
-		rightMaster.setNeutralMode(NeutralMode.Brake);
-		// rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-		// rightMaster.setSensorPhase(true); /* flip until sensor is in phase, or
-		// closed-loop will not work */
-		// rightMaster.config_kP(0, 2.0, 10);
-		// rightMaster.config_kI(0, 0.0, 10);
-		// rightMaster.config_kD(0, 0.0, 10);
-		// rightMaster.config_kF(0, 0.0, 10);
 	}
 
 	public void setFollowers() {
