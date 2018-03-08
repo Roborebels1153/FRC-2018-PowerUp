@@ -24,8 +24,6 @@ public class Constants {
 	public static final int TALON_TICKS_PER_INCH_LEFT = 136;
 	
 	public static final int TALON_TICKS_PER_INCH_RIGHT = 134;
-
-	
 	
 	
 

@@ -143,7 +143,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledInit() {
 		StateScheduler.getInstance().notifyDisabled();
-		
+
 	}
 
 	@Override
@@ -205,38 +205,38 @@ public class Robot extends TimedRobot {
 		} else if (robotPosEqual("Center") && switchPos == 'R') {
 
 			autoCommand = new CenterSwitch(50, 50, 5, 'R');
-//			autoCommand = new DriveDistanceCommand(30, -30);
+			// autoCommand = new DriveDistanceCommand(30, -30);
 			System.out.println("Center R");
-
 
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
 
 			autoCommand = new CenterSwitch(-50, 60, -5, 'L');
 			System.out.println("Center L");
 
-
 		} else if (robotPosEqual("Far Right")) {
 
 			autoCommand = new FarRightSwitchScore();
 			System.out.println("Far Right R");
 
-
-		} /*else if (robotPosEqual("Far Right") && switchPos == 'L') {
-
-			autoCommand = new FarRightOppositeSideSwitchScore();
-      System.out.println("Far Right Opposite Side");
-
-		}*/ /*else if (robotPosEqual("Far Left") && switchPos == 'R') {
-
-			autoCommand = new FarLeftOppositeSideSwitchScore();
-			System.out.println("Far Left Opposite Side");
-
-
-		}*/ else if (robotPosEqual("Far Left") && switchPos == 'L') {
+		} /*
+			 * else if (robotPosEqual("Far Right") && switchPos == 'L') {
+			 * 
+			 * autoCommand = new FarRightOppositeSideSwitchScore();
+			 * System.out.println("Far Right Opposite Side");
+			 * 
+			 * }
+			 */ /*
+				 * else if (robotPosEqual("Far Left") && switchPos == 'R') {
+				 * 
+				 * autoCommand = new FarLeftOppositeSideSwitchScore();
+				 * System.out.println("Far Left Opposite Side");
+				 * 
+				 * 
+				 * }
+				 */ else if (robotPosEqual("Far Left") && switchPos == 'L') {
 
 			autoCommand = new FarLeftSwitchScore();
 			System.out.println("Far Left L");
-
 
 		} else {
 
@@ -244,13 +244,6 @@ public class Robot extends TimedRobot {
 
 		}
 
-		
-		
-		// autoCommand = new DriveDistanceCommand(120, -120);
-
-		// autoCommand = new CenterSwitch(30, 50, 1.5, 'R');
-		// autoCommand = new CenterSwitch(30);
-		// autoCommand = new CenterSwitch(30);
 		autoCommand.start();
 	}
 
@@ -271,9 +264,8 @@ public class Robot extends TimedRobot {
 		StateScheduler.getInstance().notifyTeleop();
 
 		autoDrive.setServoValue(180);
-
 		autoDrive.resetEncoders();
-		//carriage.downInit();
+		// carriage.downInit();
 		autoDrive.resetEncoders();
 		vision.turnOffLight();
 
@@ -297,7 +289,6 @@ public class Robot extends TimedRobot {
 		System.out.println("left limist switch:" + collectorArmsVertical.getLeftLimitSwitchState());
 		System.out.println("right limist switch:" + collectorArmsVertical.getRightLimitSwitchState());
 
-		
 		if (oi.getDriverStick().getRawButtonPressed(6)) {
 			climber.moveNewClimber(0.6);
 		} else if (oi.getDriverStick().getRawButtonReleased(6)) {
@@ -309,23 +300,16 @@ public class Robot extends TimedRobot {
 		} else if (oi.getDriverStick().getRawButtonReleased(5)) {
 			climber.moveNewClimber(0);
 		}
-		
+
 		if (oi.getDriverStick().getRawButton(1)) {
-	    	State currState = Robot.climber.getState();
-	    	if (Climber.STATE_EXTENDED.equals(currState)) {
-	    		Robot.climber.setState(Climber.STATE_RETRACTED);
-	    	} else if (Climber.STATE_RETRACTED.equals(currState)) {
-	    		Robot.climber.setState(Climber.STATE_EXTENDED);
-	    	}
+			State currState = Robot.climber.getState();
+			if (Climber.STATE_EXTENDED.equals(currState)) {
+				Robot.climber.setState(Climber.STATE_RETRACTED);
+			} else if (Climber.STATE_RETRACTED.equals(currState)) {
+				Robot.climber.setState(Climber.STATE_EXTENDED);
+			}
 		}
 
-		// climber.moveNewClimber(oi.getOpStick().getRawAxis(1));
-
-		// if (oi.getDriverStick().getRawButtonPressed(4)) {
-		// autoDrive.arcadeDriveNoJoystick(0.8);
-		// } else if (oi.getDriverStick().getRawButtonReleased(4)) {
-		// autoDrive.arcadeDriveNoJoystick(0);
-		// }
 
 		autoDrive.createDriveSignal(true);
 

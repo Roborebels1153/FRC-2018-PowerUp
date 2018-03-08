@@ -55,6 +55,12 @@ public class AutoDrive extends Subsystem {
 
 	CheesyDriveHelper helper;
 
+	public enum RobotID {
+		PROTO, FINAL
+	}
+
+	public RobotID robotId;
+
 	/**
 	 * Assigns what the Robot should instantiate every time the Drive subsystem
 	 * initializes.
@@ -91,6 +97,8 @@ public class AutoDrive extends Subsystem {
 		ServoB = new Servo(2);
 
 		// robotDrive = new DifferentialDrive(leftMaster, rightMaster);
+
+		robotId = RobotID.PROTO;
 
 		configTalonOutput();
 		setEncoderAsFeedback();
@@ -176,7 +184,6 @@ public class AutoDrive extends Subsystem {
 
 	/**
 	 * Adjusting cheesy drive
-	 * 
 	 * @param value
 	 * @param deadband
 	 * @return
@@ -249,20 +256,24 @@ public class AutoDrive extends Subsystem {
 		leftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
 		leftMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
-//		final int kPeakCurrentAmps = 15; /* threshold to trigger current limit */
-//		final int kPeakTimeMs = 0; /* how long after Peak current to trigger current limit */
-//		final int kContinCurrentAmps = 10; /* hold current after limit is triggered */
-//
-//		leftMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
-//		leftMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /* this is a necessary call to avoid errata. */
-//		leftMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
-//		leftMaster.enableCurrentLimit(true); /* honor initial setting */
+		// final int kPeakCurrentAmps = 15; /* threshold to trigger current limit */
+		// final int kPeakTimeMs = 0; /* how long after Peak current to trigger current
+		// limit */
+		// final int kContinCurrentAmps = 10; /* hold current after limit is triggered
+		// */
+		//
+		// leftMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
+		// leftMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /* this is a necessary
+		// call to avoid errata. */
+		// leftMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
+		// leftMaster.enableCurrentLimit(true); /* honor initial setting */
 
-//		rightMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
-//		rightMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /* this is a necessary call to avoid errata. */
-//		rightMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
-//		rightMaster.enableCurrentLimit(true); /* honor initial setting */
-		
+		// rightMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
+		// rightMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /* this is a
+		// necessary call to avoid errata. */
+		// rightMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
+		// rightMaster.enableCurrentLimit(true); /* honor initial setting */
+
 		leftMaster.configOpenloopRamp(2, 10);
 		rightMaster.configOpenloopRamp(2, 10);
 
@@ -273,12 +284,6 @@ public class AutoDrive extends Subsystem {
 		leftBackSlave.follow(leftMaster);
 		rightFrontSlave.follow(rightMaster);
 		rightBackSlave.follow(rightMaster);
-
-		// leftFrontSlave.follow(leftMaster);
-		// leftBackSlave.follow(leftMaster);
-		// rightMaster.follow(leftMaster);
-		// rightFrontSlave.follow(leftMaster);
-		// rightBackSlave.follow(leftMaster);
 	}
 
 	public void setEncoderAsFeedback() {
@@ -287,12 +292,13 @@ public class AutoDrive extends Subsystem {
 		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.kPIDLoopIdx,
 				Constants.kTimeoutMs);
 
-		rightMaster.setSensorPhase(true);
-		leftMaster.setSensorPhase(true);
-
-		// rightMaster.setInverted(true);
-		// leftMaster.setInverted(true);
-
+		if (robotId == RobotID.PROTO) {
+			rightMaster.setSensorPhase(true);
+			leftMaster.setSensorPhase(true);
+		} else {
+			rightMaster.setSensorPhase(false);
+			leftMaster.setSensorPhase(false);
+		}
 	}
 
 	public void resetEncoders() {
