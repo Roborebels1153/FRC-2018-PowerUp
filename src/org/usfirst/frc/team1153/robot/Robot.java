@@ -10,11 +10,8 @@ package org.usfirst.frc.team1153.robot;
 import org.usfirst.frc.team1153.robot.commandGroups.CenterSwitch;
 import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardAndScore;
 import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardNoScore;
-import org.usfirst.frc.team1153.robot.commandGroups.FarLeftOppositeSideSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarLeftSwitchScore;
-import org.usfirst.frc.team1153.robot.commandGroups.FarRightOppositeSideSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarRightSwitchScore;
-import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
 import org.usfirst.frc.team1153.robot.lib.StateScheduler;
 import org.usfirst.frc.team1153.robot.lib.StateSubsystem.State;
 import org.usfirst.frc.team1153.robot.subsystems.ArmsHorizontal;
@@ -286,8 +283,8 @@ public class Robot extends TimedRobot {
 		// pto.disengagedInit();
 		// }
 
-		System.out.println("left limist switch:" + collectorArmsVertical.getLeftLimitSwitchState());
-		System.out.println("right limist switch:" + collectorArmsVertical.getRightLimitSwitchState());
+//		System.out.println("left limist switch:" + collectorArmsVertical.getLeftLimitSwitchState());
+//		System.out.println("right limist switch:" + collectorArmsVertical.getRightLimitSwitchState());
 
 		if (oi.getDriverStick().getRawButtonPressed(6)) {
 			climber.moveNewClimber(0.6);

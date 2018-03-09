@@ -184,6 +184,7 @@ public class AutoDrive extends Subsystem {
 
 	/**
 	 * Adjusting cheesy drive
+	 * 
 	 * @param value
 	 * @param deadband
 	 * @return
@@ -256,26 +257,34 @@ public class AutoDrive extends Subsystem {
 		leftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
 		leftMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
-		 final int kPeakCurrentAmps = 0; /* threshold to trigger current limit */
-		 final int kPeakTimeMs = 0; /* how long after Peak current to trigger current
-		 limit */
-		 final int kContinCurrentAmps = 0; /* hold current after limit is triggered
-		 */
-		
-		 leftMaster.configPeakCurrentLimit(kPeakCurrentAmps, 0);
-		 leftMaster.configPeakCurrentDuration(kPeakTimeMs, 0); /* this is a necessary
-		 call to avoid errata. */
-		 leftMaster.configContinuousCurrentLimit(kContinCurrentAmps, 0);
-		 leftMaster.enableCurrentLimit(false); /* honor initial setting */
+		final int kPeakCurrentAmps = 0; /* threshold to trigger current limit */
+		final int kPeakTimeMs = 0; /*
+									 * how long after Peak current to trigger current limit
+									 */
+		final int kContinCurrentAmps = 0; /*
+											 * hold current after limit is triggered
+											 */
 
-		 rightMaster.configPeakCurrentLimit(kPeakCurrentAmps, 0);
-		 rightMaster.configPeakCurrentDuration(kPeakTimeMs, 0); /* this is a
-		 necessary call to avoid errata. */
-		 rightMaster.configContinuousCurrentLimit(kContinCurrentAmps, 0);
-		 rightMaster.enableCurrentLimit(false); /* honor initial setting */
+//		leftMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
+//		leftMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /*
+//																 * this is a necessary call to avoid errata.
+//																 */
+//		leftMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
+//		leftMaster.enableCurrentLimit(true); /* honor initial setting */
 
-		leftMaster.configOpenloopRamp(2, 10);
-		rightMaster.configOpenloopRamp(2, 10);
+		leftMaster.setNeutralMode(NeutralMode.Brake);
+
+//		rightMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
+//		rightMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /*
+//																 * this is a necessary call to avoid errata.
+//																 */
+//		rightMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
+//		rightMaster.enableCurrentLimit(true); /* honor initial setting */
+
+		rightMaster.setNeutralMode(NeutralMode.Brake);
+
+		// leftMaster.configOpenloopRamp(2, 10);
+		// rightMaster.configOpenloopRamp(2, 10);
 
 	}
 
@@ -420,6 +429,22 @@ public class AutoDrive extends Subsystem {
 
 	public double getLeftMotorSpeed() {
 		return leftMaster.getSelectedSensorVelocity(0);
+	}
+	
+	public double getLeftMotorCurrent() {
+		return leftMaster.getOutputCurrent();
+	}
+	
+	public double getRightMotorCurrent() {
+		return rightMaster.getOutputCurrent();
+	}
+	
+	public double getLeftMotorOutputVoltage() {
+		return leftMaster.getMotorOutputVoltage();
+	}
+	
+	public double getRightMotorOutputVoltage() {
+		return rightMaster.getMotorOutputVoltage();
 	}
 
 	public void enactLeftMotorMotionMagic(double targetPos) {
