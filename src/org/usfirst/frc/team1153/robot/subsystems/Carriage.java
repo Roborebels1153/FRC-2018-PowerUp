@@ -3,6 +3,7 @@ package org.usfirst.frc.team1153.robot.subsystems;
 import org.usfirst.frc.team1153.robot.RobotMap;
 import org.usfirst.frc.team1153.robot.lib.StateSubsystem;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
@@ -19,10 +20,14 @@ public class Carriage extends StateSubsystem {
 	public static final State STATE_UP = new StateSubsystem.State("up");
 
 	private DoubleSolenoid articulator;
+	
+	private DigitalInput cubeLightSensor;
 
 	public Carriage() {
 		articulator = new DoubleSolenoid(RobotMap.SHOOTER_ARTICULATOR_A, RobotMap.SHOOTER_ARTICULATOR_B);
 
+		cubeLightSensor = new DigitalInput(RobotMap.CUBE_LIGHT_SENSOR);
+		
 		registerState(STATE_UP);
 		registerState(STATE_DOWN);
 	}
@@ -38,6 +43,10 @@ public class Carriage extends StateSubsystem {
 		} else {
 			articulator.set(Value.kForward);
 		}
+	}
+	
+	public boolean getCubeLightSensorValue() {
+		return cubeLightSensor.get();
 	}
 
 	/**

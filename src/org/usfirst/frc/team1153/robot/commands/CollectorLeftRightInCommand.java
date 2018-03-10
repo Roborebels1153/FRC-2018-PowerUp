@@ -9,13 +9,18 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class CollectorLeftRightInCommand extends Command {
+	
+	long startTime;
+	double waitTime;
 
-    public CollectorLeftRightInCommand() {
+    public CollectorLeftRightInCommand(double waitTime) {
+    	this.waitTime = waitTime;
         requires(Robot.collectorArmsHorizontal);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	startTime = System.currentTimeMillis();
     	Robot.collectorArmsHorizontal.setState(ArmsHorizontal.STATE_IN);
     }
 
@@ -26,12 +31,12 @@ public class CollectorLeftRightInCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	System.out.println("IsFinished called");
-        return true;
+        return (System.currentTimeMillis() - startTime) > (waitTime * 1000);
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	System.out.println("Ended Command");
+    	System.out.println("Ended Collector Left Right in Command");
     }
 
     // Called when another command which requires one or more of the same

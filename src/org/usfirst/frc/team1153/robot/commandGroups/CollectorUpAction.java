@@ -12,10 +12,8 @@ public class CollectorUpAction extends CommandGroup {
 	public CollectorUpAction () {
 		super();
 		
-		addSequential(new CollectorLeftRightInCommand());
-		addSequential(new WaitCommand(0.1));
-		addSequential(new CollectorUpDownInCommand());
-		addSequential(new WaitCommand(0.1));
+		addSequential(new CollectorLeftRightInCommand(0.1));
+		addSequential(new CollectorUpDownInCommand(0.4));
 		addSequential(new CollectorLeftRightOutCommand());
 
 	}

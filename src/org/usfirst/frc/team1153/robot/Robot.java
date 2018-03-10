@@ -105,9 +105,7 @@ public class Robot extends TimedRobot {
 	}
 
 	public static void updateDashboard() {
-		// if (++loops >= 10) {
-		// loops = 0;
-
+		
 		SmartDashboard.putNumber("Right Motor Motion Magic Error", autoDrive.getRightMotorClosedLoopError());
 
 		SmartDashboard.putNumber("Right Motor Sensor Position", autoDrive.getRightMotorSensorPosition());
@@ -121,14 +119,13 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("PID ERROR", autoDrive.gyroError());
 		SmartDashboard.putNumber("PID Output", autoDrive.getGyroOutput());
 
-		// }
-
 		SmartDashboard.putNumber("AD Gyro Reading", autoDrive.getGyroAngle());
-		// SmartDashboard.putNumber("Collector Motor Value",
-		// collector.getMotorOutput());
-
+		
 		SmartDashboard.putBoolean("Right Limit Switch", collectorArmsVertical.getRightLimitSwitchState());
 		SmartDashboard.putBoolean("Left Limit Switch", collectorArmsVertical.getLeftLimitSwitchState());
+		
+		SmartDashboard.putBoolean("Light Sensor", carriage.getCubeLightSensorValue());
+
 
 	}
 

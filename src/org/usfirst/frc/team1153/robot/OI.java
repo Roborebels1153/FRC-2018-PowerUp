@@ -16,6 +16,7 @@ import org.usfirst.frc.team1153.robot.commands.CollectorLeftRightToggleCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorOffCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorOnCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorReverseCommand;
+import org.usfirst.frc.team1153.robot.commands.CollectorUpActionCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorUpDownToggleCommand;
 import org.usfirst.frc.team1153.robot.commands.FireShooterCommand;
 import org.usfirst.frc.team1153.robot.commands.PTOToggleCommand;

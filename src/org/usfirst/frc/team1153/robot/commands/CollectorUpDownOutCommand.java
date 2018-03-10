@@ -10,30 +10,35 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class CollectorUpDownOutCommand extends Command {
 
-    public CollectorUpDownOutCommand() {
-        requires(Robot.collectorArmsVertical);
-    }
+	long startTime;
+	double waitTime;
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	Robot.collectorArmsVertical.setState(ArmsVertical.STATE_DOWN);
-    }
+	public CollectorUpDownOutCommand(double waitTime) {
+		this.waitTime = waitTime;
+		requires(Robot.collectorArmsVertical);
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    }
+	// Called just before this Command runs the first time
+	protected void initialize() {
+		startTime = System.currentTimeMillis();
+		Robot.collectorArmsVertical.setState(ArmsVertical.STATE_DOWN);
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return true;
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+	}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		return (System.currentTimeMillis() - startTime) > (waitTime * 1000);
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+	// Called once after isFinished returns true
+	protected void end() {
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+	}
 }

@@ -1,10 +1,8 @@
 package org.usfirst.frc.team1153.robot.commandGroups;
 
-import org.usfirst.frc.team1153.robot.commands.CarriageDownCommand;
 import org.usfirst.frc.team1153.robot.commands.CheckForLimitSwitchCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorLeftRightInCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorLeftRightOutCommand;
-import org.usfirst.frc.team1153.robot.commands.CollectorUpDownInCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorUpDownOutCommand;
 import org.usfirst.frc.team1153.robot.commands.WaitCommand;
 
@@ -17,11 +15,9 @@ public class CollectorDownAction extends CommandGroup {
 		
 		
 		
-		addSequential(new CollectorLeftRightInCommand());
-		addSequential(new WaitCommand(0.1));
-		addSequential(new CollectorUpDownOutCommand());
+		addSequential(new CollectorLeftRightInCommand(0));
+		addSequential(new CollectorUpDownOutCommand(0));
 		addSequential(new CheckForLimitSwitchCommand());
-		addSequential(new WaitCommand(0.1));
 		addSequential(new CollectorLeftRightOutCommand());
 
 		
