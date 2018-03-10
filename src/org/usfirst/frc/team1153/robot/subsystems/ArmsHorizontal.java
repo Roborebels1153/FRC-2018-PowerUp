@@ -53,12 +53,12 @@ public class ArmsHorizontal extends StateSubsystem {
 
 	@Override
 	protected State getDisabledDefaultState() {
-		return null;
+		return STATE_OUT;
 	}
 
 	@Override
 	protected State getTeleopDefaultState() {
-		return null;
+		return STATE_OUT;
 	}
 
 	@Override

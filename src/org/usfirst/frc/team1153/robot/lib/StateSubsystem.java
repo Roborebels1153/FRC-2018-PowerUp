@@ -30,9 +30,9 @@ public abstract class StateSubsystem extends Subsystem {
 	 * Calls the appropriate statePeriodic and stateInit methods
 	 */
 	public void run() {
-		if (state == null) {
-			return;
-		}
+//		if (state == null) {
+//			return;
+//		}
 		try {
 			if (!isInit) {
 				getClass().getMethod(state.name + "Init").invoke(this);

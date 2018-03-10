@@ -68,12 +68,12 @@ public class ArmsVertical extends StateSubsystem {
 
 	@Override
 	protected State getDisabledDefaultState() {
-		return null;
+		return STATE_UP;
 	}
 
 	@Override
 	protected State getTeleopDefaultState() {
-		return null;
+		return STATE_UP;
 	}
 
 	@Override
