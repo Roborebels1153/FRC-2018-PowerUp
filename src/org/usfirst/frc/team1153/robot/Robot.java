@@ -12,6 +12,7 @@ import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardAndScore;
 import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardNoScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarLeftSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarRightSwitchScore;
+import org.usfirst.frc.team1153.robot.commands.DriveDistanceCurvatureCommand;
 import org.usfirst.frc.team1153.robot.lib.StateScheduler;
 import org.usfirst.frc.team1153.robot.lib.StateSubsystem.State;
 import org.usfirst.frc.team1153.robot.subsystems.ArmsHorizontal;
@@ -237,7 +238,10 @@ public class Robot extends TimedRobot {
 			autoCommand = new DriveForwardNoScore();
 
 		}
-
+		
+		//autoCommand = new DriveDistanceCurvatureCommand(45, 1, 1);
+		autoCommand = new DriveForwardAndScore();
+		
 		autoCommand.start();
 	}
 

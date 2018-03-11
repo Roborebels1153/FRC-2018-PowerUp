@@ -15,11 +15,13 @@ public class DriveDistanceCommand extends Command {
 
 	StringBuilder sb = new StringBuilder();
 	long timeAtStart;
+	double waitTime;
 
-	public DriveDistanceCommand(double targetPosLeft, double targetPosRight) {
+	public DriveDistanceCommand(double targetPosLeft, double targetPosRight, double wait) {
 		requires(Robot.autoDrive);
 		this.targetPosRight = Constants.TALON_TICKS_PER_INCH_RIGHT * targetPosRight;
 		this.targetPosLeft = Constants.TALON_TICKS_PER_INCH_LEFT * targetPosLeft;
+		this.waitTime = wait;
 	}
 
 	// Called just before this Command runs the first time
@@ -62,7 +64,7 @@ public class DriveDistanceCommand extends Command {
 
 //		return (rightMotorsStopped && leftMotorsStopped && rightTolerated && leftTolerated || System.currentTimeMillis() - timeAtStart > 2500);
 		
-		return (rightMotorsStopped && leftMotorsStopped && rightTolerated && leftTolerated);
+		return (rightMotorsStopped && leftMotorsStopped && rightTolerated && leftTolerated || ((System.currentTimeMillis() - timeAtStart) > (waitTime * 1000)));
 
 
 	}

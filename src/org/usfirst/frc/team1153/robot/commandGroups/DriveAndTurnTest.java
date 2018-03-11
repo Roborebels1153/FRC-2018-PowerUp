@@ -13,7 +13,7 @@ public class DriveAndTurnTest extends CommandGroup {
     public DriveAndTurnTest() {
     	super();
     	
-    	addSequential(new DriveDistanceCommand(15000, -15000));
+    	addSequential(new DriveDistanceCommand(15000, -15000, 10));
     //	addSequential (new GyroTurnCommand(90));
         // Add Commands here:
         // e.g. addSequential(new Command1());

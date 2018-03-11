@@ -17,7 +17,7 @@ public class DriveForwardNoScore extends CommandGroup {
 		if (Robot.initialWait > 0.0) {
 			addSequential(new WaitCommand(Robot.initialWait));
 		}
-		addSequential(new DriveDistanceCommand(baselineToSwitchDistance, -1  * baselineToSwitchDistance));
+		addSequential(new DriveDistanceCommand(baselineToSwitchDistance, -1  * baselineToSwitchDistance, 3));
 	}
 
 }

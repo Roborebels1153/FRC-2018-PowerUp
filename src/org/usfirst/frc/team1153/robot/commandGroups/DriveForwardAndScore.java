@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class DriveForwardAndScore extends CommandGroup {
 	
-	double baselineToSwitchDistance = 112;
+	double baselineToSwitchDistance = 140;
 	
 	public DriveForwardAndScore () {
 		super();
@@ -19,7 +19,7 @@ public class DriveForwardAndScore extends CommandGroup {
 			addSequential(new WaitCommand(Robot.initialWait));
 		}
 		addSequential (new CarriageUpCommand());
-		addSequential(new DriveDistanceCommand(baselineToSwitchDistance, -1  * baselineToSwitchDistance));
+		addSequential(new DriveDistanceCommand(baselineToSwitchDistance, -1  * baselineToSwitchDistance, 3));
 		addSequential(new FireShooterCommand());
 		
 	}

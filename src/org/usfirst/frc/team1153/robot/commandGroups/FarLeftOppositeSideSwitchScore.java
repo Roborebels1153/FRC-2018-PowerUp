@@ -27,14 +27,14 @@ public class FarLeftOppositeSideSwitchScore extends CommandGroup {
 		}
 	
 		addSequential(new CarriageUpCommand());
-		addSequential(new DriveDistanceCommand(baselineToFirstTurnDistance, -1 * baselineToFirstTurnDistance));
+		addSequential(new DriveDistanceCommand(baselineToFirstTurnDistance, -1 * baselineToFirstTurnDistance, 3));
 		addSequential(new GyroTurnAbsoluteCommand(90));
-		addSequential(new DriveDistanceCommand(driveAcrossFieldDistance, -1 * driveAcrossFieldDistance));
+		addSequential(new DriveDistanceCommand(driveAcrossFieldDistance, -1 * driveAcrossFieldDistance, 3));
 		//TODO: add gyro check to make sure we are still straight after hitting the bump
 		addSequential(new GyroTurnAbsoluteCommand(90));
-		addSequential(new DriveDistanceCommand(driveBackTowardsBaselineDistance, -1 * driveBackTowardsBaselineDistance));
+		addSequential(new DriveDistanceCommand(driveBackTowardsBaselineDistance, -1 * driveBackTowardsBaselineDistance, 3));
 		addSequential(new GyroTurnAbsoluteCommand(135));
-		addSequential(new DriveDistanceCommand(driveToScoreDistance, -1 * driveToScoreDistance));
+		addSequential(new DriveDistanceCommand(driveToScoreDistance, -1 * driveToScoreDistance, 3));
 		addSequential(new FireShooterCommand());
 
 

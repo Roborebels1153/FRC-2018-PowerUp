@@ -74,9 +74,9 @@ public class AutoDrive extends Subsystem {
 		rightFrontSlave = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_SLAVE);
 
 		gyro = new ADXRS450_Gyro();
-		double kP = 0.016;
-		double kI = 0.00001;
-		double kD = 0.045;
+		double kP = 0.02;
+		double kI = 0;
+		double kD = 0.015;
 
 		gyroOutput = new DummyOutput();
 
@@ -369,7 +369,7 @@ public class AutoDrive extends Subsystem {
 
 		rightMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
 		/* set acceleration and vcruise velocity - see documentation */
-		rightMaster.configMotionCruiseVelocity((int)(rightCoefficient * 1500), Constants.kTimeoutMs);
+		rightMaster.configMotionCruiseVelocity((int)(rightCoefficient * 2500), Constants.kTimeoutMs);
 		rightMaster.configMotionAcceleration(1500, Constants.kTimeoutMs);
 		/* zero the sensor */
 		rightMaster.getSensorCollection().setQuadraturePosition(0, 10);
@@ -388,7 +388,7 @@ public class AutoDrive extends Subsystem {
 
 		leftMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
 		/* set acceleration and vcruise velocity - see documentation */
-		leftMaster.configMotionCruiseVelocity((int)(leftCoefficient * 1500), Constants.kTimeoutMs);
+		leftMaster.configMotionCruiseVelocity((int)(leftCoefficient * 2500), Constants.kTimeoutMs);
 		leftMaster.configMotionAcceleration(1500, Constants.kTimeoutMs);
 		// 3400
 		/* zero the sensor */

@@ -37,12 +37,12 @@ public class CenterSwitch extends CommandGroup {
 		}
 		
 		addSequential(new CarriageUpCommand());
-		addSequential(new DriveDistanceCommand(12, -1 * 12));
+		addSequential(new DriveDistanceCommand(12, -1 * 12, 2));
 		addSequential(new GyroTurnAbsoluteCommand(degreesToTurn));
-		addSequential(new DriveDistanceCommand(distance, -1 * distance));
+		addSequential(new DriveDistanceCommand(distance, -1 * distance, 2));
 		addSequential(new GyroTurnAbsoluteCommand(degreesToTurn2));
 		//addSequential(new VisionDriveSwitch(switchSide));
-		addSequential(new DriveDistanceCommand(70, -1 * 70));
+		addSequential(new DriveDistanceCommand(70, -1 * 70, 2));
 		addSequential(new WaitCommand(0.05));
 		addSequential(new FireShooterCommand());
 
