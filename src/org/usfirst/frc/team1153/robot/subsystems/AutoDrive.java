@@ -308,7 +308,11 @@ public class AutoDrive extends Subsystem {
 			rightMaster.setSensorPhase(false);
 			leftMaster.setSensorPhase(false);
 		}
-	}
+		
+		
+
+		}
+	
 
 	public void resetEncoders() {
 		leftMaster.getSensorCollection().setQuadraturePosition(0, 10);
@@ -352,7 +356,7 @@ public class AutoDrive extends Subsystem {
 		return rightMaster.getSelectedSensorVelocity(0);
 	}
 
-	public void configRightMotionMagic() {
+	public void configRightMotionMagic(double rightCoefficient) {
 		/* Set relevant frame periods to be at least as fast as periodic rate */
 		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
 		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
@@ -365,13 +369,13 @@ public class AutoDrive extends Subsystem {
 
 		rightMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
 		/* set acceleration and vcruise velocity - see documentation */
-		rightMaster.configMotionCruiseVelocity(1500, Constants.kTimeoutMs);
+		rightMaster.configMotionCruiseVelocity((int)(rightCoefficient * 1500), Constants.kTimeoutMs);
 		rightMaster.configMotionAcceleration(1500, Constants.kTimeoutMs);
 		/* zero the sensor */
 		rightMaster.getSensorCollection().setQuadraturePosition(0, 10);
 	}
 
-	public void configLeftMotionMagic() {
+	public void configLeftMotionMagic(double leftCoefficient) {
 		/* Set relevant frame periods to be at least as fast as periodic rate */
 		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
 		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
@@ -384,7 +388,7 @@ public class AutoDrive extends Subsystem {
 
 		leftMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
 		/* set acceleration and vcruise velocity - see documentation */
-		leftMaster.configMotionCruiseVelocity(1500, Constants.kTimeoutMs);
+		leftMaster.configMotionCruiseVelocity((int)(leftCoefficient * 1500), Constants.kTimeoutMs);
 		leftMaster.configMotionAcceleration(1500, Constants.kTimeoutMs);
 		// 3400
 		/* zero the sensor */

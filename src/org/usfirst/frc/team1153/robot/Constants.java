@@ -21,10 +21,14 @@ public class Constants {
 	 */
 	public static final int kTimeoutMs = 10;
 	
-	public static final int TALON_TICKS_PER_INCH_LEFT = 136;
+//	public static final int TALON_TICKS_PER_INCH_LEFT = 136;
+//	
+//	public static final int TALON_TICKS_PER_INCH_RIGHT = 134;
 	
-	public static final int TALON_TICKS_PER_INCH_RIGHT = 134;
 	
+public static final int TALON_TICKS_PER_INCH_LEFT = 191;
+	
+	public static final int TALON_TICKS_PER_INCH_RIGHT = 195;
 	
 
 }
