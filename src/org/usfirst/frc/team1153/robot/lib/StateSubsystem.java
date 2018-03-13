@@ -31,6 +31,11 @@ public abstract class StateSubsystem extends Subsystem {
 	 */
 	public void run() {
 		try {
+			if (state == null) {
+				//System.out.println("Returning from " + getClass().getName());
+				return;
+			}
+			//System.out.println("isInit: " + isInit + ", state: " + state + ", from " + getClass().getName());
 			if (!isInit) {
 				getClass().getMethod(state.name + "Init").invoke(this);
 				isInit = true;
@@ -75,18 +80,11 @@ public abstract class StateSubsystem extends Subsystem {
 					+ "), maybe missing calls to registerState(StateSubsystem.State)?");
 		}
 		// Only call the initialize methods if the state has actually changed
-		if (state != in) {
+		if (in != state) {
+			state = in;
 			isInit = false;
 		}
-		state = in;
 	}
-
-	/**
-	 * Set the state of the subsystem when robot is disabled
-	 * 
-	 * @return the int state id for disabled
-	 */
-	protected abstract StateSubsystem.State getDisabledDefaultState();
 
 	/**
 	 * Set the state of the subsystem when robot is in teleop
@@ -106,10 +104,6 @@ public abstract class StateSubsystem extends Subsystem {
 	 * Called when the robot first enters the disabled state
 	 */
 	public void robotDisabled() {
-		State state = getDisabledDefaultState();
-		if (state != null) {
-			setState(state);
-		}
 	}
 
 	/**

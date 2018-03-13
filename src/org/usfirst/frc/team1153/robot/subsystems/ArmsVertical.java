@@ -1,7 +1,9 @@
 package org.usfirst.frc.team1153.robot.subsystems;
 
+import org.usfirst.frc.team1153.robot.Robot;
 import org.usfirst.frc.team1153.robot.RobotMap;
 import org.usfirst.frc.team1153.robot.lib.StateSubsystem;
+import org.usfirst.frc.team1153.robot.lib.StateSubsystem.State;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -67,13 +69,9 @@ public class ArmsVertical extends StateSubsystem {
 	}
 
 	@Override
-	protected State getDisabledDefaultState() {
-		return STATE_UP;
-	}
-
-	@Override
 	protected State getTeleopDefaultState() {
-		return STATE_UP;
+		State currState = Robot.collectorArmsVertical.getState();
+		return currState;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1153.robot.subsystems;
 
+import org.usfirst.frc.team1153.robot.Robot;
 import org.usfirst.frc.team1153.robot.RobotMap;
 import org.usfirst.frc.team1153.robot.lib.StateSubsystem;
 
@@ -48,6 +49,12 @@ public class Carriage extends StateSubsystem {
 	public boolean getCubeLightSensorValue() {
 		return cubeLightSensor.get();
 	}
+	
+	public Value getSolenoidState() {
+		Value value  = articulator.get();
+		System.out.println(value);
+		return value;
+	}
 
 	/**
 	 * Called when shooter first begins fire state
@@ -67,24 +74,20 @@ public class Carriage extends StateSubsystem {
 	 * Called when shooter first begins fire state
 	 */
 	public void upPeriodic() {
-
+		System.out.println("Collector up periodic");
 	}
 
 	/**
 	 * Called when shooter first begins retract state
 	 */
 	public void downPeriodic() {
-
-	}
-
-	@Override
-	public StateSubsystem.State getDisabledDefaultState() {
-		return STATE_UP;
+		System.out.println("Collector down periodic");
 	}
 
 	@Override
 	public StateSubsystem.State getTeleopDefaultState() {
-		return null;
+		State currState = Robot.carriage.getState();
+		return currState;
 	}
 
 	@Override

@@ -66,12 +66,6 @@ public class Climber extends StateSubsystem {
 	}
 
 	@Override
-	protected State getDisabledDefaultState() {
-		// TODO Auto-generated method stub
-		return STATE_RETRACTED;
-	}
-
-	@Override
 	protected State getTeleopDefaultState() {
 		// TODO Auto-generated method stub
 		return STATE_RETRACTED;

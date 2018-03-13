@@ -39,13 +39,6 @@ public class PTO extends StateSubsystem {
 	public void disengagedPeriodic(){
 		
 	}
-	
-	
-	@Override
-	protected State getDisabledDefaultState() {
-		// TODO Auto-generated method stub
-		return STATE_DISENGAGED;
-	}
 
 	@Override
 	protected State getTeleopDefaultState() {

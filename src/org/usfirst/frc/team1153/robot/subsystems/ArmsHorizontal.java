@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1153.robot.subsystems;
 
+import org.usfirst.frc.team1153.robot.Robot;
 import org.usfirst.frc.team1153.robot.RobotMap;
 import org.usfirst.frc.team1153.robot.lib.StateSubsystem;
 
@@ -52,13 +53,9 @@ public class ArmsHorizontal extends StateSubsystem {
 	}
 
 	@Override
-	protected State getDisabledDefaultState() {
-		return STATE_OUT;
-	}
-
-	@Override
 	protected State getTeleopDefaultState() {
-		return STATE_OUT;
+		State currState = Robot.collectorArmsHorizontal.getState();
+		return currState;
 	}
 
 	@Override

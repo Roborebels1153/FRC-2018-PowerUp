@@ -2,6 +2,7 @@ package org.usfirst.frc.team1153.robot.commands;
 
 import org.usfirst.frc.team1153.robot.Robot;
 import org.usfirst.frc.team1153.robot.lib.StateSubsystem;
+import org.usfirst.frc.team1153.robot.subsystems.Climber;
 import org.usfirst.frc.team1153.robot.subsystems.PTO;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -22,7 +23,9 @@ public class PTOToggleCommand extends Command {
     		Robot.pto.setState(PTO.STATE_DISENGAGED);
     	} else if (PTO.STATE_DISENGAGED.equals(currState)) {
     		Robot.pto.setState(PTO.STATE_ENGAGED);
-    	}
+    	} else if (currState == null) {
+			Robot.pto.setState(PTO.STATE_DISENGAGED);
+		}
     }
 
     // Called repeatedly when this Command is scheduled to run

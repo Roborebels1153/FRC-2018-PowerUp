@@ -23,7 +23,8 @@ public class DriveDistanceCurvatureCommand extends Command {
 		requires(Robot.autoDrive);
 		this.leftScaleValue = leftCoefficient;
 		this.rightScaleValue = rightCoefficient;
-		this.targetPosRight = Constants.TALON_TICKS_PER_INCH_RIGHT * setPoint * rightCoefficient ;
+		// right side must be inverted
+		this.targetPosRight = Constants.TALON_TICKS_PER_INCH_RIGHT * setPoint * rightCoefficient * -1;
 		this.targetPosLeft = Constants.TALON_TICKS_PER_INCH_LEFT * setPoint * leftCoefficient;
 	}
 

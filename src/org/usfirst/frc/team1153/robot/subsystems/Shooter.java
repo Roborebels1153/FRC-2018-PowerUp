@@ -131,11 +131,6 @@ public class Shooter extends StateSubsystem {
 	}
 
 	@Override
-	public StateSubsystem.State getDisabledDefaultState() {
-		return STATE_RETRACT;
-	}
-
-	@Override
 	public StateSubsystem.State getTeleopDefaultState() {
 		return STATE_RETRACT;
 	}

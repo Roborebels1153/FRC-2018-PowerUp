@@ -239,8 +239,8 @@ public class Robot extends TimedRobot {
 
 		}
 		
-		//autoCommand = new DriveDistanceCurvatureCommand(45, 1, 1);
-		autoCommand = new DriveForwardAndScore();
+		autoCommand = new DriveDistanceCurvatureCommand(60, 1, 0.3);
+		//autoCommand = new DriveForwardAndScore();
 		
 		autoCommand.start();
 	}

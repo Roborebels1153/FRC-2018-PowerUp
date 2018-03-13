@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class DriveForwardAndScore extends CommandGroup {
 	
-	double baselineToSwitchDistance = 140;
+	double baselineToSwitchDistance = 105;
 	
 	public DriveForwardAndScore () {
 		super();
