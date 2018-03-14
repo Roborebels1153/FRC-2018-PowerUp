@@ -22,12 +22,12 @@ public class Carriage extends StateSubsystem {
 
 	private DoubleSolenoid articulator;
 	
-	private DigitalInput cubeLightSensor;
+	private DigitalInput cubeLimitSwitch;
 
 	public Carriage() {
 		articulator = new DoubleSolenoid(RobotMap.SHOOTER_ARTICULATOR_A, RobotMap.SHOOTER_ARTICULATOR_B);
 
-		cubeLightSensor = new DigitalInput(RobotMap.CUBE_LIGHT_SENSOR);
+		cubeLimitSwitch = new DigitalInput(RobotMap.CUBE_LIGHT_SENSOR);
 		
 		registerState(STATE_UP);
 		registerState(STATE_DOWN);
@@ -46,8 +46,8 @@ public class Carriage extends StateSubsystem {
 		}
 	}
 	
-	public boolean getCubeLightSensorValue() {
-		return cubeLightSensor.get();
+	public boolean getCubeLimitSwitchState() {
+		return cubeLimitSwitch.get();
 	}
 	
 	public Value getSolenoidState() {
@@ -74,14 +74,14 @@ public class Carriage extends StateSubsystem {
 	 * Called when shooter first begins fire state
 	 */
 	public void upPeriodic() {
-		System.out.println("Collector up periodic");
+		//System.out.println("Collector up periodic");
 	}
 
 	/**
 	 * Called when shooter first begins retract state
 	 */
 	public void downPeriodic() {
-		System.out.println("Collector down periodic");
+		//System.out.println("Collector down periodic");
 	}
 
 	@Override

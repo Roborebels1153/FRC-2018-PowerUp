@@ -12,7 +12,6 @@ import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardAndScore;
 import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardNoScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarLeftSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarRightSwitchScore;
-import org.usfirst.frc.team1153.robot.commands.DriveDistanceCurvatureCommand;
 import org.usfirst.frc.team1153.robot.lib.StateScheduler;
 import org.usfirst.frc.team1153.robot.lib.StateSubsystem.State;
 import org.usfirst.frc.team1153.robot.subsystems.ArmsHorizontal;
@@ -106,7 +105,7 @@ public class Robot extends TimedRobot {
 	}
 
 	public static void updateDashboard() {
-		
+
 		SmartDashboard.putNumber("Right Motor Motion Magic Error", autoDrive.getRightMotorClosedLoopError());
 
 		SmartDashboard.putNumber("Right Motor Sensor Position", autoDrive.getRightMotorSensorPosition());
@@ -121,12 +120,11 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("PID Output", autoDrive.getGyroOutput());
 
 		SmartDashboard.putNumber("AD Gyro Reading", autoDrive.getGyroAngle());
-		
+
 		SmartDashboard.putBoolean("Right Limit Switch", collectorArmsVertical.getRightLimitSwitchState());
 		SmartDashboard.putBoolean("Left Limit Switch", collectorArmsVertical.getLeftLimitSwitchState());
-		
-		SmartDashboard.putBoolean("Light Sensor", carriage.getCubeLightSensorValue());
 
+		SmartDashboard.putBoolean("Light Sensor", carriage.getCubeLimitSwitchState());
 
 	}
 
@@ -238,10 +236,11 @@ public class Robot extends TimedRobot {
 			autoCommand = new DriveForwardNoScore();
 
 		}
-		
-		autoCommand = new DriveDistanceCurvatureCommand(60, 1, 0.3);
-		//autoCommand = new DriveForwardAndScore();
-		
+
+		// autoCommand = new DriveDistanceCurvatureCommand(60, 1, 0.3);
+		// autoCommand = new DriveForwardAndScore();
+
+		// autoCommand = new CenterSwitch(50, 50, 5, 'R');
 		autoCommand.start();
 	}
 
@@ -278,15 +277,6 @@ public class Robot extends TimedRobot {
 		StateScheduler.getInstance().runAll();
 		updateDashboard();
 
-		// if (oi.getDriverStick().getRawButtonPressed(3)) {
-		// pto.engagedInit();
-		// } else if (oi.getDriverStick().getRawButtonReleased(3)) {
-		// pto.disengagedInit();
-		// }
-
-//		System.out.println("left limist switch:" + collectorArmsVertical.getLeftLimitSwitchState());
-//		System.out.println("right limist switch:" + collectorArmsVertical.getRightLimitSwitchState());
-
 		if (oi.getDriverStick().getRawButtonPressed(6)) {
 			climber.moveNewClimber(0.6);
 		} else if (oi.getDriverStick().getRawButtonReleased(6)) {
@@ -307,7 +297,6 @@ public class Robot extends TimedRobot {
 				Robot.climber.setState(Climber.STATE_EXTENDED);
 			}
 		}
-
 
 		autoDrive.createDriveSignal(true);
 

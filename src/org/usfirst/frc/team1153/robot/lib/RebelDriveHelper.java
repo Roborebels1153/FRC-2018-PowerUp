@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1153.robot.lib;
 
-public class CheesyDriveHelper {
+public class RebelDriveHelper {
 	private static final double kThrottleDeadband = 0.08;//.02
     private static final double kWheelDeadband = 0.04;//0.02
 
@@ -26,7 +26,7 @@ public class CheesyDriveHelper {
     private double mQuickStopAccumlator = 0.0;
     private double mNegInertiaAccumlator = 0.0;
 
-    public DriveSignal cheesyDrive(double throttle, double wheel, boolean isQuickTurn,
+    public DriveSignal rebelDrive(double throttle, double wheel, boolean isQuickTurn,
             boolean isHighGear) {
 
         wheel = handleDeadband(wheel, kWheelDeadband);

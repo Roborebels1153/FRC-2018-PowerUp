@@ -11,7 +11,7 @@ import org.usfirst.frc.team1153.robot.Constants;
 import org.usfirst.frc.team1153.robot.OI;
 import org.usfirst.frc.team1153.robot.Robot;
 import org.usfirst.frc.team1153.robot.RobotMap;
-import org.usfirst.frc.team1153.robot.lib.CheesyDriveHelper;
+import org.usfirst.frc.team1153.robot.lib.RebelDriveHelper;
 import org.usfirst.frc.team1153.robot.lib.DriveSignal;
 import org.usfirst.frc.team1153.robot.lib.DummyOutput;
 
@@ -53,7 +53,7 @@ public class AutoDrive extends Subsystem {
 		High, Low
 	}
 
-	CheesyDriveHelper helper;
+	RebelDriveHelper helper;
 
 	public enum RobotID {
 		PROTO, FINAL
@@ -91,7 +91,7 @@ public class AutoDrive extends Subsystem {
 
 		newShifter = new Solenoid(11, 0);
 
-		helper = new CheesyDriveHelper();
+		helper = new RebelDriveHelper();
 
 		ServoA = new Servo(3);
 		ServoB = new Servo(2);
@@ -137,7 +137,7 @@ public class AutoDrive extends Subsystem {
 			rightMaster.set(ControlMode.PercentOutput, gyroOutput.getOutput());
 		} else {
 			gyroPID.disable();
-			DriveSignal autoDriveSignal = helper.cheesyDrive(0, 0, false, false);
+			DriveSignal autoDriveSignal = helper.rebelDrive(0, 0, false, false);
 			Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, autoDriveSignal);
 		}
 	}
@@ -218,7 +218,7 @@ public class AutoDrive extends Subsystem {
 			rotateValue = rawRotateValue;
 		}
 
-		DriveSignal driveSignal = helper.cheesyDrive(-1 * moveValue, 0.8 * rotateValue, true, false);
+		DriveSignal driveSignal = helper.rebelDrive(-1 * moveValue, 0.8 * rotateValue, true, false);
 		Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
 
 	}
@@ -239,7 +239,7 @@ public class AutoDrive extends Subsystem {
 	public void cheesyDriveWithoutJoysticks(double move, double rotate) {
 		double moveValue = move;
 		double rotateValue = rotate;
-		DriveSignal driveSignal = helper.cheesyDrive(-1 * moveValue, rotateValue, false, false);
+		DriveSignal driveSignal = helper.rebelDrive(-1 * moveValue, rotateValue, false, false);
 		Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
 	}
 

@@ -2,7 +2,7 @@ package org.usfirst.frc.team1153.robot.commands;
 
 import org.usfirst.frc.team1153.robot.OI;
 import org.usfirst.frc.team1153.robot.Robot;
-import org.usfirst.frc.team1153.robot.lib.CheesyDriveHelper;
+import org.usfirst.frc.team1153.robot.lib.RebelDriveHelper;
 import org.usfirst.frc.team1153.robot.lib.DriveSignal;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -15,11 +15,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class DriveWithHelperCommand extends Command {
 
-	CheesyDriveHelper helper;
+	RebelDriveHelper helper;
 
 	public DriveWithHelperCommand() {
 		requires(Robot.autoDrive);
-		helper = new CheesyDriveHelper();
+		helper = new RebelDriveHelper();
 	}
 
 	// Called just before this Command runs the first time
@@ -41,7 +41,7 @@ public class DriveWithHelperCommand extends Command {
 		boolean quickTurn = Robot.autoDrive.quickTurnController();
 		double moveValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_RIGHT_X);
 		double rotateValue = Robot.oi.getDriverStick().getRawAxis(OI.JOYSTICK_LEFT_Y);
-		DriveSignal driveSignal = helper.cheesyDrive(moveValue, rotateValue, quickTurn, false);
+		DriveSignal driveSignal = helper.rebelDrive(moveValue, rotateValue, quickTurn, false);
 		Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
 
 		// SmartDashboard.putNumber("Cheesy Move Value", moveValue);
