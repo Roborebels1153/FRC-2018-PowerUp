@@ -13,6 +13,8 @@ import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardNoScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarLeftSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarRightSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FastCenterSwitch;
+import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
+import org.usfirst.frc.team1153.robot.commands.GyroTurnAbsoluteCommand;
 import org.usfirst.frc.team1153.robot.lib.StateScheduler;
 import org.usfirst.frc.team1153.robot.lib.StateSubsystem.State;
 import org.usfirst.frc.team1153.robot.subsystems.ArmsHorizontal;
@@ -200,13 +202,13 @@ public class Robot extends TimedRobot {
 		} else if (robotPosEqual("Center") && switchPos == 'R') {
 
 			//autoCommand = new CenterSwitch(50, 50, 5, 'R');
-			autoCommand = new FastCenterSwitch(25, 110);
+			autoCommand = new FastCenterSwitch(27, 110, -1);
 			System.out.println("Center R");
 
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
 
 			//autoCommand = new CenterSwitch(-50, 60, -5, 'L');
-			autoCommand = new FastCenterSwitch(-25, 110);
+			autoCommand = new FastCenterSwitch(-26, 113,1);
 
 			System.out.println("Center L");
 
@@ -245,6 +247,8 @@ public class Robot extends TimedRobot {
 		// autoCommand = new DriveForwardAndScore();
 
 		// autoCommand = new CenterSwitch(50, 50, 5, 'R');
+		//autoCommand = new GyroTurnAbsoluteCommand(25, 5);
+		autoCommand = new DriveDistanceCommand(-2346, -2346, 4);
 		autoCommand.start();
 	}
 

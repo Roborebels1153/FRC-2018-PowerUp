@@ -11,11 +11,16 @@ public class GyroTurnAbsoluteCommand extends Command {
 
 	long startTime;
 	double setpoint;
+	int error;
 	
     public GyroTurnAbsoluteCommand(double setpoint) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     	this.setpoint = setpoint;
+    	this.error = 5;
+    }
+    
+    public GyroTurnAbsoluteCommand(double setpoint, int error) {
+    	this.setpoint = setpoint;
+    	this.error = error;
     }
 
     // Called just before this Command runs the first time
@@ -34,8 +39,7 @@ public class GyroTurnAbsoluteCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-       // return System.currentTimeMillis() - startTime >= 2000;
-    	return System.currentTimeMillis() - startTime >= 2000 || (Math.abs(Robot.autoDrive.getGyroAngle()) < Math.abs(setpoint) + 5 && Math.abs(Robot.autoDrive.getGyroAngle()) > Math.abs(setpoint) - 5);
+    	return System.currentTimeMillis() - startTime >= 2000 || (Robot.autoDrive.getGyroAngle() < setpoint + error && Robot.autoDrive.getGyroAngle() > setpoint - error);
     }
 
     // Called once after isFinished returns true
