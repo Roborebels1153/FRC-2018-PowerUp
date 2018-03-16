@@ -11,16 +11,16 @@ public class GyroTurnAbsoluteCommand extends Command {
 
 	long startTime;
 	double setpoint;
-	int error;
+	double tolerance;
 	
     public GyroTurnAbsoluteCommand(double setpoint) {
     	this.setpoint = setpoint;
-    	this.error = 5;
+    	this.tolerance = 5;
     }
     
-    public GyroTurnAbsoluteCommand(double setpoint, int error) {
+    public GyroTurnAbsoluteCommand(double setpoint, double tolerance) {
     	this.setpoint = setpoint;
-    	this.error = error;
+    	this.tolerance = tolerance;
     }
 
     // Called just before this Command runs the first time
@@ -39,7 +39,7 @@ public class GyroTurnAbsoluteCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return System.currentTimeMillis() - startTime >= 2000 || (Robot.autoDrive.getGyroAngle() < setpoint + error && Robot.autoDrive.getGyroAngle() > setpoint - error);
+    	return System.currentTimeMillis() - startTime >= 2000 || Math.abs(Robot.autoDrive.getGyroAngle() - setpoint) < tolerance;/*(Robot.autoDrive.getGyroAngle() < setpoint + tolerance && Robot.autoDrive.getGyroAngle() > setpoint - tolerance);*/
     }
 
     // Called once after isFinished returns true

@@ -74,9 +74,9 @@ public class AutoDrive extends Subsystem {
 		rightFrontSlave = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_SLAVE);
 
 		gyro = new ADXRS450_Gyro();
-		double kP = 0.02;
-		double kI = 0;
-		double kD = 0.015;
+		double kP = 0.02;//0.02;
+		double kI = 0;//0;
+		double kD = 0;//0.015;
 
 		gyroOutput = new DummyOutput();
 

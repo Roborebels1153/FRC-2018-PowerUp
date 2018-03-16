@@ -3,6 +3,7 @@ package org.usfirst.frc.team1153.robot.commandGroups;
 import org.usfirst.frc.team1153.robot.Robot;
 import org.usfirst.frc.team1153.robot.commands.CarriageDownCommand;
 import org.usfirst.frc.team1153.robot.commands.CarriageUpCommand;
+import org.usfirst.frc.team1153.robot.commands.CollectorOnCommand;
 import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
 import org.usfirst.frc.team1153.robot.commands.FireShooterCommand;
 import org.usfirst.frc.team1153.robot.commands.GyroTurnAbsoluteCommand;
@@ -35,10 +36,12 @@ public class FastCenterSwitch extends CommandGroup {
 		
 		
 		addSequential(new DriveDistanceCommand(-1 * distance, distance, 2));
-		addSequential(new GyroTurnAbsoluteCommand(turnBack, 1));
+		addSequential(new GyroTurnAbsoluteCommand(turnBack, 0.5));
 		addSequential(new CarriageDownCommand(0.5));
+		addSequential(new CollectorDownAction());
 		
-		addSequential(new DriveDistanceCommand(36, -1* 36, 2));
+		addParallel(new CollectorOnCommand());
+		addSequential(new DriveDistanceCommand(63, -1* 63, 2));
 
 		
 		

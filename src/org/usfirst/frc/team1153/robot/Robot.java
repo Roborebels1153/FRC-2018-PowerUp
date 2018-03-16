@@ -60,6 +60,8 @@ public class Robot extends TimedRobot {
 
 	public static double initialWait = 0;
 	public static double middleWait = 0;
+	
+	public long gyroStartMillis;
 
 	private SendableChooser<String> routineChooser = new SendableChooser<>();
 
@@ -82,6 +84,9 @@ public class Robot extends TimedRobot {
 
 		vision.turnOffLight();
 		autoDrive.calibrateGyro();
+		autoDrive.resetGyro();
+		
+		gyroStartMillis = System.currentTimeMillis();
 
 		StateScheduler.getInstance().addStateSubsystem(shooter);
 		StateScheduler.getInstance().addStateSubsystem(collector);
@@ -202,7 +207,7 @@ public class Robot extends TimedRobot {
 		} else if (robotPosEqual("Center") && switchPos == 'R') {
 
 			//autoCommand = new CenterSwitch(50, 50, 5, 'R');
-			autoCommand = new FastCenterSwitch(27, 110, -1);
+			autoCommand = new FastCenterSwitch(27, 110, -4.5);
 			System.out.println("Center R");
 
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
@@ -248,7 +253,7 @@ public class Robot extends TimedRobot {
 
 		// autoCommand = new CenterSwitch(50, 50, 5, 'R');
 		//autoCommand = new GyroTurnAbsoluteCommand(25, 5);
-		autoCommand = new DriveDistanceCommand(-2346, -2346, 4);
+		//autoCommand = new DriveDistanceCommand(-2346, -2346, 4);
 		autoCommand.start();
 	}
 
