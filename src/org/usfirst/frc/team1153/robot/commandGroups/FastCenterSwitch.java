@@ -27,6 +27,7 @@ public class FastCenterSwitch extends CommandGroup {
 			addSequential(new WaitCommand(Robot.initialWait));
 		}
 
+		//1st Cube
 		Robot.autoDrive.resetGyro();
 		addSequential(new CarriageUpCommand());
 		addSequential(new DriveDistanceCommand(12, -1 * 12, 2));
@@ -34,14 +35,19 @@ public class FastCenterSwitch extends CommandGroup {
 		addSequential(new DriveDistanceCommand(distance, -1 * distance, 2));
 		addSequential(new FireShooterCommand());
 		
-		
+		//Back to 2nd Cube
 		addSequential(new DriveDistanceCommand(-1 * distance, distance, 2));
-		addSequential(new GyroTurnAbsoluteCommand(turnBack, 0.5));
+		addSequential(new GyroTurnAbsoluteCommand(turnBack, 1));
 		addSequential(new CarriageDownCommand(0.5));
 		addSequential(new CollectorDownAction());
-		
 		addParallel(new CollectorOnCommand());
 		addSequential(new DriveDistanceCommand(63, -1* 63, 2));
+		
+		//score 2nd cube
+		addSequential(new WaitCommand (0.5));
+		addSequential(new DriveDistanceCommand(-1 * 63,  63, 2));
+		addSequential(new GyroTurnAbsoluteCommand(-1 * turnBack));
+		addSequential(new DriveDistanceCommand(distance, -1 * distance, 2));
 
 		
 		

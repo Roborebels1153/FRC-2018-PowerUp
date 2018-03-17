@@ -97,10 +97,10 @@ public class Robot extends TimedRobot {
 		StateScheduler.getInstance().addStateSubsystem(pto);
 
 		routineChooser.addDefault("Center", "Center");
-		routineChooser.addDefault("Left", "Left");
-		routineChooser.addDefault("Right", "Right");
-		routineChooser.addDefault("Far Right", "Far Right");
-		routineChooser.addDefault("Far Left", "Far Left");
+		routineChooser.addObject("Left", "Left");
+		routineChooser.addObject("Right", "Right");
+		routineChooser.addObject("Far Right", "Far Right");
+		routineChooser.addObject("Far Left", "Far Left");
 		SmartDashboard.putData("Position", routineChooser);
 
 		/**
@@ -207,13 +207,13 @@ public class Robot extends TimedRobot {
 		} else if (robotPosEqual("Center") && switchPos == 'R') {
 
 			//autoCommand = new CenterSwitch(50, 50, 5, 'R');
-			autoCommand = new FastCenterSwitch(27, 110, -4.5);
+			autoCommand = new FastCenterSwitch(24, 110, -4.5);
 			System.out.println("Center R");
 
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
 
 			//autoCommand = new CenterSwitch(-50, 60, -5, 'L');
-			autoCommand = new FastCenterSwitch(-26, 113,1);
+			autoCommand = new FastCenterSwitch(-22, 108, 5);
 
 			System.out.println("Center L");
 
@@ -254,6 +254,7 @@ public class Robot extends TimedRobot {
 		// autoCommand = new CenterSwitch(50, 50, 5, 'R');
 		//autoCommand = new GyroTurnAbsoluteCommand(25, 5);
 		//autoCommand = new DriveDistanceCommand(-2346, -2346, 4);
+		//autoCommand = new GyroTurnAbsoluteCommand(-45, 0);
 		autoCommand.start();
 	}
 
@@ -278,6 +279,7 @@ public class Robot extends TimedRobot {
 		// carriage.downInit();
 		autoDrive.resetEncoders();
 		vision.turnOffLight();
+		shooter.retractInit();
 
 	}
 

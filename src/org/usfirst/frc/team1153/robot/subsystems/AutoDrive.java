@@ -43,7 +43,8 @@ public class AutoDrive extends Subsystem {
 
 	private DoubleSolenoid transmissionShifter;
 
-	PIDController gyroPID;
+	PIDController gyroTwoPID;
+	PIDController gyroOnePID;
 
 	private DummyOutput gyroOutput;
 
@@ -74,19 +75,25 @@ public class AutoDrive extends Subsystem {
 		rightFrontSlave = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_SLAVE);
 
 		gyro = new ADXRS450_Gyro();
-		double kP = 0.02;//0.02;
-		double kI = 0;//0;
-		double kD = 0;//0.015;
+		double kTwoP = 0.0376;//0.02;
+		double kTwoI = 0;//0;
+		double kTwoD = 0.0039;//0.00376;//0.028;//0.015;
+		
+		double kOneP = 0.0376;//0.02;
+		double kOneI = 0;//0;
+		double kOneD = 0.0039;//0.00376;//0.028;//0.015;
 
 		gyroOutput = new DummyOutput();
 
-		gyroPID = new PIDController(kP, kI, kD, gyro, gyroOutput);
+		gyroTwoPID = new PIDController(kTwoP, kTwoI, kTwoD, gyro, gyroOutput);
+		gyroOnePID = new PIDController(kTwoP, kTwoI, kTwoD, gyro, gyroOutput);
 
-		gyroPID.setInputRange(-180, 180);
 
-		gyroPID.setContinuous();
+		gyroTwoPID.setInputRange(-180, 180);
 
-		gyroPID.setOutputRange(-0.6, 0.6);
+		gyroTwoPID.setContinuous();
+
+		gyroTwoPID.setOutputRange(-0.6, 0.6);
 		transmissionShifter = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_A, RobotMap.TRANSMISSION_SOLENOID_B);
 
 		newShifter = new Solenoid(11, 0);
@@ -123,7 +130,7 @@ public class AutoDrive extends Subsystem {
 	}
 
 	public void setGyroPID(double setpoint) {
-		gyroPID.setSetpoint(setpoint);
+		gyroTwoPID.setSetpoint(setpoint);
 	}
 
 	public double getGyroOutput() {
@@ -132,22 +139,22 @@ public class AutoDrive extends Subsystem {
 
 	public void runGyroPID(boolean enabled) {
 		if (enabled) {
-			gyroPID.enable();
+			gyroTwoPID.enable();
 			leftMaster.set(ControlMode.PercentOutput, gyroOutput.getOutput());
 			rightMaster.set(ControlMode.PercentOutput, gyroOutput.getOutput());
 		} else {
-			gyroPID.disable();
+			gyroTwoPID.disable();
 			DriveSignal autoDriveSignal = helper.rebelDrive(0, 0, false, false);
 			Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, autoDriveSignal);
 		}
 	}
 
 	public boolean gyroWithinTolerance() {
-		return (Math.abs(gyroPID.getError()) < 1);
+		return (Math.abs(gyroTwoPID.getError()) < 1);
 	}
 
 	public double gyroError() {
-		return gyroPID.getError();
+		return gyroTwoPID.getError();
 	}
 
 	public double getGyroAngle() {
