@@ -398,10 +398,10 @@ public class AutoDrive extends Subsystem {
 
 		rightMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
 		/* set acceleration and vcruise velocity - see documentation */
-		int cruiseVelocity = (int) (rightCoefficient * 1500);
+		int cruiseVelocity = (int) (rightCoefficient * 1800);
 		System.out.println("Setting right cruiseVelocity to " + cruiseVelocity);
 		rightMaster.configMotionCruiseVelocity(cruiseVelocity, Constants.kTimeoutMs);
-		rightMaster.configMotionAcceleration(1500, Constants.kTimeoutMs);
+		rightMaster.configMotionAcceleration(1800, Constants.kTimeoutMs);
 		/* zero the sensor */
 		rightMaster.getSensorCollection().setQuadraturePosition(0, 10);
 	}
@@ -419,10 +419,10 @@ public class AutoDrive extends Subsystem {
 
 		leftMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
 		/* set acceleration and vcruise velocity - see documentation */
-		int cruiseVelocity = (int) (leftCoefficient * 1675);
+		int cruiseVelocity = (int) (leftCoefficient * 1800);
 		System.out.println("Setting left cruiseVelocity to " + cruiseVelocity);
 		leftMaster.configMotionCruiseVelocity(cruiseVelocity, Constants.kTimeoutMs);
-		leftMaster.configMotionAcceleration(1500, Constants.kTimeoutMs);
+		leftMaster.configMotionAcceleration(1800, Constants.kTimeoutMs);
 		// 3400
 		/* zero the sensor */
 		leftMaster.getSensorCollection().setQuadraturePosition(0, 10);
