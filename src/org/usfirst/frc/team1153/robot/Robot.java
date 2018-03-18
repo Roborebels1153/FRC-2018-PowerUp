@@ -212,7 +212,7 @@ public class Robot extends TimedRobot {
 		} else if (robotPosEqual("Center") && switchPos == 'R') {
 
 			// autoCommand = new CenterSwitch(50, 50, 5, 'R');
-			autoCommand = new FastCenterSwitch(24, 105, -4.5);
+			autoCommand = new FastCenterSwitch(19, 103, 0);
 			System.out.println("Center R");
 
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
@@ -258,7 +258,7 @@ public class Robot extends TimedRobot {
 
 		// autoCommand = new CenterSwitch(50, 50, 5, 'R');
 		// autoCommand = new GyroTurnAbsoluteCommand(25, 5);
-//		autoCommand = new DriveDistanceCommand(120, -120, 4);
+		//autoCommand = new DriveDistanceCommand(120, -120, 4);
 		// autoCommand = new GyroAbsOneSide(-45, 0);
 		autoCommand.start();
 	}

@@ -16,7 +16,9 @@ public class DriveDistanceCommand extends Command {
 	StringBuilder sb = new StringBuilder();
 	long timeAtStart;
 	double waitTime;
-
+	
+	double speedCoe = 1;
+	
 	public DriveDistanceCommand(double targetPosLeft, double targetPosRight, double wait) {
 		requires(Robot.autoDrive);
 		this.targetPosRight = Constants.TALON_TICKS_PER_INCH_RIGHT * targetPosRight;
@@ -24,11 +26,19 @@ public class DriveDistanceCommand extends Command {
 		this.waitTime = wait;
 	}
 
+	public DriveDistanceCommand(double targetPosLeft, double targetPosRight, double wait, double speedCoe) {
+		requires(Robot.autoDrive);
+		this.targetPosRight = Constants.TALON_TICKS_PER_INCH_RIGHT * targetPosRight;
+		this.targetPosLeft = Constants.TALON_TICKS_PER_INCH_LEFT * targetPosLeft;
+		this.waitTime = wait;
+		this.speedCoe = speedCoe;
+	}
+
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		Robot.autoDrive.resetEncoders();
-		Robot.autoDrive.configRightMotionMagic(1);
-		Robot.autoDrive.configLeftMotionMagic(1);
+		Robot.autoDrive.configRightMotionMagic(speedCoe);
+		Robot.autoDrive.configLeftMotionMagic(speedCoe);
 
 		timeAtStart = System.currentTimeMillis();
 

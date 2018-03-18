@@ -9,16 +9,32 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class FireShooterCommand extends Command {
+	
+	long timeAtStart;
+	long waitTime;
+
 
     public FireShooterCommand() {
     	requires (Robot.shooter);
+    	
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+		this.waitTime = 0;
+    }
+    
+    public FireShooterCommand(long wait) {
+    	requires (Robot.shooter);
+    	
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+		this.waitTime = wait;
+
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.shooter.setState(Shooter.STATE_FIRE);
+    	timeAtStart = System.currentTimeMillis();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -27,11 +43,14 @@ public class FireShooterCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return System.currentTimeMillis() - timeAtStart > waitTime;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	if (waitTime != 0) {
+    		Robot.shooter.setState(Shooter.STATE_RETRACT);
+    	}
     }
 
     // Called when another command which requires one or more of the same
