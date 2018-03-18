@@ -25,16 +25,16 @@ public class GyroTurnAbsoluteCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.autoDrive.setGyroPID(setpoint);
+    	Robot.autoDrive.setGyroTwoPID(setpoint);
     	startTime = System.currentTimeMillis();
     	Robot.autoDrive.configTalonOutput();
-    	Robot.autoDrive.runGyroPID(true);
+    	Robot.autoDrive.runGyroTwoPID(true);
 
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.autoDrive.runGyroPID(true);
+    	Robot.autoDrive.runGyroTwoPID(true);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -45,7 +45,7 @@ public class GyroTurnAbsoluteCommand extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	System.out.println("GYRO TURN FINISHED");
-    	Robot.autoDrive.runGyroPID(false);
+    	Robot.autoDrive.runGyroTwoPID(false);
     }
 
     // Called when another command which requires one or more of the same

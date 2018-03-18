@@ -7,43 +7,45 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class GyroTurnRelativeCommand extends Command {
+public class GyroAbsOneSide extends Command {
 
 	long startTime;
-	double setPoint;
+	double setpoint;
+	double tolerance;
 	
-    public GyroTurnRelativeCommand(double setpoint) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	this.setPoint = setpoint;
-
+    public GyroAbsOneSide(double setpoint) {
+    	this.setpoint = setpoint;
+    	this.tolerance = 5;
+    }
+    
+    public GyroAbsOneSide(double setpoint, double tolerance) {
+    	this.setpoint = setpoint;
+    	this.tolerance = tolerance;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.autoDrive.setGyroOnePID(setpoint);
     	startTime = System.currentTimeMillis();
-    	Robot.autoDrive.resetGyro();
-    	Robot.autoDrive.setGyroTwoPID(setPoint);
-    	System.out.println("Init method is run");
     	Robot.autoDrive.configTalonOutput();
-    	Robot.autoDrive.runGyroTwoPID(true);
+    	Robot.autoDrive.runGyroOnePID(true);
 
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.autoDrive.runGyroTwoPID(true);
+    	Robot.autoDrive.runGyroOnePID(true);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return System.currentTimeMillis() - startTime >= 2000 || (Math.abs(Robot.autoDrive.getGyroAngle()) < Math.abs(setPoint) + 5 && Math.abs(Robot.autoDrive.getGyroAngle()) > Math.abs(setPoint) - 5);
+    	return System.currentTimeMillis() - startTime >= 2000 ||(Math.abs(Robot.autoDrive.getGyroAngle() - setpoint) < tolerance && Math.abs(Robot.autoDrive.getRightMotorOutputPercent()) < 0.05);/*(Robot.autoDrive.getGyroAngle() < setpoint + tolerance && Robot.autoDrive.getGyroAngle() > setpoint - tolerance);*/
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	System.out.println("GYRO TURN FINISHED");
-    	Robot.autoDrive.runGyroTwoPID(false);
+    	Robot.autoDrive.runGyroOnePID(false);
     }
 
     // Called when another command which requires one or more of the same

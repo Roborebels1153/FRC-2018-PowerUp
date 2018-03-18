@@ -46,7 +46,8 @@ public class AutoDrive extends Subsystem {
 	PIDController gyroTwoPID;
 	PIDController gyroOnePID;
 
-	private DummyOutput gyroOutput;
+	private DummyOutput gyroTwoOutput;
+	private DummyOutput gyroOneOutput;
 
 	private Solenoid newShifter;
 
@@ -79,21 +80,22 @@ public class AutoDrive extends Subsystem {
 		double kTwoI = 0;//0;
 		double kTwoD = 0.0039;//0.00376;//0.028;//0.015;
 		
-		double kOneP = 0.0376;//0.02;
-		double kOneI = 0;//0;
-		double kOneD = 0.0039;//0.00376;//0.028;//0.015;
+		double kOneP = 0.07;//.03
+		double kOneI = 0;
+		double kOneD = 0;
 
-		gyroOutput = new DummyOutput();
-
-		gyroTwoPID = new PIDController(kTwoP, kTwoI, kTwoD, gyro, gyroOutput);
-		gyroOnePID = new PIDController(kTwoP, kTwoI, kTwoD, gyro, gyroOutput);
-
-
+		gyroTwoOutput = new DummyOutput();
+		gyroTwoPID = new PIDController(kTwoP, kTwoI, kTwoD, gyro, gyroTwoOutput);
 		gyroTwoPID.setInputRange(-180, 180);
-
 		gyroTwoPID.setContinuous();
-
 		gyroTwoPID.setOutputRange(-0.6, 0.6);
+		
+		gyroOneOutput = new DummyOutput();
+		gyroOnePID = new PIDController(kOneP, kOneI, kOneD, gyro, gyroOneOutput);
+		gyroOnePID.setInputRange(-180, 180);
+		gyroOnePID.setContinuous();
+		gyroOnePID.setOutputRange(-0.6, 0.6);
+		
 		transmissionShifter = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_A, RobotMap.TRANSMISSION_SOLENOID_B);
 
 		newShifter = new Solenoid(11, 0);
@@ -129,28 +131,45 @@ public class AutoDrive extends Subsystem {
 		gyro.reset();
 	}
 
-	public void setGyroPID(double setpoint) {
+	public void setGyroTwoPID(double setpoint) {
 		gyroTwoPID.setSetpoint(setpoint);
 	}
+	
+	public void setGyroOnePID(double setpoint) {
+		gyroOnePID.setSetpoint(setpoint);
 
+	}
+	
 	public double getGyroOutput() {
-		return gyroOutput.getOutput();
+		return gyroTwoOutput.getOutput();
 	}
 
-	public void runGyroPID(boolean enabled) {
+	public void runGyroTwoPID(boolean enabled) {
 		if (enabled) {
 			gyroTwoPID.enable();
-			leftMaster.set(ControlMode.PercentOutput, gyroOutput.getOutput());
-			rightMaster.set(ControlMode.PercentOutput, gyroOutput.getOutput());
+			leftMaster.set(ControlMode.PercentOutput, gyroTwoOutput.getOutput());
+			rightMaster.set(ControlMode.PercentOutput, gyroTwoOutput.getOutput());
 		} else {
 			gyroTwoPID.disable();
 			DriveSignal autoDriveSignal = helper.rebelDrive(0, 0, false, false);
 			Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, autoDriveSignal);
 		}
 	}
-
-	public boolean gyroWithinTolerance() {
-		return (Math.abs(gyroTwoPID.getError()) < 1);
+	
+	public void runGyroOnePID(boolean enabled) {
+		if (enabled) {
+			gyroOnePID.enable();
+			if (gyroOnePID.getError() >= 0) {
+				leftMaster.set(ControlMode.PercentOutput, gyroOneOutput.getOutput());
+			} else {
+				rightMaster.set(ControlMode.PercentOutput, gyroOneOutput.getOutput());
+			}
+			
+		} else {
+			gyroOnePID.disable();
+			DriveSignal autoDriveSignal = helper.rebelDrive(0, 0, false, false);
+			Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, autoDriveSignal);
+		}
 	}
 
 	public double gyroError() {
@@ -185,6 +204,8 @@ public class AutoDrive extends Subsystem {
 	 * Below is drive code which is used in the cheesy Drive Command
 	 */
 	public void configDrive(ControlMode controlMode, double left, double right) {
+		System.out.println("left:" + left);
+		System.out.println("right:" + right);
 		leftMaster.set(controlMode, left);
 		rightMaster.set(controlMode, -right);
 	}
@@ -279,7 +300,7 @@ public class AutoDrive extends Subsystem {
 //		leftMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
 //		leftMaster.enableCurrentLimit(true); /* honor initial setting */
 
-		leftMaster.setNeutralMode(NeutralMode.Brake);
+		leftMaster.setNeutralMode(NeutralMode.Coast);
 
 //		rightMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
 //		rightMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /*
@@ -288,10 +309,10 @@ public class AutoDrive extends Subsystem {
 //		rightMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
 //		rightMaster.enableCurrentLimit(true); /* honor initial setting */
 
-		rightMaster.setNeutralMode(NeutralMode.Brake);
+		rightMaster.setNeutralMode(NeutralMode.Coast);
 
-		// leftMaster.configOpenloopRamp(2, 10);
-		// rightMaster.configOpenloopRamp(2, 10);
+		 leftMaster.configOpenloopRamp(0, 10);
+		 rightMaster.configOpenloopRamp(0, 10);
 
 	}
 
@@ -308,19 +329,15 @@ public class AutoDrive extends Subsystem {
 		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.kPIDLoopIdx,
 				Constants.kTimeoutMs);
 
-		if (robotId == RobotID.PROTO) {
+//		if (robotId == RobotID.PROTO) {
+//			rightMaster.setSensorPhase(true);
+//			leftMaster.setSensorPhase(true);
+//		} else {
 			rightMaster.setSensorPhase(true);
 			leftMaster.setSensorPhase(true);
-		} else {
-			rightMaster.setSensorPhase(false);
-			leftMaster.setSensorPhase(false);
-		}
-		
-		
-
-		}
+		//}
+	}
 	
-
 	public void resetEncoders() {
 		leftMaster.getSensorCollection().setQuadraturePosition(0, 10);
 		rightMaster.getSensorCollection().setQuadraturePosition(0, 10);

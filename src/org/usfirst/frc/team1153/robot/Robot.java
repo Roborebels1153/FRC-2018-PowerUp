@@ -14,6 +14,7 @@ import org.usfirst.frc.team1153.robot.commandGroups.FarLeftSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarRightSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FastCenterSwitch;
 import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
+import org.usfirst.frc.team1153.robot.commands.GyroAbsOneSide;
 import org.usfirst.frc.team1153.robot.commands.GyroTurnAbsoluteCommand;
 import org.usfirst.frc.team1153.robot.lib.StateScheduler;
 import org.usfirst.frc.team1153.robot.lib.StateSubsystem.State;
@@ -60,7 +61,7 @@ public class Robot extends TimedRobot {
 
 	public static double initialWait = 0;
 	public static double middleWait = 0;
-	
+
 	public long gyroStartMillis;
 
 	private SendableChooser<String> routineChooser = new SendableChooser<>();
@@ -85,7 +86,7 @@ public class Robot extends TimedRobot {
 		vision.turnOffLight();
 		autoDrive.calibrateGyro();
 		autoDrive.resetGyro();
-		
+
 		gyroStartMillis = System.currentTimeMillis();
 
 		StateScheduler.getInstance().addStateSubsystem(shooter);
@@ -206,14 +207,14 @@ public class Robot extends TimedRobot {
 
 		} else if (robotPosEqual("Center") && switchPos == 'R') {
 
-			//autoCommand = new CenterSwitch(50, 50, 5, 'R');
+			// autoCommand = new CenterSwitch(50, 50, 5, 'R');
 			autoCommand = new FastCenterSwitch(24, 110, -4.5);
 			System.out.println("Center R");
 
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
 
-			//autoCommand = new CenterSwitch(-50, 60, -5, 'L');
-			autoCommand = new FastCenterSwitch(-22, 108, 5);
+			// autoCommand = new CenterSwitch(-50, 60, -5, 'L');
+			autoCommand = new FastCenterSwitch(-25, 135, 5);
 
 			System.out.println("Center L");
 
@@ -252,9 +253,9 @@ public class Robot extends TimedRobot {
 		// autoCommand = new DriveForwardAndScore();
 
 		// autoCommand = new CenterSwitch(50, 50, 5, 'R');
-		//autoCommand = new GyroTurnAbsoluteCommand(25, 5);
-		//autoCommand = new DriveDistanceCommand(-2346, -2346, 4);
-		//autoCommand = new GyroTurnAbsoluteCommand(-45, 0);
+		// autoCommand = new GyroTurnAbsoluteCommand(25, 5);
+		autoCommand = new DriveDistanceCommand(120, -120, 4);
+		// autoCommand = new GyroAbsOneSide(-45, 0);
 		autoCommand.start();
 	}
 
