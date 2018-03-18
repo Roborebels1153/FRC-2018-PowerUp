@@ -246,7 +246,7 @@ public class AutoDrive extends Subsystem {
 			rotateValue = rawRotateValue;
 		}
 
-		DriveSignal driveSignal = helper.rebelDrive(-1 * moveValue, 0.8 * rotateValue, true, false);
+		DriveSignal driveSignal = helper.rebelDrive(-1 * moveValue, 0.8 * rotateValue, quickTurn, false);
 		Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
 
 	}
@@ -314,6 +314,11 @@ public class AutoDrive extends Subsystem {
 		 leftMaster.configOpenloopRamp(0, 10);
 		 rightMaster.configOpenloopRamp(0, 10);
 
+	}
+	
+	public void setNeutralMode(NeutralMode mode) {
+		rightMaster.setNeutralMode(mode);
+		leftMaster.setNeutralMode(mode);
 	}
 
 	public void setFollowers() {
@@ -393,10 +398,10 @@ public class AutoDrive extends Subsystem {
 
 		rightMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
 		/* set acceleration and vcruise velocity - see documentation */
-		int cruiseVelocity = (int) (rightCoefficient * 1800);
+		int cruiseVelocity = (int) (rightCoefficient * 1500);
 		System.out.println("Setting right cruiseVelocity to " + cruiseVelocity);
 		rightMaster.configMotionCruiseVelocity(cruiseVelocity, Constants.kTimeoutMs);
-		rightMaster.configMotionAcceleration(1800, Constants.kTimeoutMs);
+		rightMaster.configMotionAcceleration(1500, Constants.kTimeoutMs);
 		/* zero the sensor */
 		rightMaster.getSensorCollection().setQuadraturePosition(0, 10);
 	}
@@ -414,10 +419,10 @@ public class AutoDrive extends Subsystem {
 
 		leftMaster.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
 		/* set acceleration and vcruise velocity - see documentation */
-		int cruiseVelocity = (int) (leftCoefficient * 1800);
+		int cruiseVelocity = (int) (leftCoefficient * 1675);
 		System.out.println("Setting left cruiseVelocity to " + cruiseVelocity);
 		leftMaster.configMotionCruiseVelocity(cruiseVelocity, Constants.kTimeoutMs);
-		leftMaster.configMotionAcceleration(1800, Constants.kTimeoutMs);
+		leftMaster.configMotionAcceleration(1500, Constants.kTimeoutMs);
 		// 3400
 		/* zero the sensor */
 		leftMaster.getSensorCollection().setQuadraturePosition(0, 10);

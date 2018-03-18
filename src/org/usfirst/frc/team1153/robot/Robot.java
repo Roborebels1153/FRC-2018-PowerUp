@@ -28,6 +28,8 @@ import org.usfirst.frc.team1153.robot.subsystems.LimelightVision;
 import org.usfirst.frc.team1153.robot.subsystems.PTO;
 import org.usfirst.frc.team1153.robot.subsystems.Shooter;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -176,6 +178,8 @@ public class Robot extends TimedRobot {
 		StateScheduler.getInstance().notifyAuto();
 
 		autoDrive.setServoValue(180);
+		
+		autoDrive.setNeutralMode(NeutralMode.Brake);
 
 		shooter.retractInit();
 		autoDrive.shiftHigh();
@@ -208,13 +212,13 @@ public class Robot extends TimedRobot {
 		} else if (robotPosEqual("Center") && switchPos == 'R') {
 
 			// autoCommand = new CenterSwitch(50, 50, 5, 'R');
-			autoCommand = new FastCenterSwitch(24, 110, -4.5);
+			autoCommand = new FastCenterSwitch(24, 105, -4.5);
 			System.out.println("Center R");
 
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
 
 			// autoCommand = new CenterSwitch(-50, 60, -5, 'L');
-			autoCommand = new FastCenterSwitch(-25, 135, 5);
+			autoCommand = new FastCenterSwitch(-20, 100, 13);
 
 			System.out.println("Center L");
 
@@ -254,7 +258,7 @@ public class Robot extends TimedRobot {
 
 		// autoCommand = new CenterSwitch(50, 50, 5, 'R');
 		// autoCommand = new GyroTurnAbsoluteCommand(25, 5);
-		autoCommand = new DriveDistanceCommand(120, -120, 4);
+//		autoCommand = new DriveDistanceCommand(120, -120, 4);
 		// autoCommand = new GyroAbsOneSide(-45, 0);
 		autoCommand.start();
 	}
@@ -281,6 +285,8 @@ public class Robot extends TimedRobot {
 		autoDrive.resetEncoders();
 		vision.turnOffLight();
 		shooter.retractInit();
+		autoDrive.setNeutralMode(NeutralMode.Coast);
+
 
 	}
 

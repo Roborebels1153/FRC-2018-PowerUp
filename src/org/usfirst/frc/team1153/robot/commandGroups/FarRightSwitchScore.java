@@ -4,6 +4,7 @@ import org.usfirst.frc.team1153.robot.Robot;
 import org.usfirst.frc.team1153.robot.commands.CarriageUpCommand;
 import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
 import org.usfirst.frc.team1153.robot.commands.FireShooterCommand;
+import org.usfirst.frc.team1153.robot.commands.GyroAbsOneSide;
 import org.usfirst.frc.team1153.robot.commands.GyroTurnAbsoluteCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -11,8 +12,8 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 
 public class FarRightSwitchScore extends CommandGroup {
 
-	double baselineToSideSwitchDistance = 170;
-	double turnToSwitchDistance = 25;
+	double baselineToSideSwitchDistance = 145;
+	double turnToSwitchDistance = 5;
 
 	public FarRightSwitchScore() {
 		super();
