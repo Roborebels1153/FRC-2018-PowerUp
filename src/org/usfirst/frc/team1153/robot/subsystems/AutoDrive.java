@@ -24,8 +24,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class AutoDrive extends Subsystem {
@@ -62,6 +64,11 @@ public class AutoDrive extends Subsystem {
 	}
 
 	public RobotID robotId;
+	
+	private Ultrasonic cubeSonar;
+
+	private PIDController sonarPid;
+
 
 	/**
 	 * Assigns what the Robot should instantiate every time the Drive subsystem
@@ -109,9 +116,33 @@ public class AutoDrive extends Subsystem {
 
 		robotId = RobotID.PROTO;
 
+		
+		cubeSonar = new Ultrasonic(1,0);
+		cubeSonar.setAutomaticMode(true);
+		
+		PIDOutput output = new PIDOutput() {
+
+			@Override
+			public void pidWrite(double output) {
+				
+			}
+			
+		};
+		sonarPid = new PIDController(0.55, 0, 0, cubeSonar, output);
+		sonarPid.setInputRange(1.0, 250.0);
+		sonarPid.setOutputRange(-0.6, 0);
+		
 		configTalonOutput();
 		setEncoderAsFeedback();
 		setFollowers();
+	}
+	
+	public double getRangeInches() {
+		return cubeSonar.getRangeInches();
+	}
+	
+	public PIDController getSonarPid() {
+		return sonarPid;
 	}
 
 	public void setServoValue(double value) {
@@ -204,8 +235,6 @@ public class AutoDrive extends Subsystem {
 	 * Below is drive code which is used in the cheesy Drive Command
 	 */
 	public void configDrive(ControlMode controlMode, double left, double right) {
-		System.out.println("left:" + left);
-		System.out.println("right:" + right);
 		leftMaster.set(controlMode, left);
 		rightMaster.set(controlMode, -right);
 	}
@@ -267,7 +296,7 @@ public class AutoDrive extends Subsystem {
 	public void cheesyDriveWithoutJoysticks(double move, double rotate) {
 		double moveValue = move;
 		double rotateValue = rotate;
-		DriveSignal driveSignal = helper.rebelDrive(-1 * moveValue, rotateValue, false, false);
+		DriveSignal driveSignal = helper.rebelDrive(-1 * moveValue, rotateValue, true, false);
 		Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, driveSignal);
 	}
 

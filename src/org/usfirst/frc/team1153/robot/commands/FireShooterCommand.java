@@ -48,7 +48,7 @@ public class FireShooterCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	if (waitTime != 0) {
+    	if ((waitTime != 0) && (System.currentTimeMillis() - this.timeAtStart > this.waitTime)) {
     		Robot.shooter.setState(Shooter.STATE_RETRACT);
     	}
     }

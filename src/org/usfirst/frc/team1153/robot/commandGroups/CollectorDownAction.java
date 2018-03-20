@@ -14,8 +14,8 @@ public class CollectorDownAction extends CommandGroup {
 		super();
 		
 		
-		addSequential(new CarriageDownCommand(0.5));
-		addSequential(new CollectorLeftRightInCommand(0));
+		addSequential(new CarriageDownCommand(0.25));
+		addSequential(new CollectorLeftRightInCommand(0.2));
 		addSequential(new CollectorUpDownOutCommand(0));
 		addSequential(new CheckForLimitSwitchCommand());
 		addSequential(new CollectorLeftRightOutCommand());

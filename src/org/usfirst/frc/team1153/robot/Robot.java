@@ -136,6 +136,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Left Limit Switch", collectorArmsVertical.getLeftLimitSwitchState());
 
 		SmartDashboard.putBoolean("Light Sensor", carriage.getCubeLimitSwitchState());
+		
+		SmartDashboard.putNumber("Sonar", Robot.autoDrive.getRangeInches());
 
 	}
 

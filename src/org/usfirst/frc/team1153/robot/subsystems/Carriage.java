@@ -7,6 +7,7 @@ import org.usfirst.frc.team1153.robot.lib.StateSubsystem;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class Carriage extends StateSubsystem {
 
@@ -21,14 +22,14 @@ public class Carriage extends StateSubsystem {
 	public static final State STATE_UP = new StateSubsystem.State("up");
 
 	private DoubleSolenoid articulator;
-	
+
 	private DigitalInput cubeLimitSwitch;
 
 	public Carriage() {
 		articulator = new DoubleSolenoid(RobotMap.SHOOTER_ARTICULATOR_A, RobotMap.SHOOTER_ARTICULATOR_B);
 
 		cubeLimitSwitch = new DigitalInput(RobotMap.CUBE_LIGHT_SENSOR);
-		
+
 		registerState(STATE_UP);
 		registerState(STATE_DOWN);
 	}
@@ -45,13 +46,13 @@ public class Carriage extends StateSubsystem {
 			articulator.set(Value.kForward);
 		}
 	}
-	
+
 	public boolean getCubeLimitSwitchState() {
 		return cubeLimitSwitch.get();
 	}
-	
+
 	public Value getSolenoidState() {
-		Value value  = articulator.get();
+		Value value = articulator.get();
 		System.out.println(value);
 		return value;
 	}
@@ -74,14 +75,14 @@ public class Carriage extends StateSubsystem {
 	 * Called when shooter first begins fire state
 	 */
 	public void upPeriodic() {
-		//System.out.println("Collector up periodic");
+		// System.out.println("Collector up periodic");
 	}
 
 	/**
 	 * Called when shooter first begins retract state
 	 */
 	public void downPeriodic() {
-		//System.out.println("Collector down periodic");
+		// System.out.println("Collector down periodic");
 	}
 
 	@Override
