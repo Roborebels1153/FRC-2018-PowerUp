@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1153.robot.commands;
 
 import org.usfirst.frc.team1153.robot.Robot;
+import org.usfirst.frc.team1153.robot.subsystems.ArmsHorizontal;
 import org.usfirst.frc.team1153.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -33,6 +34,7 @@ public class FireShooterCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.collectorArmsHorizontal.setState(ArmsHorizontal.STATE_OUT);
     	Robot.shooter.setState(Shooter.STATE_FIRE);
     	timeAtStart = System.currentTimeMillis();
     }
