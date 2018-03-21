@@ -11,11 +11,11 @@ public class GyroAbsOneSide extends Command {
 
 	long startTime;
 	double setpoint;
-	double tolerance;
+	double tolerance = 5;
+	double motorTol = 0.05;
 	
     public GyroAbsOneSide(double setpoint) {
     	this.setpoint = setpoint;
-    	this.tolerance = 5;
     }
     
     public GyroAbsOneSide(double setpoint, double tolerance) {
@@ -23,6 +23,12 @@ public class GyroAbsOneSide extends Command {
     	this.tolerance = tolerance;
     }
 
+    public GyroAbsOneSide(double setpoint, double tolerance, double motorTol) {
+    	this.setpoint = setpoint;
+    	this.tolerance = tolerance;
+    	this.motorTol = motorTol;
+
+    }
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.autoDrive.setGyroOnePID(setpoint);
@@ -39,7 +45,7 @@ public class GyroAbsOneSide extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return System.currentTimeMillis() - startTime >= 2000 ||(Math.abs(Robot.autoDrive.getGyroAngle() - setpoint) < tolerance && Math.abs(Robot.autoDrive.getRightMotorOutputPercent()) < 0.05);/*(Robot.autoDrive.getGyroAngle() < setpoint + tolerance && Robot.autoDrive.getGyroAngle() > setpoint - tolerance);*/
+    	return System.currentTimeMillis() - startTime >= 2000 ||(Math.abs(Robot.autoDrive.getGyroAngle() - setpoint) < tolerance && Math.abs(Robot.autoDrive.getRightMotorOutputPercent()) < motorTol);/*(Robot.autoDrive.getGyroAngle() < setpoint + tolerance && Robot.autoDrive.getGyroAngle() > setpoint - tolerance);*/
     }
 
     // Called once after isFinished returns true

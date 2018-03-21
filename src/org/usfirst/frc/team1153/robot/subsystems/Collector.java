@@ -147,6 +147,7 @@ public class Collector extends StateSubsystem {
 
 	public void runningInit() {
 		setMotorVelocity(COLLECT_MOTOR_RPM);
+		//setMotorPower(1);
 	}
 
 	public void runningPeriodic() {

@@ -87,7 +87,7 @@ public class AutoDrive extends Subsystem {
 		double kTwoI = 0;//0;
 		double kTwoD = 0.0039;//0.00376;//0.028;//0.015;
 		
-		double kOneP = 0.07;//.03
+		double kOneP = 0.06;//.03
 		double kOneI = 0;
 		double kOneD = 0;
 

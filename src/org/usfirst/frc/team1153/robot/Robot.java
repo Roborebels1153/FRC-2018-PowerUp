@@ -286,6 +286,7 @@ public class Robot extends TimedRobot {
 		// carriage.downInit();
 		autoDrive.resetEncoders();
 		vision.turnOffLight();
+		vision.setCamMode(0);
 		shooter.retractInit();
 		autoDrive.setNeutralMode(NeutralMode.Coast);
 
