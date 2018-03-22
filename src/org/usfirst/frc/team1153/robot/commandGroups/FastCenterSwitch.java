@@ -50,21 +50,23 @@ public class FastCenterSwitch extends CommandGroup {
 //		addParallel(new CollectorDownAction());
 //		addParallel(new CollectorOnCommand());
 		addSequential(new DriveDistanceCommand(36, -1* 36, 2, 0.5));
-		addSequential(new DriveDistanceSonarCommand(1.5, 0.5));
-		addSequential(new CollectorLeftRightInCommand(0.5));
+		addSequential(new DriveDistanceSonarCommand(0.75, 0.5));
+		addSequential(new CollectorLeftRightInCommand(0.4));
 		//addSequential(new WaitCommand (0.5));
 		addSequential(new DriveDistanceCommand(-1* 5, 3, 2, 0.25));
-		addParallel(new CollectorUpAction());
+		addSequential(new CollectorUpAction());
 		///addSequential(new DriveDistanceCommand(-1* 10, 10, 2, 0.6));
 		addParallel(new CarriageUpCommand());
 		addParallel(new CollectorOffCommand());
 		
 		//score 2nd cube
 		//addSequential(new WaitCommand (0.5));
-		addSequential(new DriveDistanceCommand(-1 * 58,  58, 2));
+//		addSequential(new DriveDistanceCommand(-1 * 58,  58, 2));
+		addSequential(new DriveDistanceCommand(-1 * 43,  43, 2));
+
 //		addSequential(new GyroTurnAbsoluteCommand(-1 * turnBack));
-		addSequential(new GyroAbsOneSide(degreesToTurn + Math.copySign(1, degreesToTurn) + 2, 2));
-		addSequential(new DriveDistanceCommand(distance, -1 * distance, 2));
+		addSequential(new GyroAbsOneSide(degreesToTurn + Math.copySign(3, degreesToTurn) + 2, 2));
+		addSequential(new DriveDistanceCommand((distance- 10), -1 * (distance-10), 2));
 		addSequential(new FireShooterCommand(50));
 
 
