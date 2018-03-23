@@ -35,7 +35,7 @@ public class FastCenterSwitch extends CommandGroup {
 		addSequential(new CarriageUpCommand());
 //		addSequential(new DriveDistanceCommand(12, -1 * 12, 2));
 //		addSequential(new GyroTurnAbsoluteCommand(degreesToTurn, 2));
-		addSequential(new GyroAbsOneSide(degreesToTurn, 2, 0.1));
+		addSequential(new GyroAbsOneSide(degreesToTurn, 4, 0.1));
 		addSequential(new DriveDistanceCommand(distance, -1 * distance, 2));
 		addSequential(new FireShooterCommand(50));
 
