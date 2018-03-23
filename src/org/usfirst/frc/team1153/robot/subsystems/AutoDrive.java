@@ -87,8 +87,8 @@ public class AutoDrive extends Subsystem {
 		double kTwoI = 0;//0;
 		double kTwoD = 0.0039;//0.00376;//0.028;//0.015;
 		
-		double kOneP = 0.035;//.03
-		double kOneI = 0;
+		double kOneP = 0.0325;//.03
+		double kOneI = 0.00015;
 		double kOneD = 0;
 
 		gyroTwoOutput = new DummyOutput();

@@ -35,7 +35,7 @@ public class FastCenterSwitch extends CommandGroup {
 		addSequential(new CarriageUpCommand());
 //		addSequential(new DriveDistanceCommand(12, -1 * 12, 2));
 //		addSequential(new GyroTurnAbsoluteCommand(degreesToTurn, 2));
-		addSequential(new GyroAbsOneSide(degreesToTurn, 2));
+		addSequential(new GyroAbsOneSide(degreesToTurn, 2, 0.1));
 		addSequential(new DriveDistanceCommand(distance, -1 * distance, 2));
 		addSequential(new FireShooterCommand(50));
 
@@ -49,7 +49,7 @@ public class FastCenterSwitch extends CommandGroup {
 		addParallel(new CollectorOnCommand());
 //		addParallel(new CollectorDownAction());
 //		addParallel(new CollectorOnCommand());
-		addSequential(new DriveDistanceCommand(40, -1* 40, 2, 0.5));
+		addSequential(new DriveDistanceCommand(45, -1* 45, 2, 0.5));
 		addSequential(new DriveDistanceSonarCommand(0.75, 0.5));
 		addSequential(new CollectorLeftRightInCommand(0.4));
 		//addSequential(new WaitCommand (0.5));
@@ -65,8 +65,8 @@ public class FastCenterSwitch extends CommandGroup {
 		addSequential(new DriveDistanceCommand(-1 * 43,  43, 2));
 
 //		addSequential(new GyroTurnAbsoluteCommand(-1 * turnBack));
-		addSequential(new GyroAbsOneSide(degreesToTurn + Math.copySign(3, degreesToTurn) + 2, 2));
-		addSequential(new DriveDistanceCommand((distance- 10), -1 * (distance-10), 2));
+		addSequential(new GyroAbsOneSide((degreesToTurn * .95) + Math.copySign(1, degreesToTurn) + 0, 2));
+		addSequential(new DriveDistanceCommand((distance + 5), -1 * (distance + 5), 3));
 		addSequential(new FireShooterCommand(50));
 
 
