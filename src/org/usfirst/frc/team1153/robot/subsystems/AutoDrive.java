@@ -87,7 +87,7 @@ public class AutoDrive extends Subsystem {
 		double kTwoI = 0;//0;
 		double kTwoD = 0.0039;//0.00376;//0.028;//0.015;
 		
-		double kOneP = 0.06;//.03
+		double kOneP = 0.035;//.03
 		double kOneI = 0;
 		double kOneD = 0;
 
@@ -114,7 +114,7 @@ public class AutoDrive extends Subsystem {
 
 		// robotDrive = new DifferentialDrive(leftMaster, rightMaster);
 
-		robotId = RobotID.PROTO;
+		robotId = RobotID.FINAL;
 
 		
 		cubeSonar = new Ultrasonic(1,0);
@@ -322,21 +322,21 @@ public class AutoDrive extends Subsystem {
 											 * hold current after limit is triggered
 											 */
 
-//		leftMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
-//		leftMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /*
-//																 * this is a necessary call to avoid errata.
-//																 */
-//		leftMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
-//		leftMaster.enableCurrentLimit(true); /* honor initial setting */
+		leftMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
+		leftMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /*
+																 * this is a necessary call to avoid errata.
+																 */
+		leftMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
+		leftMaster.enableCurrentLimit(true); /* honor initial setting */
 
 		leftMaster.setNeutralMode(NeutralMode.Coast);
 
-//		rightMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
-//		rightMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /*
-//																 * this is a necessary call to avoid errata.
-//																 */
-//		rightMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
-//		rightMaster.enableCurrentLimit(true); /* honor initial setting */
+		rightMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
+		rightMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /*
+																 * this is a necessary call to avoid errata.
+																 */
+		rightMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
+		rightMaster.enableCurrentLimit(true); /* honor initial setting */
 
 		rightMaster.setNeutralMode(NeutralMode.Coast);
 
@@ -363,13 +363,13 @@ public class AutoDrive extends Subsystem {
 		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.kPIDLoopIdx,
 				Constants.kTimeoutMs);
 
-//		if (robotId == RobotID.PROTO) {
-//			rightMaster.setSensorPhase(true);
-//			leftMaster.setSensorPhase(true);
-//		} else {
+		if (robotId == RobotID.PROTO) {
 			rightMaster.setSensorPhase(true);
 			leftMaster.setSensorPhase(true);
-		//}
+		} else {
+			rightMaster.setSensorPhase(false);
+			leftMaster.setSensorPhase(false);
+		}
 	}
 	
 	public void resetEncoders() {

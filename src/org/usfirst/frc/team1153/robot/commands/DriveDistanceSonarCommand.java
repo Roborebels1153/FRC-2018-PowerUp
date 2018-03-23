@@ -30,7 +30,7 @@ public class DriveDistanceSonarCommand extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		setPoint  = (Robot.autoDrive.getRangeInches() - 22);
+		setPoint  = (Robot.autoDrive.getRangeInches() - 24);
 		 if (setPoint > 15) {
 			 setPoint =5;
 		 } 

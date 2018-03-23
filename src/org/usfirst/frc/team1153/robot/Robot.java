@@ -149,6 +149,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledInit() {
 		StateScheduler.getInstance().notifyDisabled();
+		vision.turnOffLight();
 
 	}
 
@@ -214,13 +215,13 @@ public class Robot extends TimedRobot {
 		} else if (robotPosEqual("Center") && switchPos == 'R') {
 
 			// autoCommand = new CenterSwitch(50, 50, 5, 'R');
-			autoCommand = new FastCenterSwitch(19, 103, 0);
+			autoCommand = new FastCenterSwitch(19, 98, -1);
 			System.out.println("Center R");
 
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
 
 			// autoCommand = new CenterSwitch(-50, 60, -5, 'L');
-			autoCommand = new FastCenterSwitch(-20, 100, 13);
+			autoCommand = new FastCenterSwitch(-23, 100, 13);
 
 			System.out.println("Center L");
 
@@ -261,7 +262,8 @@ public class Robot extends TimedRobot {
 		// autoCommand = new CenterSwitch(50, 50, 5, 'R');
 		// autoCommand = new GyroTurnAbsoluteCommand(25, 5);
 		//autoCommand = new DriveDistanceCommand(120, -120, 4);
-		// autoCommand = new GyroAbsOneSide(-45, 0);
+//		 autoCommand = new GyroAbsOneSide(20, 2);
+		//autoCommand = new DriveDistanceCommand(60, -60, 2)
 		autoCommand.start();
 	}
 
@@ -285,6 +287,7 @@ public class Robot extends TimedRobot {
 		autoDrive.resetEncoders();
 		// carriage.downInit();
 		autoDrive.resetEncoders();
+		autoDrive.shiftHigh();
 		vision.turnOffLight();
 		vision.setCamMode(0);
 		shooter.retractInit();
