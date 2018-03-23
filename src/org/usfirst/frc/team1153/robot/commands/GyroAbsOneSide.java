@@ -51,6 +51,7 @@ public class GyroAbsOneSide extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	System.out.println("GYRO TURN FINISHED");
+    	System.out.println("Setpoint: " + this.setpoint + " Actual: " + Robot.autoDrive.getGyroAngle());
     	Robot.autoDrive.runGyroOnePID(false);
     }
 
