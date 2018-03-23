@@ -45,7 +45,7 @@ public class FastCenterSwitch extends CommandGroup {
 		addParallel(new CollectorDownAction());
 		addSequential(new DriveDistanceCommand(-1 * (distance-5), (distance-5), 2, 0.7));
 //		addSequential(new GyroTurnAbsoluteCommand(turnBack, 1));
-		addSequential(new GyroAbsOneSide(turnBack, 3, 0.1));
+		addSequential(new GyroAbsOneSide(turnBack, 2, 0.1));
 		addParallel(new CollectorOnCommand());
 //		addParallel(new CollectorDownAction());
 //		addParallel(new CollectorOnCommand());
