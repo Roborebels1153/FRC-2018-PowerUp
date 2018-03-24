@@ -49,7 +49,7 @@ public class FastCenterSwitch extends CommandGroup {
 		addParallel(new CollectorOnCommand());
 //		addParallel(new CollectorDownAction());
 //		addParallel(new CollectorOnCommand());
-		addSequential(new DriveDistanceCommand(45, -1* 45, 2, 0.5));
+		addSequential(new DriveDistanceCommand(47, -1* 47, 2, 0.5));
 		addSequential(new DriveDistanceSonarCommand(0.75, 0.5));
 		addSequential(new CollectorLeftRightInCommand(0.4));
 		//addSequential(new WaitCommand (0.5));
