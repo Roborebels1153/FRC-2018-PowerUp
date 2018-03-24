@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class DriveForwardNoScore extends CommandGroup {
 	
-	double baselineToSwitchDistance = 140;
+	double baselineToSwitchDistance = 145;
 
 	
 	public DriveForwardNoScore () {

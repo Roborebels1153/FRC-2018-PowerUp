@@ -68,8 +68,8 @@ public class OI {
 
 	public OI() {
 
-		drTriggerL.whenPressed(new ShiftHighCommand());
-		drTriggerL.whenReleased(new ShiftLowCommand());
+		drTriggerL.whenPressed(new ShiftLowCommand());
+		drTriggerL.whenReleased(new ShiftHighCommand());
 
 		drButtonY.whenPressed(new PTOToggleCommand());
 

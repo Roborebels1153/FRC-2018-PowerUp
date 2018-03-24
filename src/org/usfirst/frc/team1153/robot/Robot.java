@@ -136,7 +136,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Left Limit Switch", collectorArmsVertical.getLeftLimitSwitchState());
 
 		SmartDashboard.putBoolean("Light Sensor", carriage.getCubeLimitSwitchState());
-		
+
 		SmartDashboard.putNumber("Sonar", Robot.autoDrive.getRangeInches());
 
 	}
@@ -181,7 +181,7 @@ public class Robot extends TimedRobot {
 		StateScheduler.getInstance().notifyAuto();
 
 		autoDrive.setServoValue(180);
-		
+
 		autoDrive.setNeutralMode(NeutralMode.Brake);
 
 		shooter.retractInit();
@@ -221,31 +221,28 @@ public class Robot extends TimedRobot {
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
 
 			// autoCommand = new CenterSwitch(-50, 60, -5, 'L');
-			autoCommand = new FastCenterSwitch(-23, 100, 13);
+			autoCommand = new FastCenterSwitch(-27, 100, 13);
 
 			System.out.println("Center L");
 
-		} else if (robotPosEqual("Far Right")) {
+		} else if (robotPosEqual("Far Right") && switchPos == 'R') {
 
 			autoCommand = new FarRightSwitchScore();
 			System.out.println("Far Right R");
 
-		} /*
-			 * else if (robotPosEqual("Far Right") && switchPos == 'L') {
-			 * 
-			 * autoCommand = new FarRightOppositeSideSwitchScore();
-			 * System.out.println("Far Right Opposite Side");
-			 * 
-			 * }
-			 */ /*
-				 * else if (robotPosEqual("Far Left") && switchPos == 'R') {
-				 * 
-				 * autoCommand = new FarLeftOppositeSideSwitchScore();
-				 * System.out.println("Far Left Opposite Side");
-				 * 
-				 * 
-				 * }
-				 */ else if (robotPosEqual("Far Left") && switchPos == 'L') {
+		} else if (robotPosEqual("Far Right") && switchPos == 'L') {
+
+			autoCommand = new DriveForwardNoScore();
+			System.out.println("Far Right Opposite Side");
+
+		}
+
+		else if (robotPosEqual("Far Left") && switchPos == 'R') {
+
+			autoCommand = new DriveForwardNoScore();
+			System.out.println("Far Left Opposite Side");
+
+		} else if (robotPosEqual("Far Left") && switchPos == 'L') {
 
 			autoCommand = new FarLeftSwitchScore();
 			System.out.println("Far Left L");
@@ -261,9 +258,9 @@ public class Robot extends TimedRobot {
 
 		// autoCommand = new CenterSwitch(50, 50, 5, 'R');
 		// autoCommand = new GyroTurnAbsoluteCommand(25, 5);
-		//autoCommand = new DriveDistanceCommand(120, -120, 4);
-		 //autoCommand = new GyroAbsOneSide(20, 1);
-		//autoCommand = new DriveDistanceCommand(60, -60, 2)
+		// autoCommand = new DriveDistanceCommand(120, -120, 4);
+		// autoCommand = new GyroAbsOneSide(20, 1);
+		// autoCommand = new DriveDistanceCommand(60, -60, 2)
 		autoCommand.start();
 	}
 
@@ -287,12 +284,11 @@ public class Robot extends TimedRobot {
 		autoDrive.resetEncoders();
 		// carriage.downInit();
 		autoDrive.resetEncoders();
-		autoDrive.shiftHigh();
+		autoDrive.shiftLow();
 		vision.turnOffLight();
 		vision.setCamMode(0);
 		shooter.retractInit();
 		autoDrive.setNeutralMode(NeutralMode.Coast);
-
 
 	}
 
