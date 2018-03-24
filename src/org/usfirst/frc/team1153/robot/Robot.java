@@ -221,7 +221,7 @@ public class Robot extends TimedRobot {
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
 
 			// autoCommand = new CenterSwitch(-50, 60, -5, 'L');
-			autoCommand = new FastCenterSwitch(-27, 100, 13);
+			autoCommand = new FastCenterSwitch(-27, 103, 13);
 
 			System.out.println("Center L");
 

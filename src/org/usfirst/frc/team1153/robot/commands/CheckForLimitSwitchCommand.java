@@ -26,7 +26,7 @@ public class CheckForLimitSwitchCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.collectorArmsVertical.getRightLimitSwitchState() && Robot.collectorArmsVertical.getLeftLimitSwitchState();
+        return (!Robot.collectorArmsVertical.getRightLimitSwitchState()) && (!Robot.collectorArmsVertical.getLeftLimitSwitchState());
     }
 
     // Called once after isFinished returns true
