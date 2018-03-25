@@ -31,7 +31,7 @@ public class DriveDistanceSonarCommand extends Command {
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		setPoint  = (Robot.autoDrive.getRangeInches() - 24);
-		 if (setPoint > 25) {
+		 if (setPoint > 35) {
 			 setPoint =5;
 		 } 
 		this.targetPosRight = -1 * Constants.TALON_TICKS_PER_INCH_RIGHT * setPoint;
