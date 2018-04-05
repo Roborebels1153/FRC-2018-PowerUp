@@ -27,8 +27,10 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class AutoDrive extends Subsystem {
 	protected WPI_TalonSRX leftMaster;
@@ -68,6 +70,8 @@ public class AutoDrive extends Subsystem {
 	private Ultrasonic cubeSonar;
 
 	private PIDController sonarPid;
+	
+	private DifferentialDrive drive;
 
 
 	/**
@@ -75,12 +79,19 @@ public class AutoDrive extends Subsystem {
 	 * initializes.
 	 */
 	public AutoDrive() {
+		
 		leftMaster = new WPI_TalonSRX(RobotMap.LEFT_MASTER);
 		leftBackSlave = new WPI_TalonSRX(RobotMap.LEFT_BACK_SLAVE);
 		leftFrontSlave = new WPI_TalonSRX(RobotMap.LEFT_FRONT_SLAVE);
 		rightMaster = new WPI_TalonSRX(RobotMap.RIGHT_MASTER);
 		rightBackSlave = new WPI_TalonSRX(RobotMap.RIGHT_BACK_SLAVE);
 		rightFrontSlave = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_SLAVE);
+		
+		SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftMaster, leftFrontSlave);
+    	SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightMaster, rightBackSlave); 
+
+		
+		drive= new DifferentialDrive(leftGroup, rightGroup);
 
 		gyro = new ADXRS450_Gyro();
 		double kTwoP = 0.0376;//0.02;
@@ -114,7 +125,7 @@ public class AutoDrive extends Subsystem {
 
 		// robotDrive = new DifferentialDrive(leftMaster, rightMaster);
 
-		robotId = RobotID.FINAL;
+		robotId = RobotID.PROTO;
 
 		
 		cubeSonar = new Ultrasonic(1,0);
@@ -135,6 +146,10 @@ public class AutoDrive extends Subsystem {
 		configTalonOutput();
 		setEncoderAsFeedback();
 		setFollowers();
+	}
+	
+	public void drive () {
+		drive.arcadeDrive(Robot.oi.getDriverStick().getRawAxis(1), Robot.oi.getDriverStick().getRawAxis(4));
 	}
 	
 	public double getRangeInches() {

@@ -59,10 +59,7 @@ public class DriveDistanceCommand extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-//		boolean rightTolerated = Math.abs(Robot.autoDrive.getRightMotorSensorPosition()) > (targetPosRight * 0.994)
-//				&& Math.abs(Robot.autoDrive.getRightMotorSensorPosition()) < (targetPosRight * 1.006);
-//		boolean leftTolerated = Math.abs(Robot.autoDrive.getLeftMotorSensorPosition()) > (targetPosLeft * 0.994)
-//				&& Math.abs(Robot.autoDrive.getLeftMotorSensorPosition()) < (targetPosLeft * 1.006);
+//		
 		
 		boolean rightTolerated = Math.abs(Robot.autoDrive.getRightMotorSensorPosition()) > Math.abs(0.5 * targetPosRight);
 		boolean leftTolerated  = Math.abs(Robot.autoDrive.getLeftMotorSensorPosition())> Math.abs(0.5 * targetPosLeft);
@@ -74,8 +71,8 @@ public class DriveDistanceCommand extends Command {
 
 //		return (rightMotorsStopped && leftMotorsStopped && rightTolerated && leftTolerated || System.currentTimeMillis() - timeAtStart > 2500);
 		
-		return (rightMotorsStopped && leftMotorsStopped && rightTolerated && leftTolerated || ((System.currentTimeMillis() - timeAtStart) > (waitTime * 1000)));
-
+		//return (rightMotorsStopped && leftMotorsStopped && rightTolerated && leftTolerated || ((System.currentTimeMillis() - timeAtStart) > (waitTime * 1000)));
+		return false;
 
 	}
 
