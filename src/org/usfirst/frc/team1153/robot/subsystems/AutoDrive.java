@@ -66,39 +66,37 @@ public class AutoDrive extends Subsystem {
 	}
 
 	public RobotID robotId;
-	
+
 	private Ultrasonic cubeSonar;
 
 	private PIDController sonarPid;
-	
-	private DifferentialDrive drive;
 
+	private DifferentialDrive drive;
 
 	/**
 	 * Assigns what the Robot should instantiate every time the Drive subsystem
 	 * initializes.
 	 */
 	public AutoDrive() {
-		
+
 		leftMaster = new WPI_TalonSRX(RobotMap.LEFT_MASTER);
 		leftBackSlave = new WPI_TalonSRX(RobotMap.LEFT_BACK_SLAVE);
 		leftFrontSlave = new WPI_TalonSRX(RobotMap.LEFT_FRONT_SLAVE);
 		rightMaster = new WPI_TalonSRX(RobotMap.RIGHT_MASTER);
 		rightBackSlave = new WPI_TalonSRX(RobotMap.RIGHT_BACK_SLAVE);
 		rightFrontSlave = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_SLAVE);
-		
-		SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftMaster, leftFrontSlave);
-    	SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightMaster, rightBackSlave); 
 
-		
-		drive= new DifferentialDrive(leftGroup, rightGroup);
+		SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftMaster, leftFrontSlave);
+		SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightMaster, rightBackSlave);
+
+		drive = new DifferentialDrive(leftGroup, rightGroup);
 
 		gyro = new ADXRS450_Gyro();
-		double kTwoP = 0.0376;//0.02;
-		double kTwoI = 0;//0;
-		double kTwoD = 0.0039;//0.00376;//0.028;//0.015;
-		
-		double kOneP = 0.0325;//.03
+		double kTwoP = 0.0376;// 0.02;
+		double kTwoI = 0;// 0;
+		double kTwoD = 0.0039;// 0.00376;//0.028;//0.015;
+
+		double kOneP = 0.0325;// .03
 		double kOneI = 0.00015;
 		double kOneD = 0;
 
@@ -107,13 +105,13 @@ public class AutoDrive extends Subsystem {
 		gyroTwoPID.setInputRange(-180, 180);
 		gyroTwoPID.setContinuous();
 		gyroTwoPID.setOutputRange(-0.6, 0.6);
-		
+
 		gyroOneOutput = new DummyOutput();
 		gyroOnePID = new PIDController(kOneP, kOneI, kOneD, gyro, gyroOneOutput);
 		gyroOnePID.setInputRange(-180, 180);
 		gyroOnePID.setContinuous();
 		gyroOnePID.setOutputRange(-0.6, 0.6);
-		
+
 		transmissionShifter = new DoubleSolenoid(RobotMap.TRANSMISSION_SOLENOID_A, RobotMap.TRANSMISSION_SOLENOID_B);
 
 		newShifter = new Solenoid(11, 0);
@@ -127,35 +125,34 @@ public class AutoDrive extends Subsystem {
 
 		robotId = RobotID.PROTO;
 
-		
-		cubeSonar = new Ultrasonic(1,0);
+		cubeSonar = new Ultrasonic(1, 0);
 		cubeSonar.setAutomaticMode(true);
-		
+
 		PIDOutput output = new PIDOutput() {
 
 			@Override
 			public void pidWrite(double output) {
-				
+
 			}
-			
+
 		};
 		sonarPid = new PIDController(0.55, 0, 0, cubeSonar, output);
 		sonarPid.setInputRange(1.0, 250.0);
 		sonarPid.setOutputRange(-0.6, 0);
-		
+
 		configTalonOutput();
 		setEncoderAsFeedback();
 		setFollowers();
 	}
-	
-	public void drive () {
-		drive.arcadeDrive(Robot.oi.getDriverStick().getRawAxis(1), Robot.oi.getDriverStick().getRawAxis(4));
+
+	public void drive() {
+		drive.arcadeDrive(-Robot.oi.getDriverStick().getRawAxis(1), Robot.oi.getDriverStick().getRawAxis(4));
 	}
-	
+
 	public double getRangeInches() {
 		return cubeSonar.getRangeInches();
 	}
-	
+
 	public PIDController getSonarPid() {
 		return sonarPid;
 	}
@@ -180,12 +177,12 @@ public class AutoDrive extends Subsystem {
 	public void setGyroTwoPID(double setpoint) {
 		gyroTwoPID.setSetpoint(setpoint);
 	}
-	
+
 	public void setGyroOnePID(double setpoint) {
 		gyroOnePID.setSetpoint(setpoint);
 
 	}
-	
+
 	public double getGyroOutput() {
 		return gyroTwoOutput.getOutput();
 	}
@@ -201,7 +198,7 @@ public class AutoDrive extends Subsystem {
 			Robot.autoDrive.driveWithHelper(ControlMode.PercentOutput, autoDriveSignal);
 		}
 	}
-	
+
 	public void runGyroOnePID(boolean enabled) {
 		if (enabled) {
 			gyroOnePID.enable();
@@ -210,7 +207,7 @@ public class AutoDrive extends Subsystem {
 			} else {
 				rightMaster.set(ControlMode.PercentOutput, gyroOneOutput.getOutput());
 			}
-			
+
 		} else {
 			gyroOnePID.disable();
 			DriveSignal autoDriveSignal = helper.rebelDrive(0, 0, false, false);
@@ -355,11 +352,11 @@ public class AutoDrive extends Subsystem {
 
 		rightMaster.setNeutralMode(NeutralMode.Coast);
 
-		 leftMaster.configOpenloopRamp(0, 10);
-		 rightMaster.configOpenloopRamp(0, 10);
+		leftMaster.configOpenloopRamp(0, 10);
+		rightMaster.configOpenloopRamp(0, 10);
 
 	}
-	
+
 	public void setNeutralMode(NeutralMode mode) {
 		rightMaster.setNeutralMode(mode);
 		leftMaster.setNeutralMode(mode);
@@ -386,7 +383,7 @@ public class AutoDrive extends Subsystem {
 			leftMaster.setSensorPhase(false);
 		}
 	}
-	
+
 	public void resetEncoders() {
 		leftMaster.getSensorCollection().setQuadraturePosition(0, 10);
 		rightMaster.getSensorCollection().setQuadraturePosition(0, 10);
@@ -511,19 +508,19 @@ public class AutoDrive extends Subsystem {
 	public double getLeftMotorSpeed() {
 		return leftMaster.getSelectedSensorVelocity(0);
 	}
-	
+
 	public double getLeftMotorCurrent() {
 		return leftMaster.getOutputCurrent();
 	}
-	
+
 	public double getRightMotorCurrent() {
 		return rightMaster.getOutputCurrent();
 	}
-	
+
 	public double getLeftMotorOutputVoltage() {
 		return leftMaster.getMotorOutputVoltage();
 	}
-	
+
 	public double getRightMotorOutputVoltage() {
 		return rightMaster.getMotorOutputVoltage();
 	}
