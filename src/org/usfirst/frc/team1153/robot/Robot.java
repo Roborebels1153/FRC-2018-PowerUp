@@ -60,6 +60,7 @@ public class Robot extends TimedRobot {
 	public static LimelightVision vision;
 	public static Climber climber;
 	public static PTO pto;
+	public static LidarLite3 lidar;
 
 	public static double initialWait = 0;
 	public static double middleWait = 0;
@@ -84,7 +85,10 @@ public class Robot extends TimedRobot {
 		pto = new PTO();
 		vision = new LimelightVision();
 		oi = new OI();
-
+		lidar = new LidarLite3();
+		lidar.begin(LidarLite3.Configuration.LL3_CFG_DEFAULT, true);
+		
+		
 		vision.turnOffLight();
 		autoDrive.calibrateGyro();
 		autoDrive.resetGyro();
