@@ -90,6 +90,13 @@ public class LidarLite3 {
 
 	// buffer
 	private final ByteBuffer m_buffer = ByteBuffer.allocateDirect(2);
+	
+	//offset
+	private static int  m_offset;
+	
+	// scale factor
+	private static double m_scale;
+
 
 
 	/*------------------------------------------------------------------------------
@@ -145,11 +152,12 @@ public class LidarLite3 {
 			so this param is ignored.
 
 	------------------------------------------------------------------------------*/
-	public void begin(Configuration config, boolean fasti2c) {
+	public void begin(Configuration config, boolean fasti2c, int offset, double scale) {
 		
 		// set flag
 		m_begin = true;
-		
+		m_offset = offset;
+		m_scale = scale;
 		// issue hardware reset
 		reset();
 
@@ -317,7 +325,7 @@ public class LidarLite3 {
 			write(LL3_REG_COMMAND, LL3_DEV_CMD_MEASURE_WITHOUT_CORRECTION);
 		}
 
-		return (distance);
+		return (int) ((distance - (m_offset)) * m_scale);
 	}
 
 

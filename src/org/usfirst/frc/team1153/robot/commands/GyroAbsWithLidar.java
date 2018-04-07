@@ -15,7 +15,7 @@ public class GyroAbsWithLidar extends Command {
 	double tolerance = 5;
 	double motorTol = 0.05;
 	
-	int threshold = 220;
+	int threshold = 200;
 	boolean gotFirstEdge = false;
 	boolean gotSecondEdge = false;
 	boolean gotCenterCubeAngle = false;
@@ -23,6 +23,8 @@ public class GyroAbsWithLidar extends Command {
 	double secondEdgeAngle = 0.0;
 	double centerCubeAngle = 0.0;
 	
+	int loopCountFirstEdge = 0;
+	int loopCountSecondEdge = 0;
 	int lidarLoopCount = 0;
 	
 	int lidarDistance;
@@ -67,16 +69,23 @@ public class GyroAbsWithLidar extends Command {
     		System.out.println("Lidar Distance = " + lidarDistance);
     	}
     	
-    	if (lidarDistance < 30) {
+    	// Ignore false values
+    	if (lidarDistance < 0) {
     		return;
     	}
     	SmartDashboard.putNumber("Lidar Distance", lidarDistance);
+    	// When we reach the first edge, save the current robot angle
     	if (!gotFirstEdge && lidarDistance < threshold) {
+    		loopCountFirstEdge = lidarLoopCount;
+    		System.out.print("First edge: " + loopCountFirstEdge);
     		gotFirstEdge = true;
     		firstEdgeAngle = Robot.autoDrive.getGyroAngle();
     	} 
     	
+    	// When we reach the second edge, save the current robot angle
     	if (gotFirstEdge && !gotSecondEdge && lidarDistance > threshold) {
+    		loopCountSecondEdge = lidarLoopCount;
+    		System.out.print("Second edge: " + loopCountSecondEdge);
     		gotSecondEdge = true;
     		secondEdgeAngle = Robot.autoDrive.getGyroAngle();
     	} 
@@ -110,12 +119,10 @@ public class GyroAbsWithLidar extends Command {
     		//System.out.println("GyroAbsOneSideLidar motor output limit: " + motorTol + " actual: " + motorOutputPercent);
     	}
     	
-    	if (angleWithinTolerance && motorOutputPercentWithinTolerance) {
+    	if (gotFirstEdge && gotSecondEdge && angleWithinTolerance && motorOutputPercentWithinTolerance) {
     		System.out.println("GyroAbsOneSideLidar, angle: " + gyroAngle + " angle tol:" + tolerance + " motor output percent: " + motorOutputPercent + " output tol: " + motorTol);
     		
-    		lidarDistance = Robot.lidar.distance(false) - 50;
-    		Command driveCommand = new DriveDistanceCommand(lidarDistance/2.5, -(lidarDistance/2.5), 4);
-    		driveCommand.start();
+    		lidarDistance = Robot.lidar.distance(false);
     		return true;
     	} else {
     	   	if (System.currentTimeMillis() - startTime >= timeOutMillis) {

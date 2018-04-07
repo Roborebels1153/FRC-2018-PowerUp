@@ -4,12 +4,15 @@ import org.usfirst.frc.team1153.robot.Robot;
 import org.usfirst.frc.team1153.robot.commands.CarriageDownCommand;
 import org.usfirst.frc.team1153.robot.commands.CarriageUpCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorLeftRightInCommand;
+import org.usfirst.frc.team1153.robot.commands.CollectorLeftRightOutCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorOffCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorOnCommand;
 import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
+import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommandWithLidar;
 import org.usfirst.frc.team1153.robot.commands.DriveDistanceSonarCommand;
 import org.usfirst.frc.team1153.robot.commands.FireShooterCommand;
 import org.usfirst.frc.team1153.robot.commands.GyroAbsOneSide;
+import org.usfirst.frc.team1153.robot.commands.GyroAbsWithLidar;
 import org.usfirst.frc.team1153.robot.commands.WaitCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -44,13 +47,17 @@ public class FastCenterSwitch extends CommandGroup {
 		addParallel(new CarriageDownCommand(0.5));
 		addParallel(new CollectorDownAction());
 		addSequential(new DriveDistanceCommand(-1 * (distance-5), (distance-5), 2, 0.7));
-//		addSequential(new GyroTurnAbsoluteCommand(turnBack, 1));
-		addSequential(new GyroAbsOneSide(turnBack, 2, 0.1));
+		addSequential(new CollectorLeftRightOutCommand());
+		//addSequential(new GyroAbsOneSide(turnBack, 2, 0.1));
+		addSequential(new GyroAbsWithLidar(turnBack, 2, 0.1));
 		addParallel(new CollectorOnCommand());
 //		addParallel(new CollectorDownAction());
 //		addParallel(new CollectorOnCommand());
-		addSequential(new DriveDistanceCommand(driveToCube, -1* driveToCube, 2, 0.5));
-		addSequential(new DriveDistanceSonarCommand(0.75, 0.5));
+		
+		//Turn These 2 back on if no Lidar
+//		addSequential(new DriveDistanceCommand(driveToCube, -1* driveToCube, 2, 0.5));
+//		addSequential(new DriveDistanceSonarCommand(0.75, 0.5));
+		addSequential(new DriveDistanceCommandWithLidar(2, 0.5, 11));
 		addSequential(new CollectorLeftRightInCommand(0.4));
 		//addSequential(new WaitCommand (0.5));
 		addSequential(new DriveDistanceCommand(-1* 5, 3, 2, 0.25));

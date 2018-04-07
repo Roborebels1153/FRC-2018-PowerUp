@@ -8,11 +8,13 @@
 package org.usfirst.frc.team1153.robot;
 
 import org.usfirst.frc.team1153.robot.commandGroups.CenterSwitch;
+import org.usfirst.frc.team1153.robot.commandGroups.CollectorDownAction;
 import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardAndScore;
 import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardNoScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarLeftSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarRightSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FastCenterSwitch;
+import org.usfirst.frc.team1153.robot.commands.CollectorLeftRightOutCommand;
 import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
 import org.usfirst.frc.team1153.robot.commands.GyroAbsOneSide;
 import org.usfirst.frc.team1153.robot.commands.GyroTurnAbsoluteCommand;
@@ -86,7 +88,7 @@ public class Robot extends TimedRobot {
 		vision = new LimelightVision();
 		oi = new OI();
 		lidar = new LidarLite3();
-		lidar.begin(LidarLite3.Configuration.LL3_CFG_DEFAULT, true);
+		lidar.begin(LidarLite3.Configuration.LL3_CFG_DEFAULT, true, 71, 0.94);
 		
 		
 		vision.turnOffLight();
@@ -142,6 +144,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Light Sensor", carriage.getCubeLimitSwitchState());
 
 		SmartDashboard.putNumber("Sonar", Robot.autoDrive.getRangeInches());
+		
+		SmartDashboard.putNumber("Lidar value", Robot.lidar.distance(false));
 
 	}
 
@@ -219,7 +223,9 @@ public class Robot extends TimedRobot {
 		} else if (robotPosEqual("Center") && switchPos == 'R') {
 
 			// autoCommand = new CenterSwitch(50, 50, 5, 'R');
-			autoCommand = new FastCenterSwitch(21, 103, -4, 47);
+			//autoCommand = new FastCenterSwitch(21, 103, -4, 47);
+			// increased turn back to allow for scanning with lidar to get edges
+			autoCommand = new FastCenterSwitch(21, 103, -21, 47);
 			System.out.println("Center R");
 
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
@@ -265,6 +271,7 @@ public class Robot extends TimedRobot {
 		// autoCommand = new DriveDistanceCommand(120, -120, 4);
 		// autoCommand = new GyroAbsOneSide(20, 1);
 		// autoCommand = new DriveDistanceCommand(60, -60, 2);
+	//autoCommand = new CollectorLeftRightOutCommand();
 		autoCommand.start();
 	}
 

@@ -59,7 +59,7 @@ public class AutoDrive extends Subsystem {
 
 	RebelDriveHelper helper;
 
-	public enum RobotID {
+	public static enum RobotID {
 		PROTO, FINAL
 	}
 
