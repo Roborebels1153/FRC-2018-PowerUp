@@ -260,7 +260,7 @@ public class Robot extends TimedRobot {
 		// autoCommand = new GyroTurnAbsoluteCommand(25, 5);
 		// autoCommand = new DriveDistanceCommand(120, -120, 4);
 		// autoCommand = new GyroAbsOneSide(20, 1);
-		// autoCommand = new DriveDistanceCommand(60, -60, 2)
+		// autoCommand = new DriveDistanceCommand(60, -60, 2);
 		autoCommand.start();
 	}
 
