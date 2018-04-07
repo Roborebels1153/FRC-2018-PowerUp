@@ -76,7 +76,6 @@ public class DriveDistanceCommand extends Command {
 		
 		return (rightMotorsStopped && leftMotorsStopped && rightTolerated && leftTolerated || ((System.currentTimeMillis() - timeAtStart) > (waitTime * 1000)));
 
-
 	}
 
 	// Called once after isFinished returns true

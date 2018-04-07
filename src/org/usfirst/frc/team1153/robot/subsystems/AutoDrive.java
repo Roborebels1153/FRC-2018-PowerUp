@@ -114,7 +114,7 @@ public class AutoDrive extends Subsystem {
 
 		// robotDrive = new DifferentialDrive(leftMaster, rightMaster);
 
-		robotId = RobotID.FINAL;
+		robotId = RobotID.PROTO;
 
 		
 		cubeSonar = new Ultrasonic(1,0);
@@ -322,21 +322,21 @@ public class AutoDrive extends Subsystem {
 											 * hold current after limit is triggered
 											 */
 
-		leftMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
-		leftMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /*
-																 * this is a necessary call to avoid errata.
-																 */
-		leftMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
-		leftMaster.enableCurrentLimit(true); /* honor initial setting */
+//		leftMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
+//		leftMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /*
+//																 * this is a necessary call to avoid errata.
+//																 */
+//		leftMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
+//		leftMaster.enableCurrentLimit(true); /* honor initial setting */
 
 		leftMaster.setNeutralMode(NeutralMode.Coast);
 
-		rightMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
-		rightMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /*
-																 * this is a necessary call to avoid errata.
-																 */
-		rightMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
-		rightMaster.enableCurrentLimit(true); /* honor initial setting */
+//		rightMaster.configPeakCurrentLimit(kPeakCurrentAmps, 10);
+//		rightMaster.configPeakCurrentDuration(kPeakTimeMs, 50); /*
+//																 * this is a necessary call to avoid errata.
+//																 */
+//		rightMaster.configContinuousCurrentLimit(kContinCurrentAmps, 10);
+//		rightMaster.enableCurrentLimit(true); /* honor initial setting */
 
 		rightMaster.setNeutralMode(NeutralMode.Coast);
 
