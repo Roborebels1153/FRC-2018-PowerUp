@@ -14,6 +14,7 @@ import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardNoScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarLeftSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarRightSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FastCenterSwitch;
+import org.usfirst.frc.team1153.robot.commandGroups.LidarCenterSwitch;
 import org.usfirst.frc.team1153.robot.commands.CollectorLeftRightOutCommand;
 import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
 import org.usfirst.frc.team1153.robot.commands.GyroAbsOneSide;
@@ -222,16 +223,15 @@ public class Robot extends TimedRobot {
 
 		} else if (robotPosEqual("Center") && switchPos == 'R') {
 
-			// autoCommand = new CenterSwitch(50, 50, 5, 'R');
 			//autoCommand = new FastCenterSwitch(21, 103, -4, 47);
 			// increased turn back to allow for scanning with lidar to get edges
-			autoCommand = new FastCenterSwitch(21, 103, -21, 47);
+			autoCommand = new LidarCenterSwitch(21, 103, -21, 47);
 			System.out.println("Center R");
 
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
 
-			// autoCommand = new CenterSwitch(-50, 60, -5, 'L');
-			autoCommand = new FastCenterSwitch(-27, 103, 13, 51);
+			//autoCommand = new FastCenterSwitch(-27, 103, 13, 51);
+			autoCommand = new LidarCenterSwitch(-27, 103, 13, 51);
 
 			System.out.println("Center L");
 

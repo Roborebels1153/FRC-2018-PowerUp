@@ -29,7 +29,7 @@ public class GyroAbsWithLidar extends Command {
 	
 	int lidarDistance;
 	
-	long timeOutMillis = 15000;
+	long timeOutMillis = 2000;
 	
     public GyroAbsWithLidar(double setpoint) {
     	this.setpoint = setpoint;

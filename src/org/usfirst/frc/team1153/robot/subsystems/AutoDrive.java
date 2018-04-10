@@ -83,6 +83,7 @@ public class AutoDrive extends Subsystem {
 		rightFrontSlave = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_SLAVE);
 
 		gyro = new ADXRS450_Gyro();
+		
 		double kTwoP = 0.0376;//0.02;
 		double kTwoI = 0;//0;
 		double kTwoD = 0.0039;//0.00376;//0.028;//0.015;
@@ -90,12 +91,23 @@ public class AutoDrive extends Subsystem {
 		double kOneP = 0.0325;//.03
 		double kOneI = 0.00015;
 		double kOneD = 0;
+		
+		if (robotId == RobotID.PROTO){
+			System.out.println("USing Proto PID");
+			kTwoP = 0.04;//0.02;
+			kTwoI = 0;//0;
+			kTwoD = 0.004;//0.00376;//0.028;//0.015;
+			
+			kOneP = 0.0375;//.03
+			kOneI = 0.00015;
+			kOneD = 0;
+		}
 
 		gyroTwoOutput = new DummyOutput();
 		gyroTwoPID = new PIDController(kTwoP, kTwoI, kTwoD, gyro, gyroTwoOutput);
 		gyroTwoPID.setInputRange(-180, 180);
 		gyroTwoPID.setContinuous();
-		gyroTwoPID.setOutputRange(-0.6, 0.6);
+		gyroTwoPID.setOutputRange(-0.5, 0.5);
 		
 		gyroOneOutput = new DummyOutput();
 		gyroOnePID = new PIDController(kOneP, kOneI, kOneD, gyro, gyroOneOutput);
