@@ -7,6 +7,12 @@
 
 package org.usfirst.frc.team1153.robot;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+
 import org.usfirst.frc.team1153.robot.commandGroups.CenterSwitch;
 import org.usfirst.frc.team1153.robot.commandGroups.CollectorDownAction;
 import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardAndScore;
@@ -35,6 +41,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.MatchType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -71,6 +78,37 @@ public class Robot extends TimedRobot {
 	public long gyroStartMillis;
 
 	private SendableChooser<String> routineChooser = new SendableChooser<>();
+	
+	
+	/**
+	 * Initializes file printing based on whether or not we are in a match,
+	 * so that we can review logs after the match
+	 */
+	private void setupTelemetry() {
+		DriverStation ds = DriverStation.getInstance();
+		MatchType match = ds.getMatchType();
+		if (match != DriverStation.MatchType.None) {
+			String matchType;
+			if (match == DriverStation.MatchType.Qualification) {
+				matchType = "qual";
+			} else if (match == DriverStation.MatchType.Elimination) {
+				matchType = "elim";
+			} else {
+				matchType = "practice";
+			}
+			String fileName = ds.getEventName() + "-" + matchType + "-" + ds.getMatchNumber() + ".txt";
+			File parentDir = new File("/home/lvuser/rebelog");
+			File outFile = new File(parentDir, fileName);
+			try {
+				parentDir.mkdirs();
+				outFile.createNewFile();
+				PrintStream out = new PrintStream(new BufferedOutputStream(new FileOutputStream(outFile)), true);
+				System.setOut(out);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -78,6 +116,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
+		setupTelemetry();
+		
 		autoDrive = new AutoDrive();
 		shooter = new Shooter();
 		carriage = new Carriage();
