@@ -7,13 +7,19 @@
 
 package org.usfirst.frc.team1153.robot;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import edu.wpi.first.wpilibj.DriverStation.MatchType;
 import org.usfirst.frc.team1153.robot.commandGroups.CenterSwitch;
 import org.usfirst.frc.team1153.robot.commandGroups.CollectorDownAction;
 import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardAndScore;
 import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardNoScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarLeftSwitchScore;
 import org.usfirst.frc.team1153.robot.commandGroups.FarRightSwitchScore;
-import org.usfirst.frc.team1153.robot.commandGroups.FastCenterSwitch;
+import org.usfirst.frc.team1153.robot.commandGroups.SonarCenterSwitch;
 import org.usfirst.frc.team1153.robot.commandGroups.LidarCenterSwitch;
 import org.usfirst.frc.team1153.robot.commands.CollectorLeftRightOutCommand;
 import org.usfirst.frc.team1153.robot.commands.DriveDistanceCommand;
@@ -76,8 +82,40 @@ public class Robot extends TimedRobot {
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
 	 */
+
+	/**
+	 * Initializes file printing based on whether or not we are in a match, so that
+	 * we can review logs after the match
+	 */
+	private void setupTelemetry() {
+		DriverStation ds = DriverStation.getInstance();
+		MatchType match = ds.getMatchType();
+		if (match != DriverStation.MatchType.None) {
+			String matchType;
+			if (match == DriverStation.MatchType.Qualification) {
+				matchType = "qual";
+			} else if (match == DriverStation.MatchType.Elimination) {
+				matchType = "elim";
+			} else {
+				matchType = "practice";
+			}
+			String fileName = ds.getEventName() + "-" + matchType + "-" + ds.getMatchNumber() + ".txt";
+			File parentDir = new File("/home/lvuser/rebelog");
+			File outFile = new File(parentDir, fileName);
+			try {
+				parentDir.mkdirs();
+				outFile.createNewFile();
+				PrintStream out = new PrintStream(new BufferedOutputStream(new FileOutputStream(outFile)), true);
+				System.setOut(out);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	@Override
 	public void robotInit() {
+		setupTelemetry();
 		autoDrive = new AutoDrive();
 		shooter = new Shooter();
 		carriage = new Carriage();
@@ -90,8 +128,7 @@ public class Robot extends TimedRobot {
 		oi = new OI();
 		lidar = new LidarLite3();
 		lidar.begin(LidarLite3.Configuration.LL3_CFG_DEFAULT, true, 71, 0.94);
-		
-		
+
 		vision.turnOffLight();
 		autoDrive.calibrateGyro();
 		autoDrive.resetGyro();
@@ -145,7 +182,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Light Sensor", carriage.getCubeLimitSwitchState());
 
 		SmartDashboard.putNumber("Sonar", Robot.autoDrive.getRangeInches());
-		
+
 		SmartDashboard.putNumber("Lidar value", Robot.lidar.distance(false));
 
 	}
@@ -223,14 +260,14 @@ public class Robot extends TimedRobot {
 
 		} else if (robotPosEqual("Center") && switchPos == 'R') {
 
-			//autoCommand = new FastCenterSwitch(21, 103, -4, 47);
+			// autoCommand = new SonarCenterSwitch(21, 103, -4, 47);
 			// increased turn back to allow for scanning with lidar to get edges
-			autoCommand = new LidarCenterSwitch(21, 103, -21, 47);
+			autoCommand = new LidarCenterSwitch(22, 103, -21, 47);
 			System.out.println("Center R");
 
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
 
-			//autoCommand = new FastCenterSwitch(-27, 103, 13, 51);
+			// autoCommand = new SonarCenterSwitch(-27, 103, 13, 51);
 			autoCommand = new LidarCenterSwitch(-27, 103, 13, 51);
 
 			System.out.println("Center L");
@@ -271,7 +308,7 @@ public class Robot extends TimedRobot {
 		// autoCommand = new DriveDistanceCommand(120, -120, 4);
 		// autoCommand = new GyroAbsOneSide(20, 1);
 		// autoCommand = new DriveDistanceCommand(60, -60, 2);
-	//autoCommand = new CollectorLeftRightOutCommand();
+		// autoCommand = new CollectorLeftRightOutCommand();
 		autoCommand.start();
 	}
 

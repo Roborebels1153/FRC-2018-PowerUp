@@ -31,6 +31,9 @@ public class GyroAbsWithLidar extends Command {
 	
 	long timeOutMillis = 2000;
 	
+	//to account for the yaw error on the Lidar mount
+	double addOffset = 2;
+	
     public GyroAbsWithLidar(double setpoint) {
     	this.setpoint = setpoint;
     }
@@ -91,7 +94,7 @@ public class GyroAbsWithLidar extends Command {
     	} 
     	
     	if (!gotCenterCubeAngle && gotFirstEdge && gotSecondEdge) {
-    		centerCubeAngle = (secondEdgeAngle + firstEdgeAngle)/2;
+    		centerCubeAngle = ((secondEdgeAngle + firstEdgeAngle)/2) + addOffset;
     		System.out.println("Got both edges, turn angle = " + centerCubeAngle);
     		gotCenterCubeAngle = true;
     		Robot.autoDrive.runGyroTwoPID(false);
@@ -120,13 +123,13 @@ public class GyroAbsWithLidar extends Command {
     	}
     	
     	if (gotFirstEdge && gotSecondEdge && angleWithinTolerance && motorOutputPercentWithinTolerance) {
-    		System.out.println("GyroAbsOneSideLidar, angle: " + gyroAngle + " angle tol:" + tolerance + " motor output percent: " + motorOutputPercent + " output tol: " + motorTol);
+    		//System.out.println("GyroAbsOneSideLidar, angle: " + gyroAngle + " angle tol:" + tolerance + " motor output percent: " + motorOutputPercent + " output tol: " + motorTol);
     		
     		lidarDistance = Robot.lidar.distance(false);
     		return true;
     	} else {
     	   	if (System.currentTimeMillis() - startTime >= timeOutMillis) {
-        		System.out.println("GyroAbsOneSideLidar timed out");
+        		//System.out.println("GyroAbsOneSideLidar timed out");
         		return true;
         	} else {
         		return false;

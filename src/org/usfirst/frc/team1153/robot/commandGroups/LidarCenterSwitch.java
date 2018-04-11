@@ -60,7 +60,7 @@ public class LidarCenterSwitch extends CommandGroup {
 		addSequential(new DriveDistanceCommandWithLidar(2, 0.5, 11));
 		addSequential(new CollectorLeftRightInCommand(0.4));
 		//addSequential(new WaitCommand (0.5));
-		addSequential(new DriveDistanceCommand(-1* 5, 3, 2, 0.25));
+		addSequential(new DriveDistanceCommand(-1* 5, 5, 2, 0.25));
 		addSequential(new CollectorUpAction());
 		///addSequential(new DriveDistanceCommand(-1* 10, 10, 2, 0.6));
 		addParallel(new CarriageUpCommand());

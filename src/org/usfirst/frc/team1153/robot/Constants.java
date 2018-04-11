@@ -31,13 +31,13 @@ public class Constants {
 	// public static final int TALON_TICKS_PER_INCH_RIGHT = 203;
 
 	//FINAL ROBOT VALUES
-	//public static final int TALON_TICKS_PER_INCH_LEFT = 209;
-	//public static final int TALON_TICKS_PER_INCH_RIGHT = 207
+	public static final int TALON_TICKS_PER_INCH_LEFT = 209;
+	public static final int TALON_TICKS_PER_INCH_RIGHT = 207;
 	
 	
 	//if ROBOTID = PROTO, then set TicksPerInch is 1st value, else 2nd value
-	public static final int TALON_TICKS_PER_INCH_LEFT = (Robot.autoDrive.robotId == RobotID.PROTO ? 205 : 209);
-
-	public static final int TALON_TICKS_PER_INCH_RIGHT = (Robot.autoDrive.robotId == RobotID.PROTO ? 203 : 207);
+//	public static final int TALON_TICKS_PER_INCH_LEFT = (Robot.autoDrive.robotId == RobotID.PROTO ? 205 : 209);
+//
+//	public static final int TALON_TICKS_PER_INCH_RIGHT = (Robot.autoDrive.robotId == RobotID.PROTO ? 203 : 207);
 
 }

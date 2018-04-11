@@ -17,14 +17,14 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class FastCenterSwitch extends CommandGroup {
+public class SonarCenterSwitch extends CommandGroup {
 
 	/**
 	 * @param degreesToTurn
 	 * @param distance
 	 * @param switchSide
 	 */
-	public FastCenterSwitch(int degreesToTurn, double distance, double turnBack, double driveToCube) {
+	public SonarCenterSwitch(int degreesToTurn, double distance, double turnBack, double driveToCube) {
 
 		if (Robot.initialWait > 0.0) {
 			addSequential(new WaitCommand(Robot.initialWait));

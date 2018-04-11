@@ -63,7 +63,7 @@ public class AutoDrive extends Subsystem {
 		PROTO, FINAL
 	}
 
-	public RobotID robotId;
+	public RobotID robotId = RobotID.FINAL;
 	
 	private Ultrasonic cubeSonar;
 
@@ -125,8 +125,6 @@ public class AutoDrive extends Subsystem {
 		ServoB = new Servo(2);
 
 		// robotDrive = new DifferentialDrive(leftMaster, rightMaster);
-
-		robotId = RobotID.PROTO;
 
 		
 		cubeSonar = new Ultrasonic(1,0);
