@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import edu.wpi.first.wpilibj.DriverStation.MatchType;
 import org.usfirst.frc.team1153.robot.commandGroups.CenterSwitch;
 import org.usfirst.frc.team1153.robot.commandGroups.CollectorDownAction;
 import org.usfirst.frc.team1153.robot.commandGroups.DriveForwardAndScore;
@@ -41,6 +40,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.MatchType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -77,15 +77,11 @@ public class Robot extends TimedRobot {
 	public long gyroStartMillis;
 
 	private SendableChooser<String> routineChooser = new SendableChooser<>();
-
+	
+	
 	/**
-	 * This function is run when the robot is first started up and should be used
-	 * for any initialization code.
-	 */
-
-	/**
-	 * Initializes file printing based on whether or not we are in a match, so that
-	 * we can review logs after the match
+	 * Initializes file printing based on whether or not we are in a match,
+	 * so that we can review logs after the match
 	 */
 	private void setupTelemetry() {
 		DriverStation ds = DriverStation.getInstance();
@@ -112,6 +108,11 @@ public class Robot extends TimedRobot {
 			}
 		}
 	}
+
+	/**
+	 * This function is run when the robot is first started up and should be used
+	 * for any initialization code.
+	 */
 
 	@Override
 	public void robotInit() {
