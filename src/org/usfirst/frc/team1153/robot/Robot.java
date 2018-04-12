@@ -116,6 +116,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotInit() {
+		System.out.println("Reached begin of robotInit");
 		setupTelemetry();
 		autoDrive = new AutoDrive();
 		shooter = new Shooter();
@@ -157,7 +158,7 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putNumber("Initial Delay", 0);
 		SmartDashboard.putNumber("Middle Delay", 0);
-
+		System.out.println("Reached end of robotInit");
 	}
 
 	public static void updateDashboard() {
@@ -184,7 +185,7 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putNumber("Sonar", Robot.autoDrive.getRangeInches());
 
-		SmartDashboard.putNumber("Lidar value", Robot.lidar.distance(false));
+		//SmartDashboard.putNumber("Lidar value", Robot.lidar.distance(false));
 
 	}
 
@@ -350,8 +351,7 @@ public class Robot extends TimedRobot {
 		StateScheduler.getInstance().runAll();
 		updateDashboard();
 		
-		System.out.println(Robot.lidar.distance(false));
-
+		
 		if (oi.getDriverStick().getRawButtonPressed(6)) {
 			climber.moveNewClimber(0.6);
 		} else if (oi.getDriverStick().getRawButtonReleased(6)) {
