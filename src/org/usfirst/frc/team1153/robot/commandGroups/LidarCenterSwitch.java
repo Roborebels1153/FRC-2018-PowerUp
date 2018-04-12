@@ -57,7 +57,7 @@ public class LidarCenterSwitch extends CommandGroup {
 		//Turn These 2 back on if no Lidar
 //		addSequential(new DriveDistanceCommand(driveToCube, -1* driveToCube, 2, 0.5));
 //		addSequential(new DriveDistanceSonarCommand(0.75, 0.5));
-		addSequential(new DriveDistanceCommandWithLidar(2, 0.5, 7));
+		addSequential(new DriveDistanceCommandWithLidar(2, 0.5, 5));
 		addSequential(new CollectorLeftRightInCommand(0.4));
 		//addSequential(new WaitCommand (0.5));
 		addSequential(new DriveDistanceCommand(-1* 5, 5, 2, 0.25));

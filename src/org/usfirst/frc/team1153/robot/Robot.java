@@ -183,7 +183,7 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putNumber("Sonar", Robot.autoDrive.getRangeInches());
 
-		//SmartDashboard.putNumber("Lidar value", Robot.lidar.distance(false));
+		SmartDashboard.putNumber("Lidar value", Robot.lidar.distance(false));
 
 	}
 
