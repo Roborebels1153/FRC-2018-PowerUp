@@ -108,7 +108,7 @@ public class Collector extends StateSubsystem {
 	
 	public void setMotorPower(double value) {
 		configCollectorMotorOutput();
-		System.out.println("stop motors");
+		//System.out.println("stop motors");
 		motorA.set(ControlMode.PercentOutput, value);
 		motorB.set(ControlMode.PercentOutput, -value);
 	}
