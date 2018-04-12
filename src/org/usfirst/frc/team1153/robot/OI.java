@@ -23,6 +23,7 @@ import org.usfirst.frc.team1153.robot.commands.RetractShooterCommand;
 import org.usfirst.frc.team1153.robot.commands.ServoToggleCommand;
 import org.usfirst.frc.team1153.robot.commands.ShiftHighCommand;
 import org.usfirst.frc.team1153.robot.commands.ShiftLowCommand;
+import org.usfirst.frc.team1153.robot.commands.ShiftToggleCommand;
 import org.usfirst.frc.team1153.robot.lib.RebelTrigger;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -68,8 +69,10 @@ public class OI {
 
 	public OI() {
 
-		drTriggerL.whenPressed(new ShiftLowCommand());
-		drTriggerL.whenReleased(new ShiftHighCommand());
+//		drTriggerL.whenPressed(new ShiftLowCommand());
+//		drTriggerL.whenReleased(new ShiftHighCommand());
+		
+		drTriggerR.whenPressed(new ShiftToggleCommand());
 
 		drButtonY.whenPressed(new PTOToggleCommand());
 

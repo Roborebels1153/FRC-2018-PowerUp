@@ -349,6 +349,8 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 		StateScheduler.getInstance().runAll();
 		updateDashboard();
+		
+		System.out.println(Robot.lidar.distance(false));
 
 		if (oi.getDriverStick().getRawButtonPressed(6)) {
 			climber.moveNewClimber(0.6);
