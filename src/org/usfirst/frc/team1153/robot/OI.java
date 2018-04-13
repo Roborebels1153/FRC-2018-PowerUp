@@ -15,6 +15,7 @@ import org.usfirst.frc.team1153.robot.commands.CollectorLeftRightOutCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorLeftRightToggleCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorOffCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorOnCommand;
+import org.usfirst.frc.team1153.robot.commands.CollectorOnHalfCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorReverseCommand;
 import org.usfirst.frc.team1153.robot.commands.CollectorUpDownToggleCommand;
 import org.usfirst.frc.team1153.robot.commands.FireShooterCommand;
@@ -59,6 +60,8 @@ public class OI {
 	public Button opTriggerL = new RebelTrigger(opStick, 2);
 	public Button opTriggerR = new RebelTrigger(opStick, 3);
 
+	public Button opBack = new JoystickButton(opStick, 7);
+	public Button opStart = new JoystickButton(opStick, 8);
 	public Button opButtonY = new JoystickButton(opStick, 4);
 	public Button opButtonA = new JoystickButton(opStick, 1);
 	public Button opButtonB = new JoystickButton(opStick, 2);
@@ -88,9 +91,15 @@ public class OI {
 
 		opButtonY.whileHeld(new CollectorOnCommand());
 		opButtonY.whenReleased(new CollectorOffCommand());
+		
+		opButtonY.whileHeld(new CollectorOnCommand());
+		opButtonY.whenReleased(new CollectorOffCommand());
 
 		opButtonX.whileHeld(new CollectorReverseCommand());
 		opButtonX.whenReleased(new CollectorOffCommand());
+		
+		opStart.whileHeld(new CollectorOnHalfCommand());
+		opStart.whenReleased(new CollectorOffCommand());
 
 		opTriggerR.whenPressed(new CollectorLeftRightToggleCommand());
 

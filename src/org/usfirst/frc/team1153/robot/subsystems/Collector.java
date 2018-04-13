@@ -30,6 +30,11 @@ public class Collector extends StateSubsystem {
 	public static final StateSubsystem.State STATE_REVERSE = new StateSubsystem.State("reverse");
 
 	private static final double COLLECT_MOTOR_RPM = 14000;
+	
+	public enum Speed {
+		Full, Half;
+	}
+	private Speed speed = Speed.Full;
 
 	// TODO: Add motors for assembly actuation
 	private WPI_TalonSRX motorA;
@@ -146,8 +151,12 @@ public class Collector extends StateSubsystem {
 	}
 
 	public void runningInit() {
-		setMotorVelocity(COLLECT_MOTOR_RPM);
-		//setMotorPower(1);
+		//setMotorVelocity(COLLECT_MOTOR_RPM);
+		if (speed == Speed.Full) {
+			setMotorPower(0.8);
+		} else {
+			setMotorPower(0.6);
+		}
 	}
 
 	public void runningPeriodic() {
@@ -155,7 +164,8 @@ public class Collector extends StateSubsystem {
 	}
 
 	public void idleInit() {
-		setMotorVelocity(0);
+		//setMotorVelocity(0);
+		setMotorPower(0);
 	}
 
 	public void idlePeriodic() {
@@ -178,5 +188,17 @@ public class Collector extends StateSubsystem {
 	@Override
 	public StateSubsystem.State getAutoDefaultState() {
 		return STATE_IDLE;
+	}
+	
+	public void toggleSpeed() {
+		if (speed == Speed.Full) {
+			speed = Speed.Half;
+		} else {
+			speed = Speed.Full;
+		}
+	}
+	
+	public void setSpeed(Speed speed) {
+		this.speed = speed;
 	}
 }

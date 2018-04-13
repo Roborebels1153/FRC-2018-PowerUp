@@ -2,6 +2,7 @@ package org.usfirst.frc.team1153.robot.commands;
 
 import org.usfirst.frc.team1153.robot.Robot;
 import org.usfirst.frc.team1153.robot.subsystems.Collector;
+import org.usfirst.frc.team1153.robot.subsystems.Collector.Speed;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -16,6 +17,7 @@ public class CollectorReverseCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.collector.setSpeed(Speed.Full);
     	Robot.collector.setState(Collector.STATE_REVERSE);
     }
 

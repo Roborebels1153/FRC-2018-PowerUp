@@ -27,7 +27,7 @@ public class LidarCenterSwitch extends CommandGroup {
 	 * @param distance
 	 * @param switchSide
 	 */
-	public LidarCenterSwitch(int degreesToTurn, double distance, double turnBack, double driveToCube) {
+	public LidarCenterSwitch(int degreesToTurn, double distance, double turnBack, double driveToCube, double addToTurn) {
 
 		if (Robot.initialWait > 0.0) {
 			addSequential(new WaitCommand(Robot.initialWait));
@@ -72,7 +72,7 @@ public class LidarCenterSwitch extends CommandGroup {
 		addSequential(new DriveDistanceCommand(-1 * 43,  43, 2));
 
 //		addSequential(new GyroTurnAbsoluteCommand(-1 * turnBack));
-		addSequential(new GyroAbsOneSide((degreesToTurn * .95) + Math.copySign(1, degreesToTurn) + 0, 2));
+		addSequential(new GyroAbsOneSide((degreesToTurn * .95) + Math.copySign(1, degreesToTurn) + addToTurn, 2));
 		addSequential(new DriveDistanceCommand((distance + 5), -1 * (distance + 5), 3));
 		addSequential(new FireShooterCommand(50));
 

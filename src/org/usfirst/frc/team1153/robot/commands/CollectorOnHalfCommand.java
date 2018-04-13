@@ -9,15 +9,15 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class CollectorOnCommand extends Command {
+public class CollectorOnHalfCommand extends Command {
 
-	public CollectorOnCommand() {
+	public CollectorOnHalfCommand() {
 		requires(Robot.collector);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.collector.setSpeed(Speed.Full);
+		Robot.collector.setSpeed(Speed.Half);
 		Robot.collector.setState(Collector.STATE_RUNNING);
 	}
 
