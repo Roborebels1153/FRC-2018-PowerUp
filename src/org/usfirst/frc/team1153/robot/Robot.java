@@ -262,7 +262,7 @@ public class Robot extends TimedRobot {
 
 			// autoCommand = new SonarCenterSwitch(21, 103, -4, 47);
 			// increased turn back to allow for scanning with lidar to get edges
-			autoCommand = new LidarCenterSwitch(22, 103, -21, 47, -2);
+			autoCommand = new LidarCenterSwitch(24, 103, -21, 47, -2);
 			System.out.println("Center R");
 
 		} else if (robotPosEqual("Center") && switchPos == 'L') {
