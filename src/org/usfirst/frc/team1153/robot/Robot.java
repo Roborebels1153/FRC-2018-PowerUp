@@ -127,8 +127,8 @@ public class Robot extends TimedRobot {
 		pto = new PTO();
 		vision = new LimelightVision();
 		oi = new OI();
-		lidar = new LidarLite3();
-		lidar.begin(LidarLite3.Configuration.LL3_CFG_DEFAULT, true, 71, 0.94);
+//		lidar = new LidarLite3();
+//		lidar.begin(LidarLite3.Configuration.LL3_CFG_DEFAULT, true, 71, 0.94);
 
 		vision.turnOffLight();
 		autoDrive.calibrateGyro();
@@ -183,7 +183,7 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putNumber("Sonar", Robot.autoDrive.getRangeInches());
 
-		SmartDashboard.putNumber("Lidar value", Robot.lidar.distance(false));
+		//SmartDashboard.putNumber("Lidar value", Robot.lidar.distance(false));
 
 	}
 
